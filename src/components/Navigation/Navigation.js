@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../Header/Header';
+import { Link } from "react-router-dom"
 
 class Navigation extends React.Component {
   constructor(props) {
@@ -16,34 +17,34 @@ class Navigation extends React.Component {
         <div id="main-menu" className="main-menu collapse navbar-collapse">
           <ul className="nav navbar-nav">
             <li className="active">
-              <a href="/dashboard"><i className="menu-icon fa fa-laptop"></i>Tableau de bord </a>
+              <Link to="/dashboard"><i className="menu-icon fa fa-laptop"></i>Tableau de bord </Link>
             </li>
             <li>
-              <a href="/projects"><i className="menu-icon fa fa-laptop"></i>Mes Projets </a>
+              <Link to="/projects"><i className="menu-icon fa fa-laptop"></i>Mes Projets </Link>
             </li>
             <li>
-              <a href="/tasks"><i className="menu-icon fa fa-laptop"></i>Mes Taches </a>
+              <Link to="/tasks"><i className="menu-icon fa fa-laptop"></i>Mes Taches </Link>
             </li>
             <li>
-              <a href="/task"><i className="menu-icon fa fa-laptop"></i>Ma tache </a>
+              <Link to="/task"><i className="menu-icon fa fa-laptop"></i>Ma tache </Link>
             </li>
             <li>
-              <a href="/note"><i className="menu-icon fa fa-laptop"></i>Mes Notes </a>
-            </li>
-            
-            <li>
-              <a href="/user"><i className="menu-icon fa fa-laptop"></i>Utilisateurs </a>
+              <Link to="/note"><i className="menu-icon fa fa-laptop"></i>Mes Notes </Link>
             </li>
             
             <li>
-              <a href="/message"><i className="menu-icon fa fa-laptop"></i>Messages</a>
+              <Link to="/user"><i className="menu-icon fa fa-laptop"></i>Utilisateurs </Link>
             </li>
             
             <li>
-              <a href="/client"><i className="menu-icon fa fa-laptop"></i>Clients </a>
+              <Link to="/message"><i className="menu-icon fa fa-laptop"></i>Messages</Link>
+            </li>
+            
+            <li>
+              <Link to="/client"><i className="menu-icon fa fa-laptop"></i>Clients </Link>
             </li>
             <li>
-              <a href="/configuration"><i className="menu-icon fa fa-laptop"></i>Paramètres </a>
+              <Link to="/configuration"><i className="menu-icon fa fa-laptop"></i>Paramètres </Link>
             </li>
           </ul>
         </div>

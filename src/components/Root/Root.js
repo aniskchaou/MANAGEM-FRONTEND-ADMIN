@@ -15,6 +15,7 @@ class Root extends React.Component {
   render() {
     return (
       <div>
+        <Router>
         <Navigation />
         <Header/>
         
@@ -38,6 +39,7 @@ class Root extends React.Component {
           
 
         </div>
+        </Router>
       </div>
     );
   }

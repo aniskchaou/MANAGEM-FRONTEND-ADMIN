@@ -13,7 +13,7 @@ import Message from '../Message/Message';
 import Client from '../Client/Client';
 const Content = () => (
   <div className="col-md-12">
-    <Router>
+  
       <div>
         <Route exact path="/" component={Dashbord} />
         <Route exact path="/projects" component={Projects} />
@@ -27,7 +27,7 @@ const Content = () => (
 
 
       </div>
-    </Router>
+    
 
   </div>
 );
