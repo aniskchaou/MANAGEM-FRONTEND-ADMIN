@@ -16,6 +16,7 @@ const Content = () => (
   
       <div>
         <Route exact path="/" component={Dashbord} />
+        <Route exact path="/dashboard" component={Dashbord} />
         <Route exact path="/projects" component={Projects} />
         <Route exact path="/tasks" component={Tasks} />
         <Route exact path="/task" component={Task} />
