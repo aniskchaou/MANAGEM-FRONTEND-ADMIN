@@ -14,10 +14,7 @@ class Root extends React.Component {
     this.state = {};
   }
   render() {
-    if (window.location.pathname=="/"){
-      return (<Login/>
-        );
-    }
+  
 
     return (
       <div>
