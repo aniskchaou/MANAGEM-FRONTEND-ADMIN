@@ -11,6 +11,7 @@ import Task from '../Task/Task';
 import Note from '../Note/Note';
 import Message from '../Message/Message';
 import Client from '../Client/Client';
+import EditProfile from './../EditProfile/EditProfile';
 const Content = () => (
   <div className="col-md-12">
   
@@ -25,6 +26,7 @@ const Content = () => (
         <Route exact path="/client" component={Client} />
         <Route exact path="/user" component={User} />
         <Route exact path="/configuration" component={Configuration} />
+        <Route exact path="/profile" component={EditProfile} />
 
 
       </div>

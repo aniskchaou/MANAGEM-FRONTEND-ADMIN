@@ -9,7 +9,7 @@ const Footer = () => (
             <div className="footer-inner bg-white">
               <div className="row">
                 <div className="col-sm-6">
-                  Copyright &copy; 2018 Ela Admin
+                Developed by <a href="https://github.com/aniskchaou">Anis KCHAOU</a>
                   </div>
                 <div className="col-sm-6 text-right">
                   Designed by <a href="https://colorlib.com">Colorlib</a>

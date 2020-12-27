@@ -584,7 +584,7 @@ aside.left-panel {
   border-radius: 0;
   border: none;
   display: inline-block;
-  margin: 0;
+  margin: 20px 0 0 0;
   padding: 0;
   vertical-align: top; }
   .navbar .main-menu {
@@ -863,7 +863,7 @@ aside.left-panel {
           box-shadow: none;
   clear: both;
   padding: 0 30px;
-  height: 55px;
+  height: 75px;
   position: fixed;
   left: 280px;
   left: 0;
@@ -2503,3 +2503,11 @@ footer.site-footer {
     right: 20px !important; }
 
 /*# sourceMappingURL=style.css.map */
+
+
+.navbar-nav li>.activeLink {
+  font-weight: bolder;
+  font-size:large;
+  background-color: #fafafa;
+  color: #0056b3;
+}

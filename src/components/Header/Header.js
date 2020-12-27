@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './Header.css';
+import { Link } from 'react-router-dom';
 
 const Header = () => (
   <div id="right-panel" className="right-panel">
       <header id="header" className="header">
           <div className="top-left">
               <div className="navbar-header">
-                  <a className="navbar-brand" href="./"><img src="images/logo.png" alt="Logo" width="120" height="40"/></a>
+                  <a className="navbar-brand" href="./"><img src="images/logo.png" alt="Logo" /></a>
                   <a className="navbar-brand hidden" href="./"><img src="images/logo2.png" alt="Logo" /></a>
                   <a id="menuToggle" className="menutoggle"><i className="fa fa-bars"></i></a>
               </div>
@@ -60,17 +61,17 @@ const Header = () => (
 
                   <div className="user-area dropdown float-right">
                       <a href="#" className="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          <img className="user-avatar rounded-circle" src="images/admin.jpg" alt="User Avatar"/>
+                          <img className="user-avatar rounded-circle" src="images/admin.png" alt="User Avatar"/>
                       </a>
 
                       <div className="user-menu dropdown-menu">
-                          <a className="nav-link" href="#"><i className="fa fa-user"></i>Mon Profile</a>
+                          <Link to="/profile" className="nav-link" href="#"><i className="fa fa-user"></i>Mon Profile</Link>
 
-                          <a className="nav-link" href="#"><i className="fa fa-bell-o"></i>Notifications <span className="count">13</span></a>
+                          
 
-                          <a className="nav-link" href="#"><i className="fa fa-cog"></i>Paramètres</a>
+                          <Link to="/configuration" className="nav-link" href="#"><i className="fa fa-cog"></i>Paramètres</Link>
 
-                          <a className="nav-link" href="#"><i className="fa fa-power-off"></i>Déconnexion</a>
+                          <Link to="/" className="nav-link" href="#"><i className="fa fa-power-off"></i>Déconnexion</Link>
                       </div>
                   </div>
               </div>

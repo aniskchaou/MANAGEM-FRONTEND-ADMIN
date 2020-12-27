@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../Header/Header';
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 class Navigation extends React.Component {
   constructor(props) {
@@ -16,35 +16,35 @@ class Navigation extends React.Component {
 
         <div id="main-menu" className="main-menu collapse navbar-collapse">
           <ul className="nav navbar-nav">
-            <li className="active">
-              <Link to="/dashboard"><i className="menu-icon fa fa-laptop"></i>Tableau de bord </Link>
+            <li>
+              <NavLink activeClassName="activeLink" to="/dashboard"><i className="menu-icon fa fa-laptop"></i>Tableau de bord </NavLink>
             </li>
             <li>
-              <Link to="/projects"><i className="menu-icon fa fa-laptop"></i>Mes Projets </Link>
+              <NavLink activeClassName="activeLink"  to="/projects"><i className="menu-icon fa fa-crosshairs"></i>Mes Projets </NavLink>
             </li>
             <li>
-              <Link to="/tasks"><i className="menu-icon fa fa-laptop"></i>Mes Taches </Link>
+              <NavLink activeClassName="activeLink"  to="/tasks"><i className="menu-icon fa fa-clipboard-list"></i>Mes Taches </NavLink>
             </li>
             <li>
-              <Link to="/task"><i className="menu-icon fa fa-laptop"></i>Ma tache </Link>
+              <NavLink activeClassName="activeLink"  to="/task"><i className="menu-icon fa fa-dharmachakra"></i>Ma tache </NavLink>
             </li>
             <li>
-              <Link to="/note"><i className="menu-icon fa fa-laptop"></i>Mes Notes </Link>
-            </li>
-            
-            <li>
-              <Link to="/user"><i className="menu-icon fa fa-laptop"></i>Utilisateurs </Link>
+              <NavLink activeClassName="activeLink"  to="/note"><i className="menu-icon fa fa-clipboard-list"></i>Mes Notes </NavLink>
             </li>
             
             <li>
-              <Link to="/message"><i className="menu-icon fa fa-laptop"></i>Messages</Link>
+              <NavLink activeClassName="activeLink"  to="/user"><i className="menu-icon fa fa-users"></i>Utilisateurs </NavLink>
             </li>
             
             <li>
-              <Link to="/client"><i className="menu-icon fa fa-laptop"></i>Clients </Link>
+              <NavLink activeClassName="activeLink"  to="/message"><i className="menu-icon fa fa-envelope"></i>Messages</NavLink>
+            </li>
+            
+            <li>
+              <NavLink activeClassName="activeLink"  to="/client"><i className="menu-icon fa fa-users"></i>Clients </NavLink>
             </li>
             <li>
-              <Link to="/configuration"><i className="menu-icon fa fa-laptop"></i>Paramètres </Link>
+              <NavLink activeClassName="activeLink"  to="/configuration"><i className="menu-icon fa fa-cog"></i>Paramètres </NavLink>
             </li>
           </ul>
         </div>
