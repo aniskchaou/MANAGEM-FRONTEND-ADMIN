@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Note.css';
 import AddNote from './../AddNote/AddNote';
 import EditNote from './../EditNote/EditNote';
 import ViewNote from './../ViewNote/ViewNote';
+import { LoadJS } from './../init';
 const deleteNote=()=>{
   return  window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
 }
 
-const Note = () => (
+const Note = () => {
+  
+  useEffect(() => {
+    // Runs ONCE after initial rendering
+    LoadJS()
+    console.log('hello')
+  }, []);
+  
+  return (
   <div className="card">
     <div className="card-header">
       <strong className="card-title">Mes Notes</strong>
@@ -24,12 +33,20 @@ const Note = () => (
         </thead>
         <tbody>
           <tr>
-            <td>azzeazeazeazeazzzzzzzzzzzze</td>
+            <td>Calculer le budget</td>
             <td><button type="button" data-toggle="modal" data-target="#viewNote" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
               <button type="button" data-toggle="modal" data-target="#editNote"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
               <button type="button" class="btn btn-danger btn-sm" onClick={deleteNote}><i class="fas fa-trash-alt"></i></button></td>
 
-          </tr></tbody>
+          </tr>
+          <tr>
+            <td>Appeller le client</td>
+            <td><button type="button" data-toggle="modal" data-target="#viewNote" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
+              <button type="button" data-toggle="modal" data-target="#editNote"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-danger btn-sm" onClick={deleteNote}><i class="fas fa-trash-alt"></i></button></td>
+
+          </tr>
+          </tbody>
       </table>
       <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addNote">Ajouter</button>
 
@@ -97,7 +114,7 @@ const Note = () => (
       </div>
     </div>
   </div>
-);
+)};
 
 Note.propTypes = {};
 

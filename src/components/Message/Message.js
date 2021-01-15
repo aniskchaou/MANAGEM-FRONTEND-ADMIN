@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Message.css';
+import { LoadJS } from './../init';
 const deleteMessage=()=>{
   return  window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
 }
 
-const Message = () => (
+const Message = () => {
+  useEffect(() => {
+    // Runs ONCE after initial rendering
+    LoadJS()
+    console.log('hello')
+  }, []);
+  return (
   <div className="card">
     <div className="card-header">
       <strong className="card-title">Mes Messages</strong>
@@ -22,13 +29,30 @@ const Message = () => (
         </thead>
         <tbody>
           <tr>
-            <td>aze</td>
-            <td>InternetExplorer 4.0</td>
+            <td><span class="badge badge-primary">Yvette Bouchard</span></td>
+            <td>Bonjour;</td>
             <td><button type="button" data-toggle="modal" data-target="#viewMessage" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
               <button type="button" data-toggle="modal" data-target="#editMessage"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
               <button type="button" class="btn btn-danger btn-sm" onClick={deleteMessage}><i class="fas fa-trash-alt"></i></button></td>
 
-          </tr></tbody>
+          </tr>
+          <tr>
+            <td><span class="badge badge-primary">Laurent Fecteau</span></td>
+            <td>Bonjour;</td>
+            <td><button type="button" data-toggle="modal" data-target="#viewMessage" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
+              <button type="button" data-toggle="modal" data-target="#editMessage"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-danger btn-sm" onClick={deleteMessage}><i class="fas fa-trash-alt"></i></button></td>
+
+          </tr>
+          <tfoot>
+          <tr>
+            <th>Utilisateur</th>
+            <th>Message</th>
+            <th>Actions</th>
+          </tr>
+        </tfoot>
+          
+          </tbody>
       </table>
       <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addMessage">Ajouter</button>
       
@@ -94,7 +118,7 @@ const Message = () => (
       </div>
     </div>
   </div>
-);
+)};
 
 Message.propTypes = {};
 

@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Tasks.css';
 import ViewTask from './../ViewTask/ViewTask';
 import AddTask from './../AddTask/AddTask';
 import EditTask from './../EditTask/EditTask';
+import { LoadJS } from './../init';
 const deleteTasks=()=>{
   return  window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
 }
 
-const Tasks = () => (
+const Tasks = () => {
+  useEffect(() => {
+    // Runs ONCE after initial rendering
+    LoadJS()
+    console.log('hello')
+  }, []);
+  return(
   <div className="card">
     <div className="card-header">
-      <strong className="card-title">Mes taches</strong>
+      <strong className="card-title">Taches</strong>
     </div>
     <div className="card-body">
 
@@ -20,7 +27,6 @@ const Tasks = () => (
           <tr>
             <th>Titre de projet</th>
             <th>Titre de tache</th>
-            <th>Description</th>
             <th>Date écheance</th>
             <th>Priorité</th>
             <th>Utilisateurs</th>
@@ -29,19 +35,62 @@ const Tasks = () => (
           </tr>
         </thead>
         <tbody>
+         
           <tr>
-            <td>aze</td>
-            <td>InternetExplorer 4.0</td>
+            <td>Construire une maison </td>
+            <td>La préparation du terrain</td>
             <td>12/12/2009</td>
-            <td>13/12/2019</td>
-            <td>zrerzr</td>
-            <td>qzrert</td>
-            <td>Disponible</td>
+            <td class="badge badge-success">Urgent</td>
+            <td><span class="badge badge-primary">Melville Poissonnier</span><span class="badge badge-primary">Benoît Grandbois</span></td>
+            <td>Active</td>
             <td><button type="button" data-toggle="modal" data-target="#viewTasks" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
               <button type="button" data-toggle="modal" data-target="#editTasks"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
               <button type="button" class="btn btn-danger btn-sm" onClick={deleteTasks}><i class="fas fa-trash-alt"></i></button></td>
 
-          </tr></tbody>
+          </tr>
+
+          
+          <tr>
+            <td>Construire une maison </td>
+            <td>L’assainissement</td>
+            <td>01/11/2009</td>
+            <td class="badge badge-success">Urgent</td>
+            <td><span class="badge badge-primary">Melville Poissonnier</span><span class="badge badge-primary">Benoît Grandbois</span></td>
+            <td>Active</td>
+            <td><button type="button" data-toggle="modal" data-target="#viewTasks" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
+              <button type="button" data-toggle="modal" data-target="#editTasks"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-danger btn-sm" onClick={deleteTasks}><i class="fas fa-trash-alt"></i></button></td>
+
+          </tr>
+
+          
+          <tr>
+            <td>Construire une maison </td>
+            <td>Les menuiseries et l’isolation</td>
+            <td>12/10/2009</td>
+            <td class="badge badge-secondary">Normale</td>
+            <td><span class="badge badge-primary">Melville Poissonnier</span><span class="badge badge-primary">Benoît Grandbois</span> </td>
+            <td>Active</td>
+            <td><button type="button" data-toggle="modal" data-target="#viewTasks" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
+              <button type="button" data-toggle="modal" data-target="#editTasks"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-danger btn-sm" onClick={deleteTasks}><i class="fas fa-trash-alt"></i></button></td>
+
+          </tr>
+          
+          
+          
+          </tbody>
+          <tfoot>
+          <tr>
+            <th>Titre de projet</th>
+            <th>Titre de tache</th>
+            <th>Date écheance</th>
+            <th>Priorité</th>
+            <th>Utilisateurs</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </tfoot>
       </table>
       <button  type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addTasks">Ajouter</button>
       
@@ -108,7 +157,7 @@ const Tasks = () => (
       </div>
     </div>
   </div>
-);
+)};
 
 Tasks.propTypes = {};
 

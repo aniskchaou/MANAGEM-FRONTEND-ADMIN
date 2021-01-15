@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './User.css';
 import AddUser from './../AddUser/AddUser';
 import EditUser from './../EditUser/EditUser';
 import ViewUser from './../ViewUser/ViewUser';
+import { LoadJS } from './../init';
 
 const deleteUser=()=>{
     return  window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
  }
 
-const User = () => (
+const User =() =>{
+  
+  useEffect(() => {
+    // Runs ONCE after initial rendering
+    LoadJS()
+    console.log('hello')
+  }, []);
+  
+  return (
     <div className="card">
         <div className="card-header">
             <strong className="card-title">Utilisateurs</strong>
@@ -30,16 +39,53 @@ const User = () => (
                 </thead>
                 <tbody>
                     <tr>
-                        <td>aze</td>
-                        <td>InternetExplorer 4.0</td>
-                        <td>12/12/2009</td>
-                        <td>13/12/2019</td>
-                        <td>normale</td>
+                        <td>Laurent </td>
+                        <td>Fecteau</td>
+                        <td>LaurentFecteau@teleworm.us</td>
+                        <td>04.76.36.38.36</td>
+                        <td>Normale</td>
                         <td><button type="button" data-toggle="modal" data-target="#viewUser" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
               <button type="button" data-toggle="modal" data-target="#editUser"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
               <button type="button" class="btn btn-danger btn-sm" onClick={deleteUser}><i class="fas fa-trash-alt"></i></button></td>
 
-                    </tr></tbody>
+                    </tr>
+
+                    <tr>
+                        <td>Raoul  </td>
+                        <td>Lévesque</td>
+                        <td>RaoulLevesque@rhyta.com</td>
+                        <td>02.43.95.52.74</td>
+                        <td>Admin</td>
+                        <td><button type="button" data-toggle="modal" data-target="#viewUser" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
+              <button type="button" data-toggle="modal" data-target="#editUser"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-danger btn-sm" onClick={deleteUser}><i class="fas fa-trash-alt"></i></button></td>
+
+                    </tr>
+
+                    <tr>
+                        <td>Melville  </td>
+                        <td>Poissonnier</td>
+                        <td>MelvillePoissonnier@teleworm.us</td>
+                        <td>03.57.85.34.60</td>
+                        <td>Normale</td>
+                        <td><button type="button" data-toggle="modal" data-target="#viewUser" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
+              <button type="button" data-toggle="modal" data-target="#editUser"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-danger btn-sm" onClick={deleteUser}><i class="fas fa-trash-alt"></i></button></td>
+
+                    </tr>
+                    
+                    </tbody>
+                    <tfoot>
+
+                    <tr>
+                        <th>Prénom</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot>
             </table>
             <button  type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser">Ajouter</button>
            
@@ -108,7 +154,7 @@ const User = () => (
       </div>
         </div>
     </div>
-);
+)};
 
 User.propTypes = {};
 

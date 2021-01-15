@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './DashBoard.css';
+//import'@fullcalendar/core/main.css';
+//import'@fullcalendar/daygrid/main.css';
+import Note from './../Note/Note';
+import Task from './../Task/Task';
+import Tasks from './../Tasks/Tasks';
+import Message from './../Message/Message';
 
-const DashBoard = () => (
+
+const DashBoard = () => {
+  
+  useEffect(() => {
+   
+     
+  }, []);
+
+  return(
   <div className="col-md-12">
-  <div className="card">
-    <div className="card-header">
-      <strong className="card-title">Tableau de bord</strong>
-    </div>
-    <div className="card-body">
+
       <div className="row">
         <div className="col-lg-3 col-md-6">
           <div className="card">
@@ -89,11 +99,17 @@ const DashBoard = () => (
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+ </div>
+ <div className="col-md-12">
+   
+   <Task/>
+
+   
+
+ </div>
+
 </div>
-);
+)};
 
 DashBoard.propTypes = {};
 

@@ -20,13 +20,13 @@ class Navigation extends React.Component {
               <NavLink activeClassName="activeLink" to="/dashboard"><i className="menu-icon fa fa-laptop"></i>Tableau de bord </NavLink>
             </li>
             <li>
-              <NavLink activeClassName="activeLink"  to="/projects"><i className="menu-icon fa fa-crosshairs"></i>Mes Projets </NavLink>
+              <NavLink activeClassName="activeLink"  to="/projects"><i className="menu-icon fa fa-crosshairs"></i> Projets </NavLink>
             </li>
             <li>
-              <NavLink activeClassName="activeLink"  to="/tasks"><i className="menu-icon fa fa-clipboard-list"></i>Mes Taches </NavLink>
+              <NavLink activeClassName="activeLink"  to="/tasks"><i className="menu-icon fa fa-clipboard-list"></i> Taches </NavLink>
             </li>
             <li>
-              <NavLink activeClassName="activeLink"  to="/task"><i className="menu-icon fa fa-dharmachakra"></i>Ma tache </NavLink>
+              <NavLink activeClassName="activeLink"  to="/task"><i className="menu-icon fa fa-dharmachakra"></i>Mes taches </NavLink>
             </li>
             <li>
               <NavLink activeClassName="activeLink"  to="/note"><i className="menu-icon fa fa-clipboard-list"></i>Mes Notes </NavLink>
