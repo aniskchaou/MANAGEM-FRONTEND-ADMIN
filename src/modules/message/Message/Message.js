@@ -56,7 +56,7 @@ const Message = () => {
           
           </tbody>
       </table>
-      <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addMessage">Ajouter</button>
+        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addMessage"><i class="far fa-plus-square"></i>  Ajouter</button>
       
       <div class="modal fade" id="addMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -71,8 +71,8 @@ const Message = () => {
              <AddMessage/>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>
@@ -92,8 +92,8 @@ const Message = () => {
        
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>
@@ -112,8 +112,8 @@ const Message = () => {
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>

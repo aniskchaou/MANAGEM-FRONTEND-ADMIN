@@ -25,7 +25,8 @@ const AddMessage = () => (
           </div>
           <div class="form-group row">
             <div class="offset-4 col-8">
-              <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" id="save-form" className="btn btn-success"><i className="fa fa-check"></i>
+            <font   ><font   > Sauvegarder</font></font></button>
             </div>
           </div>
 </form>

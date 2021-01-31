@@ -12,11 +12,13 @@ import User from '../../../modules/user/User/User';
 import Configuration from '../../../modules/shared/Configuration/Configuration';
 import Client from '../../../modules/client/Client/Client';
 import EditProfile from '../../../modules/shared/EditProfile/EditProfile';
+import ProjectTimeLine from '../../../modules/shared/DashBoard/TimeLine'
 const Content = () => (
   <div className="col-md-12">
   
       <div>
-        <Route exact path="/" component={DashBoard} />
+      <Route exact path="/" component={DashBoard} />
+      <Route exact path="/timeline" component={ProjectTimeLine} />
         <Route exact path="/dashboard" component={DashBoard} />
         <Route exact path="/projects" component={Projects} />
         <Route exact path="/tasks" component={Tasks} />

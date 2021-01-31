@@ -88,7 +88,7 @@ const Projects = () => {
             </tr>
           </tfoot>
         </table>
-        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addProject">Ajouter</button>
+        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addProject"><i class="far fa-plus-square"></i>  Ajouter</button>
 
 
 
@@ -106,8 +106,8 @@ const Projects = () => {
                 <AddProject />
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
               </div>
             </div>
           </div>
@@ -127,8 +127,8 @@ const Projects = () => {
                 <EditProject />
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
               </div>
             </div>
           </div>
@@ -148,29 +148,13 @@ const Projects = () => {
                 <ViewProject />
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
               </div>
             </div>
           </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
       </div>
-
-
-
     </div>
   )
 };

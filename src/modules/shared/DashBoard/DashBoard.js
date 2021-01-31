@@ -1,19 +1,17 @@
 import React, { useEffect } from 'react';
+import moment from 'moment'
 import PropTypes from 'prop-types';
 import './DashBoard.css';
-
 import Task from '../../mytask/Task/Task';
-
+import TimeLine from "react-gantt-timeline";
 
 
 const DashBoard = () => {
-  
-  useEffect(() => {
-   
-     
-  }, []);
 
-  return(
+
+
+  return (
+
   <div className="col-md-12">
 
       <div className="row">
@@ -96,16 +94,18 @@ const DashBoard = () => {
             </div>
           </div>
         </div>
- </div>
- <div className="col-md-12">
+      </div>
+
+      <div className="col-md-12">
    
    <Task/>
 
    
 
  </div>
+     
+      </div>
 
-</div>
 )};
 
 DashBoard.propTypes = {};

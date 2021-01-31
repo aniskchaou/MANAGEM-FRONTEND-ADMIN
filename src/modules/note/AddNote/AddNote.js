@@ -11,7 +11,8 @@ const AddNote = () => (
       <textarea type="text" name="description" class="form-control"></textarea>
     </div>
   </div>
-<button class="d-none" id="fire-modal-2-submit"></button></form>
+      <button type="button" id="save-form" className="btn btn-success"><i className="fa fa-check"></i>
+        <font   ><font   > Sauvegarder</font></font></button></form>
   </div>
 );
 

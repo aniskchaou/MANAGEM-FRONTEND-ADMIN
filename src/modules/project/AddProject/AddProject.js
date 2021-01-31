@@ -32,7 +32,7 @@ const AddProject = () => (
           <option value="1">Non Démarré</option>
           <option value="2">en cours</option>
           <option value="3">Fini</option>
-        </select><span class="select2 select2-container select2-container--default" dir="ltr"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-status-fq-container"><span class="select2-selection__rendered" id="select2-status-fq-container" title="Not Started">Not Started</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+        </select>
       </div>
 
       <div class="form-group">
@@ -59,7 +59,8 @@ const AddProject = () => (
       </div>
 
 
-      <button class="d-none" id="fire-modal-2-submit"></button></form>
+      <button type="button" id="save-form" className="btn btn-success"><i className="fa fa-check"></i>
+        <font   ><font   > Sauvegarder</font></font></button></form>
   </div>
 );
 

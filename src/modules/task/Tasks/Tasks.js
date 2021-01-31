@@ -92,7 +92,7 @@ const Tasks = () => {
           </tr>
         </tfoot>
       </table>
-      <button  type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addTasks">Ajouter</button>
+        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addTasks"><i class="far fa-plus-square"></i>  Ajouter</button>
       
       <div class="modal fade" id="viewTasks" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -107,8 +107,8 @@ const Tasks = () => {
              <ViewTask/>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>
@@ -128,8 +128,8 @@ const Tasks = () => {
              <AddTask/>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>
@@ -149,8 +149,8 @@ const Tasks = () => {
               <EditTask/>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>

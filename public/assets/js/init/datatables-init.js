@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  
+    $('select').picker({ search: true });
     var table=$('table').DataTable({
         orderCellsTop: true,
         dom: 'Bfrtip',

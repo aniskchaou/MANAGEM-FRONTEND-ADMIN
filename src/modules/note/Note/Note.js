@@ -48,7 +48,7 @@ const Note = () => {
           </tr>
           </tbody>
       </table>
-      <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addNote">Ajouter</button>
+        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addNote"><i class="far fa-plus-square"></i>  Ajouter</button>
 
 
       <div class="modal fade" id="addNote" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -64,8 +64,8 @@ const Note = () => {
                <AddNote/>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>
@@ -85,8 +85,8 @@ const Note = () => {
               <EditNote/>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>
@@ -106,8 +106,8 @@ const Note = () => {
               <ViewNote/>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>

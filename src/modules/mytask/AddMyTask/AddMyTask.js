@@ -15,7 +15,9 @@ const AddMyTask = () => (
       <input type="text" name="due_date" class="form-control datepicker"/>
     </div>
   </div>
-<button class="d-none" id="fire-modal-2-submit"></button></form>
+      <button type="button" id="save-form" className="btn btn-success"><i className="fa fa-check"></i>
+        <font   ><font   > Sauvegarder</font></font></button>
+    </form>
   </div>
 );
 

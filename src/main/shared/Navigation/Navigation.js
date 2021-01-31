@@ -18,15 +18,18 @@ class Navigation extends React.Component {
           <ul className="nav navbar-nav">
             <li>
               <NavLink activeClassName="activeLink" to="/dashboard"><i className="menu-icon fa fa-laptop"></i>Tableau de bord </NavLink>
-            </li>
-            <li>
-              <NavLink activeClassName="activeLink"  to="/projects"><i className="menu-icon fa fa-crosshairs"></i> Projets </NavLink>
+              </li>
+              <li>
+                <NavLink activeClassName="activeLink" to="/timeline"><i className="menu-icon fa fa-calendar"></i>chronologie </NavLink>
+              </li>
+              <li>
+                <NavLink activeClassName="activeLink" to="/projects"><i className="menu-icon fa fa-crosshairs"></i> Projets <span class="badge badge-secondary">3</span> </NavLink>
             </li>
             <li>
               <NavLink activeClassName="activeLink"  to="/tasks"><i className="menu-icon fa fa-clipboard-list"></i> Taches </NavLink>
             </li>
             <li>
-              <NavLink activeClassName="activeLink"  to="/task"><i className="menu-icon fa fa-dharmachakra"></i>Mes taches </NavLink>
+                <NavLink activeClassName="activeLink" to="/task"><i className="menu-icon fa fa-dharmachakra"></i>Mes taches <span class="badge badge-primary">2</span></NavLink>
             </li>
             <li>
               <NavLink activeClassName="activeLink"  to="/note"><i className="menu-icon fa fa-clipboard-list"></i>Mes Notes </NavLink>
@@ -37,7 +40,7 @@ class Navigation extends React.Component {
             </li>
             
             <li>
-              <NavLink activeClassName="activeLink"  to="/message"><i className="menu-icon fa fa-envelope"></i>Messages</NavLink>
+                <NavLink activeClassName="activeLink" to="/message"><i className="menu-icon fa fa-envelope"></i>Messages<span class="badge badge-warning">1</span></NavLink>
             </li>
             
             <li>

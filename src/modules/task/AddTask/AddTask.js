@@ -54,7 +54,8 @@ const AddTask = () => (
         </select>
       </div>
 
-      <button className="btn btn-success" id="fire-modal-3-submit">Sauvegarder</button></form>
+      <button type="button" id="save-form" className="btn btn-success"><i className="fa fa-check"></i>
+        <font   ><font   > Sauvegarder</font></font></button></form>
   </div>
 );
 

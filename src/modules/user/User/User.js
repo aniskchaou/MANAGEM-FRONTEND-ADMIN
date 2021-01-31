@@ -88,7 +88,7 @@ const User =() =>{
                     </tr>
                 </tfoot>
             </table>
-            <button  type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser">Ajouter</button>
+        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser"><i class="far fa-plus-square"></i>  Ajouter</button>
            
 
             <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -104,8 +104,8 @@ const User =() =>{
              <AddUser/>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>
@@ -126,8 +126,8 @@ const User =() =>{
              <EditUser/>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>
@@ -147,8 +147,8 @@ const User =() =>{
               <ViewUser/>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
             </div>
           </div>
         </div>

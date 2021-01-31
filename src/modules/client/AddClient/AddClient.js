@@ -4,7 +4,7 @@ import './AddClient.css';
 
 const AddClient = () => (
   <div className="AddClient">
-    <form action="http://timwork-saas.waptechy.com/auth/create-user" method="POST" class="">
+    <form method="POST" class="">
       <div class="row">
         <div class="form-group col-md-12">
           <label>Entreprise</label>
@@ -39,7 +39,10 @@ const AddClient = () => (
         </div>
 
       </div>
-      <button class="d-none" id="fire-modal-2-submit"></button></form>
+      <button type="button" id="save-form" className="btn btn-success"><i className="fa fa-check"></i>
+        <font   ><font   > Sauvegarder</font></font></button>
+
+    </form>
   </div>
 );
 
