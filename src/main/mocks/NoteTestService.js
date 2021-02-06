@@ -1,25 +1,25 @@
-const _tasks = []
+const _location = []
 
 const getAll = () => {
-    return _tasks;
+    return _location;
 };
 
 const get = id => {
-    return _tasks.find(item => item.id === id);
+    return _location.find(item => item.id === id);
 };
 
 const create = (data) => {
-    _tasks.push(data);
+    _location.push(data);
 };
 
 const update = (old, data) => {
 
-    var foundIndex = _tasks.findIndex(item => item === old);
-    _tasks[foundIndex] = data;
+    var foundIndex = _location.findIndex(item => item === old);
+    _location[foundIndex] = data;
 };
 
 const remove = id => {
-    _tasks.splice(id, 1);
+    _location.splice(id, 1);
 };
 
 const removeAll = () => {

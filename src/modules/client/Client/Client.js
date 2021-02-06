@@ -1,21 +1,82 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import './Client.css';
 import AddClient from './../AddClient/AddClient';
 import EditClient from './../EditClient/EditClient';
 import ViewClient from './../ViewClient/ViewClient';
 import { LoadJS } from '../../../libraries/datatables/datatables';
+import useForceUpdate from 'use-force-update';
+import showMessage from '../../../libraries/messages/messages';
+import clientMessage from '../../../main/messages/clientMessage';
+import ClientTestService from '../../../main/mocks/ClientTestService';
+import HTTPService from '../../../main/services/HTTPService';
+
 
 const deleteClient=()=>{
   return  window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
 }
 
 const Client = () => {
+
+  const [clients, setClients] = useState([]);
+  const [updatedItem, setUpdatedItem] = useState({});
+  const forceUpdate = useForceUpdate();
+
+
   useEffect(() => {
-    // Runs ONCE after initial rendering
     LoadJS()
-    console.log('hello')
+    retrieveClients()
   }, []);
+
+
+  const getAll = () => {
+    HTTPService.getAll()
+      .then(response => {
+        setClients(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const removeOne = (data) => {
+    HTTPService.remove(data)
+      .then(response => {
+
+      })
+      .catch(e => {
+
+      });
+  }
+
+
+
+  const retrieveClients = () => {
+    var clients = ClientTestService.getAll();
+    setClients(clients);
+  };
+
+  const resfresh = () => {
+    retrieveClients()
+    forceUpdate()
+  }
+
+  const remove = (e, data) => {
+    e.preventDefault();
+    var r = window.confirm("Etes-vous sûr que vous voulez supprimer ?");
+    if (r) {
+      showMessage('Confirmation', clientMessage.delete, 'success')
+      ClientTestService.remove(data)
+      //removeOne(data)
+      resfresh()
+    }
+
+  }
+
+  const update = (e, data) => {
+    e.preventDefault();
+    setUpdatedItem(data)
+    resfresh()
+  }
 
   return (
   <div className="card">
@@ -35,7 +96,32 @@ const Client = () => {
             <th>Action</th>
           </tr>
         </thead>
-        <tbody>
+          <tbody>
+
+            {clients.map(item =>
+              <tr>
+                <td>{item.company}</td>
+                <td>{item.last_name}</td>
+                <td>{item.first_name}</td>
+                <td>{item.email}</td>
+                <td >{item.phone}</td>
+
+                <td>
+                  <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#editJob" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                  <button onClick={e => remove(e, clients.indexOf(item))} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>
+
+
+              </tr>
+
+
+            )}
+
+
+
+
+
+
+
           <tr>
             <td>Exact Realty</td>
             <td>Zerbino </td>
@@ -88,7 +174,7 @@ const Client = () => {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button onClick={resfresh} type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -96,7 +182,7 @@ const Client = () => {
               <AddClient/>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <button onClick={resfresh} type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 
             </div>
           </div>

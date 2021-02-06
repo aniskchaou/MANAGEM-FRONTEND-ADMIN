@@ -1,21 +1,85 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Task.css';
 import AddMyTask from '../AddMyTask/AddMyTask';
 import EditMyTask from '../EditMyTask/EditMyTask';
 import ViewMyTask from '../ViewMyTask/ViewMyTask';
 import { LoadJS } from '../../../libraries/datatables/datatables';
+import useForceUpdate from 'use-force-update';
+import showMessage from '../../../libraries/messages/messages';
+import taskMessage from '../../../main/messages/taskMessage';
+import MyTaskTestService from '../../../main/mocks/MyTaskTestService';
+import HTTPService from '../../../main/services/HTTPService';
+
+
 const deleteTask=()=>{
   return  window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
 }
 
 const Task = () => {
   
+  const [tasks, setTasks] = useState([]);
+  const [updatedItem, setUpdatedItem] = useState({});
+  const forceUpdate = useForceUpdate();
+
+
   useEffect(() => {
-    // Runs ONCE after initial rendering
     LoadJS()
-    console.log('hello')
+    retrieveTasks()
   }, []);
+
+
+  const getAll = () => {
+    HTTPService.getAll()
+      .then(response => {
+        setTasks(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const removeOne = (data) => {
+    HTTPService.remove(data)
+      .then(response => {
+
+      })
+      .catch(e => {
+
+      });
+  }
+
+
+
+  const retrieveTasks = () => {
+    var tasks = MyTaskTestService.getAll();
+    setTasks(tasks);
+  };
+
+  const resfresh = () => {
+    retrieveTasks()
+    forceUpdate()
+  }
+
+  const remove = (e, data) => {
+    e.preventDefault();
+    var r = window.confirm("Etes-vous sûr que vous voulez supprimer ?");
+    if (r) {
+      showMessage('Confirmation', taskMessage.delete, 'success')
+      MyTaskTestService.remove(data)
+      //removeOne(data)
+      resfresh()
+    }
+
+  }
+
+  const update = (e, data) => {
+    e.preventDefault();
+    setUpdatedItem(data)
+    resfresh()
+  }
+
+
 
   return (
   <div className="card">
@@ -32,7 +96,26 @@ const Task = () => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
+          <tbody>
+            {tasks.map(item =>
+              <tr>
+                <td>{item.todo}</td>
+                <td>{item.due_date}</td>
+
+                <td>
+                  <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#editJob" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                  <button onClick={e => remove(e, tasks.indexOf(item))} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>
+
+
+              </tr>
+
+
+            )}
+
+
+
+
+
           <tr>
             <td>daily meeting</td>
             <td>12/11/2020</td>
@@ -57,7 +140,7 @@ const Task = () => {
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button onClick={resfresh} type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -65,7 +148,7 @@ const Task = () => {
               <AddMyTask/>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <button onClick={resfresh} type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 
             </div>
           </div>

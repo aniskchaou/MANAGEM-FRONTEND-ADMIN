@@ -1,25 +1,25 @@
-const _tasks = []
+const _staff = []
 
 const getAll = () => {
-    return _tasks;
+    return _staff;
 };
 
 const get = id => {
-    return _tasks.find(item => item.id === id);
+    return _staff.find(item => item.id === id);
 };
 
 const create = (data) => {
-    _tasks.push(data);
+    _staff.push(data);
 };
 
 const update = (old, data) => {
 
-    var foundIndex = _tasks.findIndex(item => item === old);
-    _tasks[foundIndex] = data;
+    var foundIndex = _staff.findIndex(item => item === old);
+    _staff[foundIndex] = data;
 };
 
 const remove = id => {
-    _tasks.splice(id, 1);
+    _staff.splice(id, 1);
 };
 
 const removeAll = () => {

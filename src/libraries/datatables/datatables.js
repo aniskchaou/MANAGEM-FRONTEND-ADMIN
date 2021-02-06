@@ -8,8 +8,11 @@ export function LoadJS () {
         { src: "https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js" },
         { src: "https://cdn.datatables.net/v/dt/dt-1.10.23/b-1.6.5/b-colvis-1.6.5/b-html5-1.6.5/datatables.min.js" },
         { src: "https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.10.23/b-1.6.5/b-html5-1.6.5/b-print-1.6.5/datatables.min.js" },
-      { src: "assets/picker.min.js" },
+      { src: "https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js" },
+       { src: "assets/picker.min.js" },
       { src: "assets/js/init/datatables-init.js" }
+
+
     ]
     //Append the script element on each iteration
     
