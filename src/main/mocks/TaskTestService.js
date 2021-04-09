@@ -1,4 +1,7 @@
-const _tasks = []
+const _tasks = [{
+    "project_id": "Construire une maison", "title": "La préparation du terrain",
+    "due_date": "12/12/2009", "priority": "Urgent", "users": "Melville Poissonnier", "status": "Active"
+}]
 
 const getAll = () => {
     return _tasks;

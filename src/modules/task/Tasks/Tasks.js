@@ -16,8 +16,8 @@ import HTTPService from '../../../main/services/HTTPService';
 
 
 
-const deleteTasks=()=>{
-  return  window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
+const deleteTasks = () => {
+  return window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
 }
 
 const Tasks = () => {
@@ -84,26 +84,26 @@ const Tasks = () => {
   }
 
 
-  return(
-  <div className="card">
-    <div className="card-header">
-      <strong className="card-title">Taches</strong>
-    </div>
-    <div className="card-body">
+  return (
+    <div className="card">
+      <div className="card-header">
+        <strong className="card-title">Taches</strong>
+      </div>
+      <div className="card-body">
 
-      <table id="example1" className="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Titre de projet</th>
-            <th>Titre de tache</th>
-            <th>Date écheance</th>
-            <th>Priorité</th>
-            <th>Utilisateurs</th>
-            <th>Statut</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+        <table id="example1" className="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Titre de projet</th>
+              <th>Titre de tache</th>
+              <th>Date écheance</th>
+              <th>Priorité</th>
+              <th>Utilisateurs</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
             {tasks.map(item =>
               <tr>
                 <td>{item.project_id}</td>
@@ -111,140 +111,94 @@ const Tasks = () => {
                 <td>{item.due_date}</td>
                 <td>{item.priority}</td>
                 <td >{item.users}</td>
-                <td >{item.status}</td>
+                <td><span class="badge badge-success">{item.status}</span></td>
                 <td>
                   <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#editJob" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
                   <button onClick={e => remove(e, tasks.indexOf(item))} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>
 
 
               </tr>
-
-
             )}
-
-
-          <tr>
-            <td>Construire une maison </td>
-            <td>La préparation du terrain</td>
-            <td>12/12/2009</td>
-            <td class="badge badge-success">Urgent</td>
-            <td><span class="badge badge-primary">Melville Poissonnier</span><span class="badge badge-primary">Benoît Grandbois</span></td>
-            <td>Active</td>
-            <td><button type="button" data-toggle="modal" data-target="#viewTasks" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
-              <button type="button" data-toggle="modal" data-target="#editTasks"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-              <button type="button" class="btn btn-danger btn-sm" onClick={deleteTasks}><i class="fas fa-trash-alt"></i></button></td>
-
-          </tr>
-
-          
-          <tr>
-            <td>Construire une maison </td>
-            <td>L’assainissement</td>
-            <td>01/11/2009</td>
-            <td class="badge badge-success">Urgent</td>
-            <td><span class="badge badge-primary">Melville Poissonnier</span><span class="badge badge-primary">Benoît Grandbois</span></td>
-            <td>Active</td>
-            <td><button type="button" data-toggle="modal" data-target="#viewTasks" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
-              <button type="button" data-toggle="modal" data-target="#editTasks"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-              <button type="button" class="btn btn-danger btn-sm" onClick={deleteTasks}><i class="fas fa-trash-alt"></i></button></td>
-
-          </tr>
-
-          
-          <tr>
-            <td>Construire une maison </td>
-            <td>Les menuiseries et l’isolation</td>
-            <td>12/10/2009</td>
-            <td class="badge badge-secondary">Normale</td>
-            <td><span class="badge badge-primary">Melville Poissonnier</span><span class="badge badge-primary">Benoît Grandbois</span> </td>
-            <td>Active</td>
-            <td><button type="button" data-toggle="modal" data-target="#viewTasks" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
-              <button type="button" data-toggle="modal" data-target="#editTasks"class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-              <button type="button" class="btn btn-danger btn-sm" onClick={deleteTasks}><i class="fas fa-trash-alt"></i></button></td>
-
-          </tr>
-          
-          
-          
           </tbody>
           <tfoot>
-          <tr>
-            <th>Titre de projet</th>
-            <th>Titre de tache</th>
-            <th>Date écheance</th>
-            <th>Priorité</th>
-            <th>Utilisateurs</th>
-            <th>Statut</th>
-            <th>Actions</th>
-          </tr>
-        </tfoot>
-      </table>
+            <tr>
+              <th>Titre de projet</th>
+              <th>Titre de tache</th>
+              <th>Date écheance</th>
+              <th>Priorité</th>
+              <th>Utilisateurs</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </tfoot>
+        </table>
         <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addTasks"><i class="far fa-plus-square"></i>  Ajouter</button>
-      
-      <div class="modal fade" id="viewTasks" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-             <ViewTask/>
-            </div>
-            <div class="modal-footer">
+
+        <div class="modal fade" id="viewTasks" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <ViewTask />
+              </div>
+              <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
 
-      <div class="modal fade" id="addTasks" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <div class="modal fade" id="addTasks" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
                 <button onClick={resfresh} type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-             <AddTask/>
-            </div>
-            <div class="modal-footer">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <AddTask />
+              </div>
+              <div class="modal-footer">
                 <button onClick={resfresh} type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
 
-      <div class="modal fade" id="editTasks" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <EditTask/>
-            </div>
-            <div class="modal-footer">
+        <div class="modal fade" id="editTasks" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <EditTask />
+              </div>
+              <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-)};
+  )
+};
 
 Tasks.propTypes = {};
 

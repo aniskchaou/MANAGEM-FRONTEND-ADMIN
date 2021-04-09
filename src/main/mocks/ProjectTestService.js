@@ -1,4 +1,8 @@
-const _tasks = []
+const _tasks = [{
+    "title": "Contruire une Maison", "starting_date": "12/12/2009",
+    "ending_date": "13/12/2010", "users": "Manville Goudreau", "client": "Laure Saucier", "status": "en cours"
+}]
+
 
 const getAll = () => {
     return _tasks;

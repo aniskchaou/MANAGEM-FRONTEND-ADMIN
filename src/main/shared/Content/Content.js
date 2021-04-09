@@ -13,26 +13,29 @@ import Configuration from '../../../modules/shared/Configuration/Configuration';
 import Client from '../../../modules/client/Client/Client';
 import EditProfile from '../../../modules/shared/EditProfile/EditProfile';
 import ProjectTimeLine from '../../../modules/shared/DashBoard/TimeLine'
+import CurrentUser from '../../config/user';
+import Login from '../Login/Login';
+
 const Content = () => (
-  <div className="col-md-12">
-  
-      <div>
+  <div className="col-md-12" style={{ display: (CurrentUser.CONNECTED_USER ? 'block' : 'none') }}>
+
+    <div>
       <Route exact path="/" component={DashBoard} />
       <Route exact path="/timeline" component={ProjectTimeLine} />
-        <Route exact path="/dashboard" component={DashBoard} />
-        <Route exact path="/projects" component={Projects} />
-        <Route exact path="/tasks" component={Tasks} />
-        <Route exact path="/task" component={Task} />
-        <Route exact path="/note" component={Note} />
-        <Route exact path="/message" component={Message} />
-        <Route exact path="/client" component={Client} />
-        <Route exact path="/user" component={User} />
-        <Route exact path="/configuration" component={Configuration} />
-        <Route exact path="/profile" component={EditProfile} />
+      <Route exact path="/dashboard" component={DashBoard} />
+      <Route exact path="/projects" component={Projects} />
+      <Route exact path="/tasks" component={Tasks} />
+      <Route exact path="/task" component={Task} />
+      <Route exact path="/note" component={Note} />
+      <Route exact path="/message" component={Message} />
+      <Route exact path="/client" component={Client} />
+      <Route exact path="/user" component={User} />
+      <Route exact path="/configuration" component={Configuration} />
+      <Route exact path="/profile" component={EditProfile} />
+      <Route exact path="/login" component={Login} />
 
+    </div>
 
-      </div>
-    
 
   </div>
 );

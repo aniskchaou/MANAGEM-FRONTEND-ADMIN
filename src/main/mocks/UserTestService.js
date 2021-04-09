@@ -1,4 +1,8 @@
-const _user = []
+const _user = [{
+    "first_name": "Laurent", "last_name": "Fecteau",
+    "email": "LaurentFecteau@teleworm.us", "phone": "04.76.36.38.36",
+    "groups": "Nomal", "state": "Active"
+}]
 
 const getAll = () => {
     return _user;

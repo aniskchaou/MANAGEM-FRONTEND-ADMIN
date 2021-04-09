@@ -111,59 +111,13 @@ const Projects = () => {
                 <td>{item.starting_date}</td>
                 <td>{item.ending_date}</td>
                 <td>{item.users}</td>
-                <td>{item.client}</td>
-                <td>{item.status}</td>
+                <td><span class="badge badge-success">{item.client}</span></td>
+                <td><span class="badge badge-secondary">{item.status}</span></td>
                 <td>
                   <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#editJob" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
                   <button onClick={e => remove(e, projects.indexOf(item))} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>
-
-
               </tr>
-
-
             )}
-
-
-
-
-
-
-
-
-
-
-
-            <tr>
-              <td>Contruire une Maison</td>
-
-              <td>12/12/2009</td>
-              <td>13/12/2010</td>
-              <td><span class="badge badge-primary">Manville Goudreau</span>
-                <span class="badge badge-primary">Lucille Bergeron</span>
-              </td>
-              <td><span class="badge badge-success">Laure Saucier</span></td>
-              <td><span class="badge badge-warning">en cours</span></td>
-              <td><button type="button" data-toggle="modal" data-target="#viewProject" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
-                <button type="button" data-toggle="modal" data-target="#editProject" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                <button type="button" class="btn btn-danger btn-sm" onClick={deleteProject}><i class="fas fa-trash-alt"></i></button></td>
-
-            </tr>
-            <tr>
-              <td>Contruire une Maison</td>
-
-              <td>4/3/2009</td>
-              <td>1/1/2019</td>
-              <td><span class="badge badge-primary">Manville Goudreau</span>
-                <span class="badge badge-primary">Eglantine Langlais</span>
-              </td>
-              <td><span class="badge badge-success">Ruby Faubert</span></td>
-              <td><span class="badge badge-secondary">demarré</span></td>
-              <td><button type="button" data-toggle="modal" data-target="#viewProject" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
-                <button type="button" data-toggle="modal" data-target="#editProject" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                <button type="button" class="btn btn-danger btn-sm" onClick={deleteProject}><i class="fas fa-trash-alt"></i></button></td>
-
-            </tr>
-
           </tbody>
           <tfoot>
             <tr>
