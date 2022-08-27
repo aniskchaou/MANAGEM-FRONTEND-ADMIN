@@ -10,6 +10,8 @@ import showMessage from '../../../libraries/messages/messages';
 import taskMessage from '../../../main/messages/taskMessage';
 import TaskTestService from '../../../main/mocks/TaskTestService';
 import HTTPService from '../../../main/services/HTTPService';
+import taskHHTPService from '../../../main/services/taskHHTPService';
+import { NavLink } from 'react-router-dom';
 
 
 
@@ -56,8 +58,10 @@ const Tasks = () => {
 
 
   const retrieveTasks = () => {
-    var tasks = TaskTestService.getAll();
-    setTasks(tasks);
+    taskHHTPService.getAllTask().then(data => {
+      setTasks(data.data)
+    });
+    ;
   };
 
   const resfresh = () => {
@@ -69,8 +73,11 @@ const Tasks = () => {
     e.preventDefault();
     var r = window.confirm("Etes-vous sûr que vous voulez supprimer ?");
     if (r) {
-      showMessage('Confirmation', taskMessage.delete, 'success')
-      TaskTestService.remove(data)
+
+      //TaskTestService.remove(data)
+      taskHHTPService.removeTask(data).then(data => {
+        showMessage('Confirmation', taskMessage.delete, 'success')
+      })
       //removeOne(data)
       resfresh()
     }
@@ -90,7 +97,101 @@ const Tasks = () => {
         <strong className="card-title">Taches</strong>
       </div>
       <div className="card-body">
+        <div className="row">
+          <div className="col-lg-3 col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <div className="stat-widget-five">
+                  <div className="stat-icon dib flat-color-1">
+                    <i className="pe-7s-cash"></i>
+                  </div>
+                  <div className="stat-content">
+                    <div className="text-left dib">
+                      <div className="stat-text">
+                        <span className="count">5</span>
+                      </div>
+                      <div className="stat-heading">Projets</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <div className="col-lg-3 col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <div className="stat-widget-five">
+                  <div className="stat-icon dib flat-color-2">
+                    <i className="pe-7s-cart"></i>
+                  </div>
+                  <div className="stat-content">
+                    <div className="text-left dib">
+                      <div className="stat-text">
+                        <span className="count">3</span>
+                      </div>
+                      <div className="stat-heading">Clients</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-3 col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <div className="stat-widget-five">
+                  <div className="stat-icon dib flat-color-3">
+                    <i className="pe-7s-browser"></i>
+                  </div>
+                  <div className="stat-content">
+                    <div className="text-left dib">
+                      <div className="stat-text">
+                        <span className="count">2</span>
+                      </div>
+                      <div className="stat-heading">Taches</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-3 col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <div className="stat-widget-five">
+                  <div className="stat-icon dib flat-color-4">
+                    <i className="pe-7s-users"></i>
+                  </div>
+                  <div className="stat-content">
+                    <div className="text-left dib">
+                      <div className="stat-text">
+                        <span className="count">2</span>
+                      </div>
+                      <div className="stat-heading">Messages</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" className="btn btn-primary btn-sm" data-toggle="modal" data-target="#addTasks"><i class="far fa-plus-square"></i>  Ajouter</button>
+        <button type="button" className="btn btn-info btn-sm" data-toggle="modal" data-target="#bulkProject"><i class="fa fa-trash"></i>  Bulk Action</button>
+        <NavLink type="button" className="btn btn-secondary btn-sm" to="/modules-configuration"><i class="fa fa-info-circle"></i>  Help</NavLink>
+        <NavLink type="button" className="btn btn-success btn-sm" to="/modules-configuration"><i className="menu-icon fa fa-cog"></i>  Settings </NavLink>
+        <div class="btn-group">
+          <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i className="menu-icon fa fa-male"></i>  Switch to
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Kanban</a>
+            <a class="dropdown-item" href="#">Calendar</a>
+            <a class="dropdown-item" href="#">Gantt</a>
+          </div>
+        </div>
         <table id="example1" className="table table-striped table-bordered">
           <thead>
             <tr>
@@ -113,7 +214,7 @@ const Tasks = () => {
                 <td >{item.users}</td>
                 <td><span class="badge badge-success">{item.status}</span></td>
                 <td>
-                  <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#editJob" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                  <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#edit" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
                   <button onClick={e => remove(e, tasks.indexOf(item))} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>
 
 
@@ -132,7 +233,6 @@ const Tasks = () => {
             </tr>
           </tfoot>
         </table>
-        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addTasks"><i class="far fa-plus-square"></i>  Ajouter</button>
 
         <div class="modal fade" id="viewTasks" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -176,7 +276,7 @@ const Tasks = () => {
         </div>
 
 
-        <div class="modal fade" id="editTasks" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -186,7 +286,7 @@ const Tasks = () => {
                 </button>
               </div>
               <div class="modal-body">
-                <EditTask />
+                <EditTask project={updatedItem} />
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>

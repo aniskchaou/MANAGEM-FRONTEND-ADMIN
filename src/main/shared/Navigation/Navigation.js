@@ -3,7 +3,7 @@ import Header from '../Header/Header';
 import { NavLink } from "react-router-dom"
 import User from '../../../modules/user/User/User';
 import CurrentUser from '../../config/user';
-
+import './Navigation.css'
 class Navigation extends React.Component {
   constructor(props) {
     super(props);
@@ -19,37 +19,84 @@ class Navigation extends React.Component {
           <div id="main-menu" className="main-menu collapse navbar-collapse">
             <ul className="nav navbar-nav">
               <li>
-                <NavLink activeClassName="activeLink" to="/dashboard"><i className="menu-icon fa fa-laptop"></i>Tableau de bord </NavLink>
+                <NavLink activeClassName="activeLink" to="/dashboard"><i className="menu-icon fa fa-laptop"></i>Dashboard </NavLink>
+              </li>
+              <li class="menu-item-has-children dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-folder"></i>Projects</a>
+                <ul class="sub-menu children dropdown-menu">
+                  <li>
+                    <NavLink activeClassName="activeLink" to="/projects">List</NavLink>
+                  </li>
+                  <li>
+                    <NavLink activeClassName="activeLink" to="/calendar">Calendar </NavLink>
+                  </li>
+                  <li>
+                    <NavLink activeClassName="activeLink" to="/timeline">Gantt </NavLink>
+                  </li>
+                  <li>
+                    <NavLink activeClassName="activeLink" to="/project-kanban">Kanban </NavLink>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="menu-item-has-children dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-list"></i>Tasks</a>
+                <ul class="sub-menu children dropdown-menu">
+                  <li>
+                    <NavLink activeClassName="activeLink" to="/tasks">List</NavLink>
+                  </li>
+                  <li>
+                    <NavLink activeClassName="activeLink" to="/tasks">Kanban</NavLink>
+                  </li>
+                  <li>
+                    <NavLink activeClassName="activeLink" to="/tasks">Gantt</NavLink>
+                  </li>
+                </ul>
+              </li>
+
+
+
+              <li>
+                <NavLink activeClassName="activeLink" to="/task"><i className="menu-icon fa fa-dharmachakra"></i>My Tasks <span class="badge badge-primary">2</span></NavLink>
               </li>
               <li>
-                <NavLink activeClassName="activeLink" to="/timeline"><i className="menu-icon fa fa-calendar"></i>chronologie </NavLink>
+                <NavLink activeClassName="activeLink" to="/note"><i className="menu-icon fa fa-clipboard-list"></i>Notes </NavLink>
               </li>
               <li>
-                <NavLink activeClassName="activeLink" to="/projects"><i className="menu-icon fa fa-crosshairs"></i> Projets <span class="badge badge-secondary">3</span> </NavLink>
-              </li>
-              <li>
-                <NavLink activeClassName="activeLink" to="/tasks"><i className="menu-icon fa fa-clipboard-list"></i> Taches </NavLink>
-              </li>
-              <li>
-                <NavLink activeClassName="activeLink" to="/task"><i className="menu-icon fa fa-dharmachakra"></i>Mes taches <span class="badge badge-primary">2</span></NavLink>
-              </li>
-              <li>
-                <NavLink activeClassName="activeLink" to="/note"><i className="menu-icon fa fa-clipboard-list"></i>Mes Notes </NavLink>
+                <NavLink activeClassName="activeLink" to="/contract"><i className="menu-icon fa fa-clipboard-list"></i>Contracts </NavLink>
               </li>
 
               <li>
-                <NavLink activeClassName="activeLink" to="/user"><i className="menu-icon fa fa-users"></i>Utilisateurs </NavLink>
+                <NavLink activeClassName="activeLink" to="/user"><i className="menu-icon fa fa-users"></i>Collaborators </NavLink>
+              </li>
+
+
+              <li>
+                <NavLink activeClassName="activeLink" to="/team"><i className="menu-icon fa fa-users"></i>Teams<span class="badge badge-warning">1</span></NavLink>
               </li>
 
               <li>
-                <NavLink activeClassName="activeLink" to="/message"><i className="menu-icon fa fa-envelope"></i>Messages<span class="badge badge-warning">1</span></NavLink>
+                <NavLink activeClassName="activeLink" to="/client"><i className="menu-icon fa fa-handshake-o"></i>Clients </NavLink>
               </li>
 
-              <li>
-                <NavLink activeClassName="activeLink" to="/client"><i className="menu-icon fa fa-users"></i>Clients </NavLink>
+
+
+
+
+
+              <li class="menu-item-has-children dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-area-chart"></i>Charts</a>
+                <ul class="sub-menu children dropdown-menu sub-navigatio">
+                  <li>
+                    <NavLink activeClassName="activeLink" to="/project-analytics">Project analytics </NavLink>
+                  </li>
+                  <li>
+                    <NavLink activeClassName="activeLink" to="/task-analytics">Task analytics </NavLink>
+                  </li>
+                </ul>
               </li>
               <li>
-                <NavLink activeClassName="activeLink" to="/configuration"><i className="menu-icon fa fa-cog"></i>Paramètres </NavLink>
+                <NavLink activeClassName="activeLink" to="/configuration"><i className="menu-icon fa fa-cog"></i>Settings </NavLink>
               </li>
             </ul>
           </div>

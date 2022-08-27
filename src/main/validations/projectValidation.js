@@ -1,9 +1,9 @@
 const projectValidation = {
-    title: "doit etre definie",
-    description: "doit etre definie",
-    starting_date: "doit etre definie",
-    ending_date: "doit etre definie",
-    users: "doit etre definie",
-    client: "doit etre definie"
+    title: "title is required",
+    description: "description is required",
+    starting_date: "starting date is required",
+    ending_date: "ending date is required",
+    users: "users is required ",
+    client: "client is required"
 }
 export default projectValidation;
