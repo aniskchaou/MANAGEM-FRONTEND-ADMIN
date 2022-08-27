@@ -6,6 +6,7 @@ import clientMessage from '../../../main/messages/clientMessage'
 import clientValidation from '../../../main/validations/clientValidation'
 import ClientTestService from '../../../main/mocks/ClientTestService';
 import HTTPService from '../../../main/services/HTTPService';
+import clientHTTPService from '../../../main/services/clientHTTPService';
 
 
 const AddClient = () => {
@@ -24,9 +25,12 @@ const AddClient = () => {
 
   const onSubmit = (data) => {
     //saveClient(data)
-    ClientTestService.create(data)
-    setClient(initialState)
-    showMessage('Confirmation', clientMessage.add, 'success')
+    //ClientTestService.create(data)
+    clientHTTPService.createClient(data).then(data => {
+      setClient(initialState)
+      showMessage('Confirmation', clientMessage.add, 'success')
+    })
+
   }
 
   const saveClient = (data) => {
@@ -58,7 +62,7 @@ const AddClient = () => {
               type="text" name="company" class="form-control" />
             <div className="error text-danger">
               {errors.company && clientValidation.company}
-              </div>
+            </div>
           </div>
 
 
@@ -69,7 +73,7 @@ const AddClient = () => {
               type="text" name="first_name" class="form-control" required="" />
             <div className="error text-danger">
               {errors.first_name && clientValidation.first_name}
-              </div>
+            </div>
           </div>
 
 
@@ -97,7 +101,7 @@ const AddClient = () => {
               type="text" name="phone" class="form-control" />
             <div className="error text-danger">
               {errors.phone && clientValidation.phone}
-              </div>
+            </div>
           </div>
 
           <div class="form-group col-md-6">

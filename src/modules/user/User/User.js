@@ -86,6 +86,89 @@ const User = () => {
         <strong className="card-title">Utilisateurs</strong>
       </div>
       <div className="card-body">
+        <div className="row">
+          <div className="col-lg-3 col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <div className="stat-widget-five">
+                  <div className="stat-icon dib flat-color-1">
+                    <i className="pe-7s-cash"></i>
+                  </div>
+                  <div className="stat-content">
+                    <div className="text-left dib">
+                      <div className="stat-text">
+                        <span className="count">5</span>
+                      </div>
+                      <div className="stat-heading">Projets</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-3 col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <div className="stat-widget-five">
+                  <div className="stat-icon dib flat-color-2">
+                    <i className="pe-7s-cart"></i>
+                  </div>
+                  <div className="stat-content">
+                    <div className="text-left dib">
+                      <div className="stat-text">
+                        <span className="count">3</span>
+                      </div>
+                      <div className="stat-heading">Clients</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-3 col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <div className="stat-widget-five">
+                  <div className="stat-icon dib flat-color-3">
+                    <i className="pe-7s-browser"></i>
+                  </div>
+                  <div className="stat-content">
+                    <div className="text-left dib">
+                      <div className="stat-text">
+                        <span className="count">2</span>
+                      </div>
+                      <div className="stat-heading">Taches</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-lg-3 col-md-6">
+            <div className="card">
+              <div className="card-body">
+                <div className="stat-widget-five">
+                  <div className="stat-icon dib flat-color-4">
+                    <i className="pe-7s-users"></i>
+                  </div>
+                  <div className="stat-content">
+                    <div className="text-left dib">
+                      <div className="stat-text">
+                        <span className="count">2</span>
+                      </div>
+                      <div className="stat-heading">Messages</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser"><i class="far fa-plus-square"></i>  Ajouter</button>
+        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser"><i class="far fa-plus-square"></i>  send invitation</button>
 
         <table id="example1" className="table table-striped table-bordered">
           <thead>
@@ -108,7 +191,7 @@ const User = () => {
                 <td>{item.phone}</td>
                 <td>{item.groups}</td>
                 <td>
-                  <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#editUser" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                  <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#edit" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
                   <button onClick={e => remove(e, users.indexOf(item))} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>
               </tr>
             )}
@@ -124,7 +207,7 @@ const User = () => {
             </tr>
           </tfoot>
         </table>
-        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser"><i class="far fa-plus-square"></i>  Ajouter</button>
+
 
 
         <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -149,7 +232,7 @@ const User = () => {
 
 
 
-        <div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -159,7 +242,7 @@ const User = () => {
                 </button>
               </div>
               <div class="modal-body">
-                <EditUser />
+                <EditUser project={updatedItem} />
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>

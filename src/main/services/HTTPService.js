@@ -2,7 +2,9 @@ import http from "../../libraries/axios/axios";
 import BASE_URL from "../urls/urls";
 
 const getAll = () => {
-    return http.get("/posts");
+
+    return http.get("http://localhost:8088/projectss");
+
 };
 
 const get = id => {

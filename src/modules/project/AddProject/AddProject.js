@@ -6,6 +6,7 @@ import projectMessage from '../../../main/messages/projectMessage'
 import projectValidation from '../../../main/validations/projectValidation'
 import ProjectTestService from '../../../main/mocks/ProjectTestService';
 import HTTPService from '../../../main/services/HTTPService';
+import projectHTTPService from '../../../main/services/projectHTTPService';
 
 
 const AddProject = () => {
@@ -25,9 +26,14 @@ const AddProject = () => {
 
   const onSubmit = (data) => {
     //saveProject(data)
-    ProjectTestService.create(data)
-    setProject(initialState)
-    showMessage('Confirmation', projectMessage.add, 'success')
+    // ProjectTestService.create(data)
+    projectHTTPService.createProject(data).then(data => {
+      setProject(initialState)
+      showMessage('Confirmation', projectMessage.add, 'success')
+      //setProjects(data.data);
+      //setLoading(false)
+    })
+
   }
 
   const saveProject = (data) => {
@@ -52,7 +58,7 @@ const AddProject = () => {
   return (
     <div className="AddProject">
       <form method="POST" class="" onSubmit={handleSubmit(onSubmit)}>
-      
+
         <div class="form-group">
           <label>Titre<span class="text-danger">*</span></label>
           <input ref={register({ required: true })} onChange={handleInputChange} value={project.title}
@@ -92,7 +98,7 @@ const AddProject = () => {
         <div class="form-group">
           <label>Statut<span class="text-danger">*</span></label>
           <select ref={register({ required: true })} onChange={handleInputChange} value={project.status}
-            name="status" class="form-control select2 select2-hidden-accessible">
+            name="status" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
             <option value="Non Démarré">Non Démarré</option>
             <option value="en cours">en cours</option>
             <option value="Fini">Fini</option>
@@ -107,8 +113,8 @@ const AddProject = () => {
 
 
           <select ref={register({ required: true })} onChange={handleInputChange}
-            value={project.users} name="users" class="form-control select2 select2-hidden-accessible"
-            multiple tabindex="-1" aria-hidden="true">
+            value={project.users} name="users" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
+          >
             <option value="Admin Natash">Admin Natash</option>
             <option value="Tony Stark">Tony Stark</option>
             <option value="Scarlet Witch">Scarlet Witch</option>
@@ -124,7 +130,8 @@ const AddProject = () => {
         <div class="form-group">
           <label>Client</label>
           <select ref={register({ required: true })} onChange={handleInputChange} value={project.client}
-            name="client" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+            name="client" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
+          >
             <option value="">Select Client</option>
             <option value="Mike Dean">Mike Dean</option>
             <option value="John Doe">John Doe</option>
@@ -135,7 +142,7 @@ const AddProject = () => {
         </div>
 
 
-        <button type="submit" id="save-form" className="btn btn-success"><i className="fa fa-check"></i>
+        <button type="submit" id="save-form" class="btn btn-success"><i className="fa fa-check"></i>
           <font   ><font   > Sauvegarder</font></font></button></form>
     </div>
   )

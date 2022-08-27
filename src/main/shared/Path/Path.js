@@ -3,30 +3,15 @@ import PropTypes from 'prop-types';
 import './Path.css';
 
 const Path = () => (
-  <div className="breadcrumbs">
-    <div className="breadcrumbs-inner">
-      <div className="row m-0">
-        <div className="col-sm-4">
-          <div className="page-header float-left">
-            <div className="page-title">
-              <h1>Dashboard</h1>
-            </div>
-          </div>
-        </div>
-        <div className="col-sm-8">
-          <div className="page-header float-right">
-            <div className="page-title">
-              <ol className="breadcrumb text-right">
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Table</a></li>
-                <li className="active">Data table</li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div className='path'>
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Profile Settings</li>
+      </ol>
+
+    </nav></div>
 );
 
 Path.propTypes = {};

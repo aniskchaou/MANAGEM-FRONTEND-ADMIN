@@ -6,6 +6,7 @@ import taskMessage from '../../../main/messages/taskMessage'
 import taskValidation from '../../../main/validations/taskValidation'
 import TaskTestService from '../../../main/mocks/TaskTestService';
 import HTTPService from '../../../main/services/HTTPService';
+import taskHHTPService from '../../../main/services/taskHHTPService';
 
 
 const AddTask = () => {
@@ -25,9 +26,12 @@ const AddTask = () => {
 
   const onSubmit = (data) => {
     //saveTask(data)
-    TaskTestService.create(data)
-    setTask(initialState)
-    showMessage('Confirmation', taskMessage.add, 'success')
+    //TaskTestService.create(data)
+    taskHHTPService.createTask(data).then(data => {
+      setTask(initialState)
+      showMessage('Confirmation', taskMessage.add, 'success')
+    })
+
   }
 
   const saveTask = (data) => {
@@ -126,7 +130,7 @@ const AddTask = () => {
           <select ref={register({ required: true })}
             onChange={handleInputChange}
             value={task.users} name="users" id="users_append"
-            className="form-control select2 select2-hidden-accessible" multiple >
+            className="form-control select2 select2-hidden-accessible"  >
             <option value="John Doe">John Doe</option>
             <option value="Mike Dean">Mike Dean</option>
           </select>

@@ -8,6 +8,7 @@ import Footer from '../Footer/Footer';
 import Login from '../../../main/shared/Login/Login'
 import User from '../../../modules/user/User/User';
 import CurrentUser from '../../config/user';
+import Path from '../Path/Path';
 
 
 class Root extends React.Component {
@@ -35,10 +36,12 @@ class Root extends React.Component {
 
           <div id="right-panel" className="right-panel">
             <div className="content">
+
               <div className="animated fadeIn">
                 <div className="row">
+
                   <Content />
-                  <Login rerender={this.rerender} />
+
                 </div>
               </div>
             </div>
@@ -48,6 +51,7 @@ class Root extends React.Component {
 
 
           </div>
+          <Login rerender={this.rerender} />
         </Router>
       </div>
     );

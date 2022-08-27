@@ -15,10 +15,19 @@ import EditProfile from '../../../modules/shared/EditProfile/EditProfile';
 import ProjectTimeLine from '../../../modules/shared/DashBoard/TimeLine'
 import CurrentUser from '../../config/user';
 import Login from '../Login/Login';
-
+import Path from '../Path/Path';
+import ConfigurationModules from '../../../modules/shared/ConfigurationModules/ConfigurationModules';
+import ProjectReport from '../../../components/ProjectReport/ProjectReport';
+import ProjectAnalytics from '../../../components/ProjectAnalytics/ProjectAnalytics';
+import TaskReport from '../../../components/TaskReport/TaskReport';
+import TaskAnalytics from '../../../components/TaskAnalytics/TaskAnalytics';
+import ProjectCalendar from '../../../components/ProjectCalendar/ProjectCalendar';
+import ProjectKanban from '../../../components/ProjectKanban/ProjectKanban';
+import Teams from '../../../components/Teams/Teams'
+import Contracts from '../../../components/Contracts/Contracts'
 const Content = () => (
   <div className="col-md-12" style={{ display: (CurrentUser.CONNECTED_USER ? 'block' : 'none') }}>
-
+    <Path />
     <div>
       <Route exact path="/" component={DashBoard} />
       <Route exact path="/timeline" component={ProjectTimeLine} />
@@ -33,7 +42,15 @@ const Content = () => (
       <Route exact path="/configuration" component={Configuration} />
       <Route exact path="/profile" component={EditProfile} />
       <Route exact path="/login" component={Login} />
-
+      <Route exact path="/modules-configuration" component={ConfigurationModules} />
+      <Route exact path="/project-report" component={ProjectReport} />
+      <Route exact path="/project-analytics" component={ProjectAnalytics} />
+      <Route exact path="/task-report" component={TaskReport} />
+      <Route exact path="/task-analytics" component={TaskAnalytics} />
+      <Route exact path="/calendar" component={ProjectCalendar} />
+      <Route exact path="/project-kanban" component={ProjectKanban} />
+      <Route exact path="/contract" component={Contracts} />
+      <Route exact path="/team" component={Teams} />
     </div>
 
 
