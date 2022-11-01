@@ -1,68 +1,152 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './EditProject.css';
+import projectHTTPService from '../../../main/services/projectHTTPService';
+import projectMessage from '../../../main/messages/projectMessage';
+import showMessage from '../../../libraries/messages/messages';
+import { useForm } from 'react-hook-form';
+import clientHTTPService from '../../../main/services/clientHTTPService';
+import userHTTPService from '../../../main/services/userHTTPService';
 
-const EditProject = () => (
-  <div className="EditProject">
-    <form  method="POST" class="">
-      
-      <div class="form-group">
-        <label>Titre<span class="text-danger">*</span></label>
-        <input type="text" name="title" class="form-control" required="" />
-      </div>
+const EditProject = (props) => {
 
-      <div class="form-group">
-        <label>Description<span class="text-danger">*</span></label>
-        <textarea type="text" name="description" class="form-control"></textarea>
-      </div>
+  const { register, handleSubmit, errors } = useForm() // initialise the hook
+  const [project, setProject] = useState(props.project);
+  const [typeSubs, setTypeSubs] = useState([]);
+  const [members, setMembers] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-      <div class="form-group">
-        <label>Début<span class="text-danger">*</span></label>
-        <input type="date" name="starting_date" class="form-control datepicker" />
-      </div>
-
-      <div class="form-group">
-        <label>Fin<span class="text-danger">*</span></label>
-        <input type="date" name="ending_date" class="form-control datepicker" />
-      </div>
-
-      <div class="form-group">
-        <label>Statut<span class="text-danger">*</span></label>
-        <select name="status" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true">
-          <option value="1">Non Démarré</option>
-          <option value="2">en cours</option>
-          <option value="3">Fini</option>
-        </select><span class="select2 select2-container select2-container--default" dir="ltr"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-status-fq-container"><span class="select2-selection__rendered" id="select2-status-fq-container" title="Not Started">Not Started</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-      </div>
-
-      <div class="form-group">
-        <label>Utilisateurs </label>
+  useEffect(() => {
+    setProject(props.project)
+    console.log(props.project)
+  }, [props.project]);
 
 
-        <select name="users[]" class="form-control select2 select2-hidden-accessible" multiple  tabindex="-1" aria-hidden="true">
-          <option value="3">Admin Natash</option>
-          <option value="4">Tony Stark</option>
-          <option value="5">Scarlet Witch</option>
-          <option value="6">Captain Marvel</option>
-          <option value="7">Groot Groot</option>
-        </select>
-      </div>
+  const onSubmit = (data) => {
+    console.log(data)
+    projectHTTPService.editProject(props.project.id, data).then(data => {
+      props.closeModal()
+      showMessage('Confirmation', projectMessage.edit, 'success')
+
+    }).catch(e => {
+      console.log(e)
+    })
+
+  }
+
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setProject({ ...project, [name]: value });
+  };
+
+  useEffect(() => {
+    retrieveUsers()
+    retrieveClients()
+  }, []);
+
+  const retrieveClients = () => {
+    setLoading(true)
+    clientHTTPService.getAllClient().then(data => {
+      setLoading(false)
+      setClients(data.data)
+
+    });
+    ;
+  };
 
 
-      <div class="form-group">
-        <label>Client</label>
-        <select name="client" class="form-control select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true">
-          <option value="">Select Client</option>
-          <option value="10">Client User</option>
-          <option value="14">B C</option>
-        </select>
-      </div>
+  const retrieveUsers = () => {
+    setLoading(true)
+    userHTTPService.getAllUser()
+      .then(response => {
+        setUsers(response.data);
+        console.log(response.data)
+        setLoading(false)
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
 
 
-      <button class="d-none" id="fire-modal-2-submit"></button>
-    </form>
-  </div>
-);
+
+
+
+  return (
+    <div className="EditProject">
+      <form class="" onSubmit={handleSubmit(onSubmit)}>
+
+        <div class="form-group">
+          <label>Title<span class="text-danger">*</span></label>
+          <input type="text" name="title" class="form-control" onChange={handleInputChange} value={project.title} ref={register({ required: true })} />
+        </div>
+
+        <div class="form-group">
+          <label>Short description<span class="text-danger">*</span></label>
+          <textarea type="text" name="description" class="form-control" onChange={handleInputChange} value={project.description} ref={register({ required: true })}></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Start<span class="text-danger">*</span></label>
+          <input type="date" name="starting_date" class="form-control datepicker" onChange={handleInputChange} value={project.starting_date} ref={register({ required: true })} />
+        </div>
+
+        <div class="form-group">
+          <label>End<span class="text-danger">*</span></label>
+          <input type="date" name="ending_date" class="form-control datepicker" onChange={handleInputChange} value={project.ending_date} ref={register({ required: true })} />
+        </div>
+
+        <div class="form-group">
+          <label>Status<span class="text-danger">*</span></label>
+          <select name="status" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
+            onChange={handleInputChange} value={project.title} ref={register({ required: true })}>
+            <option value="Todo">ToDo</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Done">Done</option>
+            <option value="Blocked">Blocked</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>User </label>
+
+
+          <select name="users" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
+            onChange={handleInputChange}
+            value={project.users} ref={register({ required: true })}>
+            {
+              users.map(item =>
+                <option value={item.username}>{item.name}</option>
+
+              )
+            }
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label>Client</label>
+          <select name="client" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
+            onChange={handleInputChange} value={project.client} ref={register({ required: true })}>
+            {
+              clients.map(item =>
+                <option value={item.first_name + ' ' + item.last_name}>{item.first_name + ' ' + item.last_name}</option>
+
+              )
+            }
+          </select>
+        </div>
+
+
+        <button name="submit" type="submit" class="btn btn-primary"><i class="far fa-save"></i>
+          Save</button>
+      </form>
+    </div>
+  )
+
+};
 
 EditProject.propTypes = {};
 

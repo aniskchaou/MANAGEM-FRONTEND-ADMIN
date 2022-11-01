@@ -15,10 +15,13 @@ const editClient = (id, data) => {
 const removeClient = id => {
     return http.delete(`${BASE_URL}/api/client/${id}`);
 };
-
+const getCount = () => {
+    return http.get(`${BASE_URL}/api/count/client/all`)
+}
 export default {
     getAllClient,
     createClient,
     editClient,
-    removeClient
+    removeClient,
+    getCount
 };

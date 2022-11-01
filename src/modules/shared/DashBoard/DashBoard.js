@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import moment from 'moment'
-import PropTypes from 'prop-types';
-import './DashBoard.css';
-import Task from '../../mytask/Task/Task';
-import TimeLine from "react-gantt-timeline";
 
+import User from '../../../main/config/user';
 
 import { Pie } from 'react-chartjs-2';
 //import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -23,6 +19,14 @@ import { LoadJS } from '../../../libraries/datatables/datatables';
 import projectHTTPService from '../../../main/services/projectHTTPService';
 import { Line } from 'react-chartjs-2';
 import mytaskHTTPService from '../../../main/services/mytaskHTTPService';
+import taskHHTPService from '../../../main/services/taskHHTPService';
+import ProjectInProgress from '../../../modules/project/ProjectInProgress/ProjectInProgress';
+import TaskInProgress from '../../../modules/task/TaskInProgress/TaskInProgress';
+import DashboardSummary from '../../../modules/shared/DashboardSummary/DashboardSummary';
+import clientHTTPService from '../../../main/services/clientHTTPService';
+import userHTTPService from '../../../main/services/userHTTPService';
+import { useHistory } from 'react-router-dom';
+import settingsHTTPService from '../../../main/services/settingsHTTPService';
 //import faker from 'faker';
 
 //ChartJS.register(ArcElement, Tooltip, Legend);
@@ -93,161 +97,186 @@ const DashBoard = () => {
   const [project, setProject] = useState(data);
   const [myTasks, setTasks] = useState([])
   const [loading, setLoading] = useState(false);
+
+
+  const [todo, setTodo] = useState(0);
+  const [inprogress, setInprogress] = useState(0);
+  const [done, setDone] = useState(0);
+  const [blocked, setBlocked] = useState(0);
+  const [dashboardSettings, setDashboardSettings] = useState([]);
+
+  const [todotask, setTodotask] = useState(0);
+  const [inprogresstask, setInprogresstask] = useState(0);
+  const [completed, setCompleted] = useState(0);
+  const [inreview, setInreview] = useState(0);
+  let history = useHistory()
+
+
   useEffect(() => {
+    if (localStorage.getItem('connected') == undefined) {
+      history.push("/login")
+    }
+    loadChartData()
+    getDashboardSettings()
     //LoadJS()
+
+
+  }, []);
+  const getDashboardSettings = () => {
+    settingsHTTPService.getDashboardSettings().then(data => {
+      setDashboardSettings(data.data[0])
+      console.log(dashboardSettings)
+
+    })
+  }
+
+  const loadChartData = () => {
     setLoading(true)
     projectHTTPService.findprojectByStatus().then(data => {
       console.log(data.data)
       setProject(data.data)
       setLoading(false)
     })
-    mytaskHTTPService.getAllMyTask().then(data => {
+    // var tasks = MyTaskTestService.getAll();
+    taskHHTPService.getAllMyTask(User.USER_DETAIL.username).then(data => {
+      console.log(data.data)
       setTasks(data.data)
     })
-  }, []);
+    projectHTTPService.getTodo().then(data => {
+      setTodo(data.data.todo)
+    })
+    projectHTTPService.getInprogress().then(data => {
+      setInprogress(data.data.inprogress)
+    })
+    projectHTTPService.getDone().then(data => {
+      setDone(data.data.done)
+    })
+    projectHTTPService.getBlocked().then(data => {
+      setBlocked(data.data.blocked)
+    })
 
+    taskHHTPService.getTodo().then(data => {
+      setTodo(data.data.todo)
+    })
+    taskHHTPService.getInprogress().then(data => {
+      setInprogress(data.data.inprogress)
+    })
+    taskHHTPService.getCompleted().then(data => {
+      setCompleted(data.data.completed)
+    })
+    taskHHTPService.getinreview().then(data => {
+      setInreview(data.data.inreview)
+    })
+
+  }
 
   return (
 
     <div className="col-md-12">
+      {dashboardSettings.showSummary == 1 &&
+        <DashboardSummary />
+      }
+      <div className="col-lg-12">
+        <div className="card">
+          {dashboardSettings.showExpenseIncomeCharts == 1 &&
+            <div className="row">
+              <div className="col-lg-6">
 
-      <div className="row">
-        <div className="col-lg-3 col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <div className="stat-widget-five">
-                <div className="stat-icon dib flat-color-1">
-                  <i className="pe-7s-cash"></i>
+                <div className="card-body">
+
+                  <h4 className="box-title">Projects </h4>
+                  <Pie data={{
+                    labels: ['To do', 'In progress', 'Done', 'Blocked'],
+                    datasets: [
+                      {
+                        label: '# of Votes',
+                        data: [todo, inprogress, done, blocked],
+                        backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(111, 111, 86, 0.2)'
+                        ],
+                        borderColor: [
+                          'rgba(255, 99, 132, 1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(111, 111, 86, 1)'
+                        ],
+                        borderWidth: 1,
+                      },
+                    ],
+                  }} />
                 </div>
-                <div className="stat-content">
-                  <div className="text-left dib">
-                    <div className="stat-text">
-                      <span className="count">5</span>
-                    </div>
-                    <div className="stat-heading">Projets</div>
-                  </div>
+              </div>
+              <div className="col-lg-6">
+
+                <div className="card-body">
+
+                  <h4 className="box-title">Tasks </h4>
+                  <Pie data={{
+                    labels: ['To do', 'In Progress', 'Completed', 'In Review'],
+                    datasets: [
+                      {
+                        label: '# of Votes',
+                        data: [todo, inprogress, completed, inreview],
+                        backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(111, 111, 86, 0.2)'
+                        ],
+                        borderColor: [
+                          'rgba(255, 99, 132, 1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(111, 111, 86, 0.2)'
+                        ],
+                        borderWidth: 1,
+                      },
+                    ],
+                  }} />
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          }
 
-        <div className="col-lg-3 col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <div className="stat-widget-five">
-                <div className="stat-icon dib flat-color-2">
-                  <i className="pe-7s-cart"></i>
-                </div>
-                <div className="stat-content">
-                  <div className="text-left dib">
-                    <div className="stat-text">
-                      <span className="count">3</span>
-                    </div>
-                    <div className="stat-heading">Clients</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-3 col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <div className="stat-widget-five">
-                <div className="stat-icon dib flat-color-3">
-                  <i className="pe-7s-browser"></i>
-                </div>
-                <div className="stat-content">
-                  <div className="text-left dib">
-                    <div className="stat-text">
-                      <span className="count">2</span>
-                    </div>
-                    <div className="stat-heading">Taches</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-3 col-md-6">
-          <div className="card">
-            <div className="card-body">
-              <div className="stat-widget-five">
-                <div className="stat-icon dib flat-color-4">
-                  <i className="pe-7s-users"></i>
-                </div>
-                <div className="stat-content">
-                  <div className="text-left dib">
-                    <div className="stat-text">
-                      <span className="count">2</span>
-                    </div>
-                    <div className="stat-heading">Messages</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      <div class="col-lg-12">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="box-title">Projects </h4>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="card-body">
-                {!loading && <Pie data={project} />}
+      <div className="orders">
+        <div className="row">
+          <div className="col-xl-8">
+            <div className="card">
+              <div className="card-body">
+                <h4 className="box-title"> Tasks </h4>
               </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="card-body">
-                {<Line options={options} data={data} />}
-              </div>
-            </div>
-          </div>
-          <div class="card-body"></div>
-        </div>
-      </div>
-      <div class="orders">
-        <div class="row">
-          <div class="col-xl-8">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="box-title">My Tasks </h4>
-              </div>
-              <div class="card-body--">
-                <div class="table-stats order-table ov-h">
-                  <table class="table ">
+              <div className="card-body--">
+                <div className="table-stats order-table ov-h">
+                  <table className="table ">
                     <thead>
                       <tr>
-                        <th class="serial">#</th>
-                        <th class="avatar">Avatar</th>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
+                        <th className="serial">#</th>
+                        <th className="avatar">Task</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Priority</th>
+                        <th>Assigned</th>
                         <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
                       {myTasks.map(item =>
-                        <tr>
-                          <td class="serial">1.</td>
-                          <td class="avatar">
-                            <div class="round-img">
-                              <a href="#"><img class="rounded-circle" src="images/avatar/1.jpg" alt="" /></a>
-                            </div>
+                        <tr key={item.id}>
+                          <td className="serial">{item.id}</td>
+                          <td className="avatar">
+                            {item.title}
                           </td>
-                          <td> #5469 </td>
-                          <td>  <span class="name">{item.todo}</span> </td>
-                          <td> <span class="product">iMax</span> </td>
-                          <td><span class="count">231</span></td>
+                          <td> {item.startdate}</td>
+                          <td>  <span className="name">{item.deadline}</span> </td>
+                          <td> <span className="product">{item.priority}</span> </td>
+                          <td><span className="count">{item.assigned}</span></td>
                           <td>
-                            <span class="badge badge-complete">Complete</span>
+                            <span className="badge badge-complete">{item.status}</span>
                           </td>
                         </tr>
 
@@ -261,37 +290,11 @@ const DashBoard = () => {
             </div>
           </div>
 
-          <div class="col-xl-4">
-            <div class="row">
-              <div class="col-lg-6 col-xl-12">
-                <div class="card br-0">
-                  <div class="card-body">
-                    <h4 class="box-title">Open Projects </h4>
-                  </div>
-                  <div class="card-body">
-                    <ul class="list-group">
-                      <li class="list-group-item">Morbi leo risus</li>
-                      <li class="list-group-item">Porta ac consectetur ac</li>
-                      <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+          <div className="col-xl-4">
+            <div className="row">
+              <ProjectInProgress />
 
-              <div class="col-lg-6 col-xl-12">
-                <div class="card bg-flat-color-3  ">
-                  <div class="card-body">
-                    <h4 class="box-title">Open Tasks </h4>
-                  </div>
-                  <div class="card-body">
-                    <ul class="list-group">
-                      <li class="list-group-item">Morbi leo risus</li>
-                      <li class="list-group-item">Porta ac consectetur ac</li>
-                      <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+              <TaskInProgress />
             </div>
           </div>
         </div>

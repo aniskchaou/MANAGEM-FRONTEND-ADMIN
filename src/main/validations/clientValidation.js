@@ -1,10 +1,10 @@
 
 const candidateValidation = {
-    first_name: "Nom doit etre definie",
-    last_name: "doit etre definie",
-    phone: "doit etre definie",
-    password: "doit etre definie",
-    email: "doit etre definie",
-    company: "doit etre definie"
+    first_name: "First name is required.",
+    last_name: "Last name is required.",
+    phone: "Telephone is required.",
+    password: "Password is required.",
+    email: "Email is required",
+    company: "Company is required."
 }
 export default candidateValidation;

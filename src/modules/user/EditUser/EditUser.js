@@ -6,14 +6,14 @@ const EditUser = () => (
   <div className="EditUser">
     <form method="POST" className="">
       <div className="row">
-        
+
         <div className="form-group col-md-6">
-          <label>Nom<span className="text-danger">*</span></label>
+          <label>First name<span className="text-danger">*</span></label>
           <input type="text" name="first_name" className="form-control" required="" />
         </div>
 
         <div className="form-group col-md-6">
-          <label>Prénom<span className="text-danger">*</span></label>
+          <label>Last name<span className="text-danger">*</span></label>
           <input type="text" name="last_name" className="form-control" />
         </div>
 
@@ -23,12 +23,12 @@ const EditUser = () => (
         </div>
 
         <div className="form-group col-md-6">
-          <label>Mobile</label>
+          <label>Telephone</label>
           <input type="text" name="phone" className="form-control" />
         </div>
 
         <div className="form-group col-md-6">
-          <label>Mot de passe<span className="text-danger">*</span></label>
+          <label>Password<span className="text-danger">*</span></label>
           <input type="text" name="password" className="form-control" />
         </div>
 
@@ -44,7 +44,7 @@ const EditUser = () => (
 
 
       </div>
-      <button className="d-none" id="fire-modal-2-submit"></button></form>
+      <button className="d-none" id="fire-modal-2-submit">Save</button></form>
   </div>
 );
 

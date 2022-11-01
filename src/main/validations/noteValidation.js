@@ -1,3 +1,3 @@
 
-const noteValidation = { description: "doit etre definie", }
+const noteValidation = { description: "description is required.", }
 export default noteValidation;

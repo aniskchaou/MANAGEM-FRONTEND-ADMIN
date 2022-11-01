@@ -14,9 +14,14 @@ import mytaskHTTPService from '../../../main/services/mytaskHTTPService';
 import ReactTooltip from 'react-tooltip';
 import { useForm } from 'react-hook-form';
 import projectHTTPService from '../../../main/services/projectHTTPService';
-
+import { Typography, Button, LinearProgress } from '@mui/material';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import MyTaskSummary from '../../../modules/task/MyTaskSummary/MyTaskSummary';
+import taskHHTPService from '../../../main/services/taskHHTPService';
+import User from '../../../main/config/user';
+import CurrentUser from '../../../main/config/user';
 const deleteTask = () => {
-  return window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
+  return window.confirm(CurrentUser.DELTE_MSG)
 }
 
 const Task = () => {
@@ -31,7 +36,7 @@ const Task = () => {
   const [project, setProject] = useState(initialState);
   const { register, handleSubmit, errors } = useForm()
   const [checked, setChecked] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const handleChange = (event) => {
 
     if (checked) {
@@ -74,7 +79,7 @@ const Task = () => {
 
   const retrieveTasks = () => {
     var tasks = MyTaskTestService.getAll();
-    mytaskHTTPService.getAllMyTask()
+    taskHHTPService.getAllMyTask(User.USER_DETAIL.username)
       .then(response => {
         setTasks(response.data);
       })
@@ -90,7 +95,7 @@ const Task = () => {
 
   const remove = (e, data) => {
     e.preventDefault();
-    var r = window.confirm("Etes-vous sûr que vous voulez supprimer ?");
+    var r = window.confirm(CurrentUser.DELTE_MSG);
     if (r) {
       showMessage('Confirmation', taskMessage.delete, 'success')
       MyTaskTestService.remove(data)
@@ -112,28 +117,64 @@ const Task = () => {
   };
 
   const onSubmit = (data) => {
-    const formData = new FormData();
-
-    // Update the formData object 
-    formData.append(
-      "file",
-      project.file,
-      'file'
-    );
-
-    projectHTTPService.uploadFile(formData).then(res => {
-      console.log(res)
-    })
-
-    /*      < form method = "POST" class="" onSubmit = { handleSubmit(onSubmit) } enctype = "multipart/form-data" >
-   
-           <input ref={register({ required: true })} name="file" type="file" onChange={handleInputChange} />
-           <button type="submit" id="save-form" class="btn btn-success"><i className="fa fa-check"></i>
-             Sauvegarder</button>
-         </form > */
+    /*  const formData = new FormData();
+ 
+     // Update the formData object 
+     formData.append(
+       "file",
+       project.file,
+       'file'
+     );
+ 
+     projectHTTPService.uploadFile(formData).then(res => {
+       console.log(res)
+     })
+ 
+          < form method = "POST" class="" onSubmit = { handleSubmit(onSubmit) } enctype = "multipart/form-data" >
+    
+            <input ref={register({ required: true })} name="file" type="file" onChange={handleInputChange} />
+            <button type="submit" id="save-form" class="btn btn-success"><i className="fa fa-check"></i>
+              Sauvegarder</button>
+          </form > */
 
 
     //< input type = "checkbox" checked = { checked } onChange = { handleChange } />
+  }
+
+  const columns = [
+    { field: 'id', headerName: '#', width: 200 },
+    { field: 'project_id', headerName: 'Project', width: 200 },
+    { field: 'title', headerName: 'Title', width: 200 },
+    { field: 'deadline', headerName: 'Due Date', width: 200, cellClassName: 'deadline-color' },
+    { field: 'priority', headerName: 'Priority', width: 200, cellClassName: 'priority-color' },
+    { field: 'assigned', headerName: 'Assigned', width: 200 }
+  ];
+
+
+  const handleRowSelection = (e) => {
+    if (e.length == 1) {
+
+      setUpdatedItemId(e[0])
+      const selectedItem = tasks.find(item => item.id == e[0])
+      setUpdatedItem(selectedItem)
+      console.log(updatedItem);
+    }
+    setUpdatedItemIds(e)
+
+  }
+  const [updatedItemId, setUpdatedItemId] = useState(0);
+  const [updatedItemIds, setUpdatedItemIds] = useState([]);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showChart, setShowChart] = useState(false);
+  const removeAll = (e) => {
+    e.preventDefault();
+    var r = window.confirm(CurrentUser.DELTE_MSG);
+    if (r) {
+
+      /*   certificateHTTPService.removeAllCertificates().then(data => {
+          getAllPatient()
+        }) */
+    }
   }
   return (
     <div className="card">
@@ -141,137 +182,24 @@ const Task = () => {
 
 
       <div className="card-header">
-        <strong className="card-title">Mes taches</strong>
+        <strong className="card-title">My Tasks</strong>
       </div>
       <div className="card-body">
-        <div className="row">
-          <div className="col-lg-3 col-md-6">
-            <div className="card">
-              <div className="card-body">
-                <div className="stat-widget-five">
-                  <div className="stat-icon dib flat-color-1">
-                    <i className="pe-7s-cash"></i>
-                  </div>
-                  <div className="stat-content">
-                    <div className="text-left dib">
-                      <div className="stat-text">
-                        <span className="count">5</span>
-                      </div>
-                      <div className="stat-heading">Projets</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-lg-3 col-md-6">
-            <div className="card">
-              <div className="card-body">
-                <div className="stat-widget-five">
-                  <div className="stat-icon dib flat-color-2">
-                    <i className="pe-7s-cart"></i>
-                  </div>
-                  <div className="stat-content">
-                    <div className="text-left dib">
-                      <div className="stat-text">
-                        <span className="count">3</span>
-                      </div>
-                      <div className="stat-heading">Clients</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-lg-3 col-md-6">
-            <div className="card">
-              <div className="card-body">
-                <div className="stat-widget-five">
-                  <div className="stat-icon dib flat-color-3">
-                    <i className="pe-7s-browser"></i>
-                  </div>
-                  <div className="stat-content">
-                    <div className="text-left dib">
-                      <div className="stat-text">
-                        <span className="count">2</span>
-                      </div>
-                      <div className="stat-heading">Taches</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-lg-3 col-md-6">
-            <div className="card">
-              <div className="card-body">
-                <div className="stat-widget-five">
-                  <div className="stat-icon dib flat-color-4">
-                    <i className="pe-7s-users"></i>
-                  </div>
-                  <div className="stat-content">
-                    <div className="text-left dib">
-                      <div className="stat-text">
-                        <span className="count">2</span>
-                      </div>
-                      <div className="stat-heading">Messages</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addTask"><i class="far fa-plus-square"></i>  Ajouter</button>
-
-
+        <MyTaskSummary />
 
         <ReactTooltip />
 
-
-        <table id="example1" className="table table-striped table-bordered">
-          <thead>
-            <tr>
-              {show == true && <th>à faire</th>}
-              <th>Date écheance</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map(item =>
-              <tr>
-                {show == true && <td>{item.todo}</td>}
-                <td>{item.due_date}</td>
-
-                <td>
-                  <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#editJob" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                  <button onClick={e => remove(e, tasks.indexOf(item))} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>
-
-
-              </tr>
-
-
-            )}
-            <tr>
-              {show == true && <td>daily meeting</td>}
-              <td>12/11/2020</td>
-              <td><button data-tip="hello world" type="button" data-toggle="modal" data-target="#viewTask" class="btn btn-primary btn-sm"><i class="fas fa-address-book"></i></button>
-                <button data-tip="hello world" type="button" data-toggle="modal" data-target="#editTask" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                <button data-tip="hello world" type="button" class="btn btn-danger btn-sm" onClick={deleteTask}><i class="fas fa-trash-alt"></i></button></td>
-
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              {show == true && <th>à faire</th>}
-              <th>Date écheance</th>
-              <th>Actions</th>
-            </tr>
-          </tfoot>
-        </table>
+        {loading ?
+          <LinearProgress />
+          : <div style={{ height: 430, width: '100%' }}><DataGrid
+            rows={tasks}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[6]}
+            checkboxSelection
+            onSelectionModelChange={handleRowSelection}
+            components={{ Toolbar: GridToolbar }}
+          /></div>}
 
         <div class="modal fade" id="addTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

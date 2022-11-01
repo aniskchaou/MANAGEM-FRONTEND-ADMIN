@@ -1,0 +1,14 @@
+.Card {
+    padding: 15px;
+    background: #ffffff;
+    color: #282828;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: move;
+    
+}
+
+.Card--spacer,
+.Card--dragging {
+    opacity: 0;
+}

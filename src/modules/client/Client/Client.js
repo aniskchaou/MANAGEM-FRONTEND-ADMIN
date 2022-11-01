@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Client.css';
 import AddClient from './../AddClient/AddClient';
 import EditClient from './../EditClient/EditClient';
@@ -12,11 +12,11 @@ import HTTPService from '../../../main/services/HTTPService';
 import clientHTTPService from '../../../main/services/clientHTTPService';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Typography, Button, LinearProgress } from '@mui/material';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import CurrentUser from '../../../main/config/user';
 
 
-const deleteClient = () => {
-  return window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
-}
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const data = {
@@ -51,7 +51,20 @@ const Client = () => {
   const [clients, setClients] = useState([]);
   const [updatedItem, setUpdatedItem] = useState({});
   const forceUpdate = useForceUpdate();
+  const [loading, setLoading] = useState(false);
+  const closeButtonEdit = useRef(null);
+  const closeButtonAdd = useRef(null);
 
+
+  const closeModalEdit = (data) => {
+    resfresh()
+    closeButtonEdit.current.click()
+  }
+
+  const closeModalAdd = (data) => {
+    resfresh()
+    closeButtonAdd.current.click()
+  }
 
   useEffect(() => {
     LoadJS()
@@ -59,31 +72,13 @@ const Client = () => {
   }, []);
 
 
-  const getAll = () => {
-    HTTPService.getAll()
-      .then(response => {
-        setClients(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  };
-
-  const removeOne = (data) => {
-    HTTPService.remove(data)
-      .then(response => {
-
-      })
-      .catch(e => {
-
-      });
-  }
-
-
 
   const retrieveClients = () => {
+    setLoading(true)
     clientHTTPService.getAllClient().then(data => {
+      setLoading(false)
       setClients(data.data)
+
     });
     ;
   };
@@ -95,7 +90,7 @@ const Client = () => {
 
   const remove = (e, data) => {
     e.preventDefault();
-    var r = window.confirm("Etes-vous sûr que vous voulez supprimer ?");
+    var r = window.confirm(CurrentUser.DELTE_MSG);
     if (r) {
       showMessage('Confirmation', clientMessage.delete, 'success')
       //ClientTestService.remove(data)
@@ -114,150 +109,71 @@ const Client = () => {
     resfresh()
   }
 
+
+  const columns = [
+    { field: 'id', headerName: '#', width: 200 },
+    { field: 'last_name', headerName: 'Last name', width: 200 },
+    { field: 'first_name', headerName: 'First name', width: 200 },
+    { field: 'company', headerName: 'Company', width: 200 },
+    { field: 'email', headerName: 'Email', width: 200 },
+    { field: 'phone', headerName: 'Telephone', width: 200 },
+  ];
+
+
+  const handleRowSelection = (e) => {
+    if (e.length == 1) {
+
+      setUpdatedItemId(e[0])
+      const selectedItem = clients.find(item => item.id == e[0])
+      setUpdatedItem(selectedItem)
+      console.log(updatedItem);
+    }
+    setUpdatedItemIds(e)
+
+  }
+  const [updatedItemId, setUpdatedItemId] = useState(0);
+  const [updatedItemIds, setUpdatedItemIds] = useState([]);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showChart, setShowChart] = useState(false);
+
   return (
 
     <div className="card">
 
       <div className="card-header">
-        <strong className="card-title">Clients</strong>
+        <h4><i class="menu-icon fa fa-handshake-o"></i> Clients</h4>
       </div>
       <div className="card-body">
-        <div className="row">
-          <div className="col-lg-3 col-md-6">
-            <div className="card">
-              <div className="card-body">
-                <div className="stat-widget-five">
-                  <div className="stat-icon dib flat-color-1">
-                    <i className="pe-7s-cash"></i>
-                  </div>
-                  <div className="stat-content">
-                    <div className="text-left dib">
-                      <div className="stat-text">
-                        <span className="count">5</span>
-                      </div>
-                      <div className="stat-heading">Projets</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addClient"><i class="far fa-plus-square"></i>  Create</button>
+        <button type="button" onClick={e => update(e, updatedItem)} data-toggle="modal" data-target="#edit" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> edit</button>
+        <button onClick={e => remove(e, updatedItemId)} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Remove</button>
+        {loading ?
+          <LinearProgress />
+          : <div style={{ height: 430, width: '100%' }}><DataGrid
+            rows={clients}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[6]}
+            checkboxSelection
+            onSelectionModelChange={handleRowSelection}
+            components={{ Toolbar: GridToolbar }}
+          /></div>}
 
-          <div className="col-lg-3 col-md-6">
-            <div className="card">
-              <div className="card-body">
-                <div className="stat-widget-five">
-                  <div className="stat-icon dib flat-color-2">
-                    <i className="pe-7s-cart"></i>
-                  </div>
-                  <div className="stat-content">
-                    <div className="text-left dib">
-                      <div className="stat-text">
-                        <span className="count">3</span>
-                      </div>
-                      <div className="stat-heading">Clients</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-lg-3 col-md-6">
-            <div className="card">
-              <div className="card-body">
-                <div className="stat-widget-five">
-                  <div className="stat-icon dib flat-color-3">
-                    <i className="pe-7s-browser"></i>
-                  </div>
-                  <div className="stat-content">
-                    <div className="text-left dib">
-                      <div className="stat-text">
-                        <span className="count">2</span>
-                      </div>
-                      <div className="stat-heading">Taches</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-lg-3 col-md-6">
-            <div className="card">
-              <div className="card-body">
-                <div className="stat-widget-five">
-                  <div className="stat-icon dib flat-color-4">
-                    <i className="pe-7s-users"></i>
-                  </div>
-                  <div className="stat-content">
-                    <div className="text-left dib">
-                      <div className="stat-text">
-                        <span className="count">2</span>
-                      </div>
-                      <div className="stat-heading">Messages</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button type="button" data-toggle="modal" data-target="#viewClient" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-        <button type="button" className="btn btn-success btn-sm" data-toggle="modal" data-target="#addClient"><i class="far fa-plus-square"></i>  Ajouter</button>
-
-        <table id="example1" className="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Entreprise</th>
-              <th>Prénom</th>
-              <th>Nom</th>
-              <th>Email</th>
-              <th>Mobile</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-
-            {clients.map(item =>
-              <tr>
-                <td>{item.company}</td>
-                <td>{item.last_name}</td>
-                <td>{item.first_name}</td>
-                <td>{item.email}</td>
-                <td >{item.phone}</td>
-                <td>
-                  <button onClick={e => update(e, item)} type="button" data-toggle="modal" data-target="#edit" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
-                  <button onClick={e => remove(e, clients.indexOf(item))} type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button></td>
-              </tr>
-            )}
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>Entreprise</th>
-              <th>Prénom</th>
-              <th>Nom</th>
-              <th>Email</th>
-              <th>Mobile</th>
-              <th>Action</th>
-            </tr>
-          </tfoot>
-        </table>
 
         <div class="modal fade" id="addClient" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h4 class="modal-title" id="exampleModalLongTitle">New</h4>
                 <button onClick={resfresh} type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <AddClient />
+                <AddClient closeModal={closeModalAdd} />
               </div>
               <div class="modal-footer">
-                <button onClick={resfresh} type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <button onClick={resfresh} ref={closeButtonAdd} type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
               </div>
             </div>
@@ -269,41 +185,23 @@ const Client = () => {
           <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h4 class="modal-title" id="exampleModalLongTitle">Edit</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <EditClient client={updatedItem} />
+                <EditClient client={updatedItem} closeModal={closeModalEdit} />
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <button onClick={resfresh} ref={closeButtonEdit} type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
               </div>
             </div>
           </div>
         </div>
 
-        <div class="modal fade" id="viewClient" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <ViewClient />
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
 
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   )

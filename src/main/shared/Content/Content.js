@@ -11,23 +11,26 @@ import Tasks from '../../../modules/task/Tasks/Tasks';
 import User from '../../../modules/user/User/User';
 import Configuration from '../../../modules/shared/Configuration/Configuration';
 import Client from '../../../modules/client/Client/Client';
-import EditProfile from '../../../modules/shared/EditProfile/EditProfile';
+import Profile from '../../../modules/shared/Profile/Profile';
 import ProjectTimeLine from '../../../modules/shared/DashBoard/TimeLine'
 import CurrentUser from '../../config/user';
 import Login from '../Login/Login';
 import Path from '../Path/Path';
 import ConfigurationModules from '../../../modules/shared/ConfigurationModules/ConfigurationModules';
-import ProjectReport from '../../../components/ProjectReport/ProjectReport';
-import ProjectAnalytics from '../../../components/ProjectAnalytics/ProjectAnalytics';
-import TaskReport from '../../../components/TaskReport/TaskReport';
-import TaskAnalytics from '../../../components/TaskAnalytics/TaskAnalytics';
-import ProjectCalendar from '../../../components/ProjectCalendar/ProjectCalendar';
-import ProjectKanban from '../../../components/ProjectKanban/ProjectKanban';
-import Teams from '../../../components/Teams/Teams'
-import Contracts from '../../../components/Contracts/Contracts'
-const Content = () => (
-  <div className="col-md-12" style={{ display: (CurrentUser.CONNECTED_USER ? 'block' : 'none') }}>
-    <Path />
+import ProjectReport from '../../../modules/project/ProjectReport/ProjectReport';
+import ProjectAnalytics from '../../../modules/project/ProjectAnalytics/ProjectAnalytics';
+import TaskReport from '../../../modules/task/TaskReport/TaskReport';
+import TaskAnalytics from '../../../modules/task/TaskAnalytics/TaskAnalytics';
+import ProjectCalendar from '../../../modules/project/ProjectCalendar/ProjectCalendar';
+import ProjectKanban from '../../../modules/project/ProjectKanban/ProjectKanban';
+import Teams from '../../../modules/team/Teams/Teams'
+import Contracts from '../../../modules/contract/Contracts/Contracts'
+import taskKanban from '../../../modules/task/task-kanban/task-kanban';
+import SearchProject from '../../../modules/shared/SearchProject/SearchProject';
+import Register from '../Register/Register';
+const Content = ({ connected }) => (
+  <div className="col-md-12" style={{ display: (connected ? 'block' : 'none') }}>
+
     <div>
       <Route exact path="/" component={DashBoard} />
       <Route exact path="/timeline" component={ProjectTimeLine} />
@@ -40,7 +43,7 @@ const Content = () => (
       <Route exact path="/client" component={Client} />
       <Route exact path="/user" component={User} />
       <Route exact path="/configuration" component={Configuration} />
-      <Route exact path="/profile" component={EditProfile} />
+      <Route exact path="/profile" component={Profile} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/modules-configuration" component={ConfigurationModules} />
       <Route exact path="/project-report" component={ProjectReport} />
@@ -51,6 +54,9 @@ const Content = () => (
       <Route exact path="/project-kanban" component={ProjectKanban} />
       <Route exact path="/contract" component={Contracts} />
       <Route exact path="/team" component={Teams} />
+      <Route exact path="/task-kanban" component={taskKanban} />
+      <Route exact path="/register" component={Register} />
+      <Route path="/result/:input" component={SearchProject} />
     </div>
 
 

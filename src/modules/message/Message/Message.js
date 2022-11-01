@@ -8,11 +8,12 @@ import showMessage from '../../../libraries/messages/messages';
 import messageMessage from '../../../main/messages/messageMessage';
 import MessageTestService from '../../../main/mocks/MessageTestService';
 import HTTPService from '../../../main/services/HTTPService';
+import CurrentUser from '../../../main/config/user';
 
 
 
 const deleteMessage = () => {
-  return window.confirm("Êtes-vous sûr de vouloir supprimer cette tache ?")
+  return window.confirm(CurrentUser.DELTE_MSG)
 }
 
 const Message = () => {
@@ -62,7 +63,7 @@ const Message = () => {
 
   const remove = (e, data) => {
     e.preventDefault();
-    var r = window.confirm("Etes-vous sûr que vous voulez supprimer ?");
+    var r = window.confirm(CurrentUser.DELTE_MSG);
     if (r) {
       showMessage('Confirmation', messageMessage.delete, 'success')
       MessageTestService.remove(data)

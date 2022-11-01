@@ -1,0 +1,51 @@
+.Column {
+    display: inline-block;
+    vertical-align: top;
+    width: 225px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-right: 20px;
+    background: #eae9e9;
+   
+}
+
+.Column__title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color:red
+}
+.todo{
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: rgb(255, 166, 0)
+    }
+.inprogress{
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: rgb(0, 255, 42)
+    }
+.inreview{
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: rgb(21, 0, 255)
+    }
+.completed{
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: rgb(255, 0, 51)
+    }
+.default{
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: rgb(9, 0, 0)
+    }
+    .done{
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: rgb(72, 10, 152)
+        }
+    .blocked{
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: rgb(255, 0, 0)
+        }
