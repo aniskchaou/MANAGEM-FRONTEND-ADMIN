@@ -11,6 +11,7 @@ const Footer = ({ connected }) => {
 
   const [footerSettings, setFooterSettings] = useState({});
 
+
   useEffect(() => {
     getFooterSettings()
   }, []);
