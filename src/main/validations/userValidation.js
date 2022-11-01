@@ -1,10 +1,10 @@
 
 const userValidation = {
-    first_name: "doit etre definie",
-    last_name: "doit etre definie",
-    email: "doit etre definie",
-    phone: "doit etre definie",
-    password: "doit etre definie",
-    groups: "doit etre definie"
+    first_name: "First name is required.",
+    last_name: "Last name is required.",
+    email: "Email is required.",
+    phone: "Telephone is required.",
+    password: "password is required.",
+    groups: "group is required."
 }
 export default userValidation;

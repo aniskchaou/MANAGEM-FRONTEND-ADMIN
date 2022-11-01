@@ -1,1 +1,9 @@
 .AddTask {}
+#low{background-color: orangered;}
+#high{color: chartreuse;}
+#medium{color:blue;}
+
+            #todo{color:red;}
+            #inprogress{color:blue;}
+            #inreview{color:forestgreen;}
+            #completed{color:chartreuse;}

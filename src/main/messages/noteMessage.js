@@ -1,7 +1,7 @@
 const noteMessage = {
-    add: 'enregistrement    a été ajouté avec succés',
-    edit: 'enregistrement    a été modifié avec succés',
-    delete: 'enregistrement    a été supprimé avec succés'
+    add: 'Item has been successfully added',
+    edit: 'Item has been successfully edited',
+    delete: 'Item has been successfully removed'
 }
 
 export default noteMessage

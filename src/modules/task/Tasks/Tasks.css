@@ -1,1 +1,9 @@
 .Tasks {}
+
+.priority-color{
+color:greenyellow;
+}
+
+.deadline-color{
+    color: red;
+}

@@ -5,31 +5,41 @@ import showMessage from '../../../libraries/messages/messages'
 import taskMessage from '../../../main/messages/taskMessage'
 import taskValidation from '../../../main/validations/taskValidation'
 import TaskTestService from '../../../main/mocks/TaskTestService';
-import HTTPService from '../../../main/services/HTTPService';
+import HTTPService from '../../../main/services/userHTTPService';
 import taskHHTPService from '../../../main/services/taskHHTPService';
+import projectHTTPService from '../../../main/services/projectHTTPService';
+import { useEffect } from 'react';
+import userHTTPService from '../../../main/services/userHTTPService';
 
 
-const AddTask = () => {
+const AddTask = (props) => {
 
   const initialState = {
-    project_id: "",
+    project: "",
     description: "",
     title: "",
-    due_date: "",
+    deadline: "",
     priority: "",
     status: "",
-    users: ""
+    assigned: ""
   };
 
   const { register, handleSubmit, errors } = useForm()
   const [task, setTask] = useState(initialState);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [projects, setProjects] = useState([]);
+
+
 
   const onSubmit = (data) => {
     //saveTask(data)
     //TaskTestService.create(data)
+    console.log(data)
     taskHHTPService.createTask(data).then(data => {
       setTask(initialState)
       showMessage('Confirmation', taskMessage.add, 'success')
+      props.closeModal()
     })
 
   }
@@ -53,25 +63,43 @@ const AddTask = () => {
   };
 
 
+  useEffect(() => {
+    retrieveUsers()
+    retrieveProjects()
+  }, []);
+
+  const retrieveProjects = () => {
+    //var projects = ProjectTestService.getAll();
+    setLoading(true)
+    projectHTTPService.getAllProject().then(data => {
+      console.log(data.data)
+      setProjects(data.data);
+      setLoading(false)
+    })
+
+  };
+
+  const retrieveUsers = () => {
+    setLoading(true)
+    userHTTPService.getAllUser()
+      .then(response => {
+        setUsers(response.data);
+        console.log(response.data)
+        setLoading(false)
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+
   return (
     <div className="AddTask">
       <form method="POST" className="" onSubmit={handleSubmit(onSubmit)}>
 
-        <div className="form-group">
-          <label>Projet<span className="text-danger">*</span></label>
-          <select ref={register({ required: true })} onChange={handleInputChange}
-            value={task.project_id} name="project_id" id="project_id"
-            className="form-control select2 select2-hidden-accessible" tabIndex="-1" aria-hidden="true">
-
-            <option value="Projet 1">Projet 1</option>
-          </select>
-          <div className="error text-danger">
-            {errors.project_id && taskValidation.project_id}
-          </div>
-        </div>
 
         <div className="form-group">
-          <label>Titre<span className="text-danger">*</span></label>
+          <label>Title<span className="text-danger">*</span></label>
           <input ref={register({ required: true })} onChange={handleInputChange}
             value={task.title} type="text" name="title" className="form-control" required="" />
           <div className="error text-danger">
@@ -80,7 +108,27 @@ const AddTask = () => {
         </div>
 
         <div className="form-group">
-          <label>Description<span className="text-danger">*</span></label>
+          <label>Project<span className="text-danger">*</span></label>
+          <select ref={register({ required: true })} onChange={handleInputChange}
+            value={task.project} name="project_id" id="project"
+            class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow" tabIndex="-1" aria-hidden="true">
+
+            {
+              projects.map(item =>
+                <option value={item.title}>{item.title}</option>
+
+              )
+            }
+          </select>
+          <div className="error text-danger">
+            {errors.project_id && taskValidation.project_id}
+          </div>
+        </div>
+
+
+
+        <div className="form-group">
+          <label>Short Description<span className="text-danger">*</span></label>
           <textarea ref={register({ required: true })} onChange={handleInputChange}
             value={task.description} type="text" name="description" className="form-control"></textarea>
           <div className="error text-danger">
@@ -89,21 +137,21 @@ const AddTask = () => {
         </div>
 
         <div className="form-group">
-          <label>Date échéance<span className="text-danger">*</span></label>
+          <label>Due Date<span className="text-danger">*</span></label>
           <input ref={register({ required: true })} onChange={handleInputChange}
-            value={task.due_date} type="date" name="due_date" className="form-control datepicker" required="" />
+            value={task.deadline} type="date" name="deadline" className="form-control datepicker" required="" />
           <div className="error text-danger">
             {errors.due_date && taskValidation.due_date}
           </div>
         </div>
 
         <div className="form-group">
-          <label>Priorité<span className="text-danger">*</span></label>
+          <label>Priority<span className="text-danger">*</span></label>
           <select ref={register({ required: true })} onChange={handleInputChange}
-            value={task.priority} name="priority" className="form-control select2 select2-hidden-accessible" required="" tabIndex="-1" aria-hidden="true">
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
+            value={task.priority} name="priority" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow" required="" tabIndex="-1" aria-hidden="true">
+            <option id="low" value="Low">Low</option>
+            <option id="medium" value="Medium">Medium</option>
+            <option id="high" value="High">High</option>
           </select>
           <div className="error text-danger">
             {errors.priority && taskValidation.priority}
@@ -111,14 +159,14 @@ const AddTask = () => {
         </div>
 
         <div className="form-group">
-          <label>Statut<span className="text-danger">*</span></label>
+          <label>Status<span className="text-danger">*</span></label>
           <select ref={register({ required: true })} onChange={handleInputChange}
-            value={task.status} name="status" className="form-control select2 select2-hidden-accessible"
+            value={task.status} name="status" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
             required="" tabIndex="-1" aria-hidden="true">
-            <option value="Todo">Todo</option>
-            <option value="In Progress">In Progress</option>
-            <option value="In Review">In Review</option>
-            <option value="Completed">Completed</option>
+            <option id="todo" value="Todo">Todo</option>
+            <option id="inprogress" value="In Progress">In Progress</option>
+            <option id="inreview" value="In Review">In Review</option>
+            <option id="completed" value="Completed">Completed</option>
           </select>
           <div className="error text-danger">
             {errors.status && taskValidation.status}
@@ -126,13 +174,17 @@ const AddTask = () => {
         </div>
 
         <div className="form-group">
-          <label>Utilisateurs </label>
+          <label>User </label>
           <select ref={register({ required: true })}
             onChange={handleInputChange}
-            value={task.users} name="users" id="users_append"
-            className="form-control select2 select2-hidden-accessible"  >
-            <option value="John Doe">John Doe</option>
-            <option value="Mike Dean">Mike Dean</option>
+            value={task.assigned} name="assigned" id="users_append"
+            class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"  >
+            {
+              users.map(item =>
+                <option value={item.username}>{item.name}</option>
+
+              )
+            }
           </select>
           <div className="error text-danger">
             {errors.users && taskValidation.users}
@@ -140,7 +192,7 @@ const AddTask = () => {
         </div>
 
         <button type="submit" id="save-form" className="btn btn-success"><i className="fa fa-check"></i>
-          <font   ><font   > Sauvegarder</font></font></button></form>
+          <font   ><font   > Save</font></font></button></form>
     </div>
   )
 };

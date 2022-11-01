@@ -10,6 +10,18 @@
       "withTest": false,
       "withStory": false,
       "withLazy": false
-    }
+    },
+    "path": "src/components",
+    "css": {
+      "preprocessor": "css",
+      "module": true,
+      "withStyle": true
+    },
+    "test": {
+      "library": "Testing Library",
+      "withTest": false
+    },
+    "withStory": false,
+    "withLazy": false
   }
 }

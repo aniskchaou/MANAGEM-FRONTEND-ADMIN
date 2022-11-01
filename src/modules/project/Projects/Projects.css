@@ -1,5 +1,24 @@
 .Projects {}
 
+.status-color{
+    color: yellowgreen;
+    font-weight: bold;
+}
+
+.title-color {
+    font-weight:bold ;
+}
+
+.start-date-color {
+    color:blue ;
+    font-weight: bold;
+}
+
+.end-date-color {
+    color: red;
+    font-weight: bold;
+}
+
 body {
     padding: 10px;
 

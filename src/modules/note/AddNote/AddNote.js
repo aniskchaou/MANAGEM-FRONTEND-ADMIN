@@ -5,11 +5,11 @@ import showMessage from '../../../libraries/messages/messages'
 import noteMessage from '../../../main/messages/noteMessage'
 import noteValidation from '../../../main/validations/noteValidation'
 import NoteTestService from '../../../main/mocks/NoteTestService';
-import HTTPService from '../../../main/services/HTTPService';
+import HTTPService from '../../../main/services/userHTTPService';
 import noteHTTPService from '../../../main/services/noteHTTPService';
 
 
-const AddNote = () => {
+const AddNote = (props) => {
   const initialState = {
 
     description: "",
@@ -26,6 +26,7 @@ const AddNote = () => {
     noteHTTPService.createNote(data).then(data => {
       setNote(initialState)
       showMessage('Confirmation', noteMessage.add, 'success')
+      props.closeModal()
     })
 
   }
@@ -43,13 +44,13 @@ const AddNote = () => {
         <div class="row">
 
           <div class="form-group col-md-12">
-            <label>Note<span class="text-danger">*</span></label>
+            <label>Title<span class="text-danger">*</span></label>
             <input ref={register({ required: true })} onChange={handleInputChange} value={note.name}
               type="text" name="name" class="form-control" />
 
 
 
-            <label>Note<span class="text-danger">*</span></label>
+            <label>Description<span class="text-danger">*</span></label>
             <textarea ref={register({ required: true })} onChange={handleInputChange} value={note.description}
               type="text" name="description" class="form-control"></textarea>
             <div className="error text-danger">
@@ -60,7 +61,7 @@ const AddNote = () => {
         </div>
         <button type="submit" id="save-form" className="btn btn-success">
           <i className="fa fa-check"></i>
-          <font   ><font   > Sauvegarder</font></font></button></form>
+          <font   ><font   > Save</font></font></button></form>
     </div>
   )
 };

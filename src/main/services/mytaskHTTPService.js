@@ -15,8 +15,26 @@ const editMyTask = (id, data) => {
 const removeMyTask = id => {
     return http.delete(`${BASE_URL}/api/mytask/${id}`);
 };
+const getTodo = () => {
+    return http.get(`${BASE_URL}/api/count/mytask/todo`)
+}
 
+const getInprogress = () => {
+    return http.get(`${BASE_URL}/api/count/mytask/inprogress`)
+}
+
+const getinreview = () => {
+    return http.get(`${BASE_URL}/api/count/mytask/inreview`)
+}
+
+const getCompleted = () => {
+    return http.get(`${BASE_URL}/api/count/mytask/completed`)
+}
 export default {
+    getTodo,
+    getinreview,
+    getCompleted,
+    getInprogress,
     getAllMyTask,
     createMyTask,
     editMyTask,

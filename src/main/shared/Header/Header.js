@@ -1,28 +1,72 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Header.css';
 import { Link, useHistory } from 'react-router-dom';
 import User from '../../../modules/user/User/User';
 import CurrentUser from '../../config/user';
+import { LoadJS } from '../../../libraries/datatables/datatables';
+import settingsHTTPService from '../../services/settingsHTTPService';
 
-const Header = (props) => {
+const Header = ({ connected, handleClick }) => {
 
     let history = useHistory()
-
+    const [headerSettings, setHeaderSettings] = useState({});
+    const initialState = {
+        input: '',
+    };
+    const [activity, setActivity] = useState(initialState);
     const logout = () => {
-        props.rerender();
-        CurrentUser.CONNECTED_USER = false
+        handleClick(false)
+        localStorage.clear()
         history.push("/login")
     }
 
 
 
+    useEffect(() => {
+
+
+        LoadJS()
+
+
+    }, []);
+
+    const print = () => {
+        history.replace("/result/" + activity.input)
+    }
+
+    const handleInputChange = event => {
+        const { name, value } = event.target;
+        setActivity({ ...activity, [name]: value });
+    };
+
+    const search = (event) => {
+        if (event.keyCode === 13) {
+            history.replace("/result/" + activity.input)
+        }
+    }
+
+    useEffect(() => {
+        getFooterSettings()
+    }, []);
+
+    const getFooterSettings = () => {
+        settingsHTTPService.getHeaderSettings().then(data => {
+            setHeaderSettings(data.data[0])
+            console.log(data.data[0])
+        })
+    }
+
+
+
     return (
-        <div id="right-panel" className="right-panel" style={{ display: (CurrentUser.CONNECTED_USER ? 'block' : 'none') }}>
+        <div id="right-panel" className="right-panel" style={{ display: (connected ? 'block' : 'none') }}>
             <header id="header" className="header">
                 <div className="top-left">
                     <div className="navbar-header">
-                        <a className="navbar-brand" href="./"><img src="images/logo.png" alt="Logo" /></a>
+                        {headerSettings.showLogo == 1 &&
+                            <a className="navbar-brand" href="./"><img src="images/logo.png" alt="Logo" /></a>
+                        }
                         <a className="navbar-brand hidden" href="./"><img src="images/logo2.png" alt="Logo" /></a>
                         <a id="menuToggle" className="menutoggle"><i className="fa fa-bars"></i></a>
                     </div>
@@ -30,47 +74,18 @@ const Header = (props) => {
                 <div className="top-right">
                     <div className="header-menu">
                         <div className="header-left">
-                            <button className="search-trigger"><i className="fa fa-search"></i></button>
+                            {headerSettings.enbaleSearchBar == 1 &&
+                                <button className="search-trigger"><i className="fa fa-search"></i></button>
+                            }
                             <div className="form-inline">
                                 <form className="search-form">
-                                    <input className="form-control mr-sm-2" type="text" placeholder="Search ..." aria-label="Search" />
-                                    <button className="search-close" type="submit"><i className="fa fa-close"></i></button>
+                                    <input onChange={handleInputChange} name="input" value={activity.input} onKeyDown={(e) => search(e)} className="form-control mr-sm-2" type="text" placeholder="Search ..." aria-label="Search" />
+                                    <button onClick={print} className="search-close" type="submit"><i className="fa fa-close"></i></button>
                                 </form>
                             </div>
 
-                            <div className="dropdown for-notification">
-                                <button className="btn btn-secondary dropdown-toggle" type="button" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i className="fa fa-bell"></i>
-                                    <span className="count bg-danger">3</span>
-                                </button>
-                                <div className="dropdown-menu" aria-labelledby="notification">
-                                    <p className="red">You have 3 Notification</p>
-                                    <a className="dropdown-item media" href="#">
-                                        <i className="fa fa-check"></i>
-                                        <p>...........</p>
-                                    </a>
 
-                                </div>
-                            </div>
 
-                            <div className="dropdown for-message">
-                                <button className="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i className="fa fa-envelope"></i>
-                                    <span className="count bg-primary">4</span>
-                                </button>
-                                <div className="dropdown-menu" aria-labelledby="message">
-                                    <p className="red">You have 4 Mails</p>
-                                    <a className="dropdown-item media" href="#">
-                                        <span className="photo media-left"><img alt="avatar" src="images/avatar/1.jpg" /></span>
-                                        <div className="message media-body">
-                                            <span className="name float-left">Jonathan Smith</span>
-                                            <span className="time float-right">Just now</span>
-                                            <p>Hello, this is an example msg</p>
-                                        </div>
-                                    </a>
-
-                                </div>
-                            </div>
                         </div>
 
                         <div className="user-area dropdown float-right">
@@ -79,13 +94,13 @@ const Header = (props) => {
                             </a>
 
                             <div className="user-menu dropdown-menu">
-                                <Link to="/profile" className="nav-link" href="#"><i className="fa fa-user"></i>Mon Profile</Link>
+                                <Link to="/profile" className="nav-link" href="#"><i className="fa fa-user"></i>My Profile</Link>
 
 
 
-                                <Link to="/configuration" className="nav-link" href="#"><i className="fa fa-cog"></i>Paramètres</Link>
+                                <Link to="/configuration" className="nav-link" href="#"><i className="fa fa-cog"></i>Settings</Link>
 
-                                <Link to="/" onClick={logout} className="nav-link" href="#"><i className="fa fa-power-off"></i>Déconnexion</Link>
+                                <Link to="/" onClick={logout} className="nav-link" href="#"><i className="fa fa-power-off"></i>Log out</Link>
                             </div>
                         </div>
                     </div>
