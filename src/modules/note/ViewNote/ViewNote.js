@@ -8,8 +8,6 @@ const ViewNote = () => (
   </div>
 );
 
-ViewNote.propTypes = {};
 
-ViewNote.defaultProps = {};
 
 export default ViewNote;

@@ -9,147 +9,181 @@ import userHTTPService from '../../../main/services/userHTTPService';
 import projectHTTPService from '../../../main/services/projectHTTPService';
 
 const EditTask = (props) => {
+  const { register, handleSubmit, formState: { errors } } = useForm(); // Updated useForm structure
 
-  const { register, handleSubmit, errors } = useForm() // initialise the hook
-  const [task, setTask] = useState(props.task);
-  const [typeSubs, setTypeSubs] = useState([]);
-  const [members, setMembers] = useState([]);
+  const [task, setTask] = useState(props.task || {}); // Prevents undefined errors
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setTask(props.task)
-
+    setTask(props.task || {}); // Update when props change
   }, [props.task]);
 
-
-  const onSubmit = (data) => {
-    console.log(data)
-    taskHHTPService.editTask(props.task.id, data).then(data => {
-      props.closeModal()
-      showMessage('Confirmation', taskMessage.edit, 'success')
-    }).catch(e => {
-      console.log(e)
-    })
-
-  }
-
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setTask({ ...task, [name]: value });
-  };
-
   useEffect(() => {
-    retrieveUsers()
-    retrieveProjects()
+    retrieveUsers();
+    retrieveProjects();
   }, []);
 
   const retrieveProjects = () => {
-    //var projects = ProjectTestService.getAll();
-    setLoading(true)
-    projectHTTPService.getAllProject().then(data => {
-      console.log(data.data)
-      setProjects(data.data);
-      setLoading(false)
-    })
-
-  };
-
-  const retrieveUsers = () => {
-    setLoading(true)
-    userHTTPService.getAllUser()
-      .then(response => {
-        setUsers(response.data);
-        console.log(response.data)
-        setLoading(false)
+    setLoading(true);
+    projectHTTPService.getAllProject()
+      .then(data => {
+        setProjects(data.data || []);
+        setLoading(false);
       })
-      .catch(e => {
-        console.log(e);
+      .catch(error => {
+        console.error("Error fetching projects:", error);
+        setLoading(false);
       });
   };
 
+  const retrieveUsers = () => {
+    setLoading(true);
+    userHTTPService.getAllUser()
+      .then(response => {
+        setUsers(response.data || []);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("Error fetching users:", error);
+        setLoading(false);
+      });
+  };
 
+  const onSubmit = (data) => {
+    taskHHTPService.editTask(props.task.id, data)
+      .then(() => {
+        props.closeModal();
+        showMessage('Confirmation', taskMessage.edit, 'success');
+      })
+      .catch(error => {
+        console.error("Error updating task:", error);
+      });
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setTask(prevTask => ({ ...prevTask, [name]: value }));
+  };
 
   return (
     <div className="EditTask">
-      <form onSubmit={handleSubmit(onSubmit)} className="">
-
+      <form onSubmit={handleSubmit(onSubmit)} className="task-form">
         <div className="form-group">
-          <label>Project<span className="text-danger">*</span></label>
-          <select name="project_id" id="project" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
-            onChange={handleInputChange} value={task?.project}
-            ref={register({ required: true })}>
-            {
-              projects.map(item =>
-                <option value={item.title}>{item.title}</option>
-
-              )
-            }
+          <label>Project <span className="text-danger">*</span></label>
+          <select
+            name="project_id"
+            className="form-control"
+            onChange={handleInputChange}
+            value={task?.project || ""}
+            {...register("project_id", { required: "Project is required" })}
+          >
+            {projects.map((item, index) => (
+              <option key={index} value={item.title}>{item.title}</option>
+            ))}
           </select>
+          {errors.project_id && <p className="text-danger">{errors.project_id.message}</p>}
         </div>
 
         <div className="form-group">
-          <label>Title<span className="text-danger">*</span></label>
-          <input type="text" name="title" className="form-control" required="" onChange={handleInputChange} value={task.title}
-            ref={register({ required: true })} />
+          <label>Title <span className="text-danger">*</span></label>
+          <input
+            type="text"
+            name="title"
+            className="form-control"
+            onChange={handleInputChange}
+            value={task?.title || ""}
+            {...register("title", { required: "Title is required" })}
+          />
+          {errors.title && <p className="text-danger">{errors.title.message}</p>}
         </div>
 
         <div className="form-group">
-          <label>Short Description<span className="text-danger">*</span></label>
-          <textarea type="text" name="description" className="form-control" onChange={handleInputChange} value={task.description}
-            ref={register({ required: true })}></textarea>
+          <label>Short Description <span className="text-danger">*</span></label>
+          <textarea
+            name="description"
+            className="form-control"
+            onChange={handleInputChange}
+            value={task?.description || ""}
+            {...register("description", { required: "Description is required" })}
+          />
+          {errors.description && <p className="text-danger">{errors.description.message}</p>}
         </div>
 
         <div className="form-group">
-          <label>Due Date<span className="text-danger">*</span></label>
-          <input type="date" name="deadline" className="form-control datepicker" required=""
-            onChange={handleInputChange} value={task.deadline}
-            ref={register({ required: true })} />
+          <label>Due Date <span className="text-danger">*</span></label>
+          <input
+            type="date"
+            name="deadline"
+            className="form-control"
+            onChange={handleInputChange}
+            value={task?.deadline || ""}
+            {...register("deadline", { required: "Due date is required" })}
+          />
+          {errors.deadline && <p className="text-danger">{errors.deadline.message}</p>}
         </div>
 
         <div className="form-group">
-          <label>Priority<span className="text-danger">*</span></label>
-          <select onChange={handleInputChange} value={task.priority}
-            ref={register({ required: true })} name="priority" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
-            <option id="low" value="Low">Low</option>
-            <option id="medium" value="Medium">Medium</option>
-            <option id="high" value="High">High</option>
+          <label>Priority <span className="text-danger">*</span></label>
+          <select
+            name="priority"
+            className="form-control"
+            onChange={handleInputChange}
+            value={task?.priority || ""}
+            {...register("priority", { required: "Priority is required" })}
+          >
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
           </select>
+          {errors.priority && <p className="text-danger">{errors.priority.message}</p>}
         </div>
 
         <div className="form-group">
-          <label>Status<span className="text-danger">*</span></label>
-          <select onChange={handleInputChange} value={task.status}
-            ref={register({ required: true })} name="status" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
-            <option id="todo" value="Todo">Todo</option>
-            <option id="inprogress" value="In Progress">In Progress</option>
-            <option id="inreview" value="In Review">In Review</option>
-            <option id="completed" value="Completed">Completed</option>
+          <label>Status <span className="text-danger">*</span></label>
+          <select
+            name="status"
+            className="form-control"
+            onChange={handleInputChange}
+            value={task?.status || ""}
+            {...register("status", { required: "Status is required" })}
+          >
+            <option value="Todo">Todo</option>
+            <option value="In Progress">In Progress</option>
+            <option value="In Review">In Review</option>
+            <option value="Completed">Completed</option>
           </select>
+          {errors.status && <p className="text-danger">{errors.status.message}</p>}
         </div>
 
         <div className="form-group">
-          <label>User </label>
-          <select onChange={handleInputChange} value={task.assigned}
-            ref={register({ required: true })} name="assigned" id="users_append" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
-            {
-              users.map(item =>
-                <option value={item.username}>{item.name}</option>
-
-              )
-            }
+          <label>User</label>
+          <select
+            name="assigned"
+            className="form-control"
+            onChange={handleInputChange}
+            value={task?.assigned || ""}
+            {...register("assigned", { required: "User assignment is required" })}
+          >
+            {users.map((item, index) => (
+              <option key={index} value={item.username}>{item.name}</option>
+            ))}
           </select>
+          {errors.assigned && <p className="text-danger">{errors.assigned.message}</p>}
         </div>
 
-        <button name="submit" type="submit" class="btn btn-primary"><i class="far fa-save"></i>
-          Save</button></form>
+        <button type="submit" className="btn btn-primary">
+          <i className="far fa-save"></i> Save
+        </button>
+      </form>
     </div>
-  )
+  );
 };
 
-EditTask.propTypes = {};
-
-EditTask.defaultProps = {};
+EditTask.propTypes = {
+  task: PropTypes.object.isRequired,
+  closeModal: PropTypes.func.isRequired,
+};
 
 export default EditTask;

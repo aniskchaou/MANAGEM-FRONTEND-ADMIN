@@ -111,8 +111,5 @@ const TaskSummary = () => {
   )
 };
 
-TaskSummary.propTypes = {};
-
-TaskSummary.defaultProps = {};
 
 export default TaskSummary;

@@ -1,172 +1,162 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './AddContract.css';
-import contractHTTPService from '../../../main/services/contractHTTPService';
-
-import noteMessage from '../../../main/messages/noteMessage';
 import { useForm } from 'react-hook-form';
+import contractHTTPService from '../../../main/services/contractHTTPService';
 import projectHTTPService from '../../../main/services/projectHTTPService';
 import showMessage from '../../../libraries/messages/messages';
+import noteMessage from '../../../main/messages/noteMessage';
 
 const AddContract = (props) => {
-  const initialState = {
+  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
 
-    title: "",
-    date: "",
-    client: "",
-    project: "",
-    company: "",
-    note: "",
-    contractValue: "",
-    contractType: "",
-    website: "",
-    startDate: "",
-    endDate: "",
-    description: ""
-
-  };
-
-  const { register, handleSubmit, errors } = useForm()
-  const [contract, setContract] = useState(initialState);
   const [projects, setProjects] = useState([]);
-  const onSubmit = (data) => {
-    //saveNote(data)
-    // NoteTestService.create(data)
-    contractHTTPService.createContract(data).then(data => {
-      setContract(initialState)
-      showMessage('Confirmation', noteMessage.add, 'success')
-      props.closeModal()
-    })
-
-  }
 
   useEffect(() => {
-    retrieveProjects()
+    retrieveProjects();
   }, []);
 
-  const retrieveProjects = () => {
-    //var projects = ProjectTestService.getAll();
-
-    projectHTTPService.getAllProject().then(data => {
-      console.log(data.data)
-      setProjects(data.data);
-
-    })
-
+  const retrieveProjects = async () => {
+    try {
+      const response = await projectHTTPService.getAllProject();
+      setProjects(response.data || []);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
   };
 
-
-
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setContract({ ...contract, [name]: value });
+  const onSubmit = async (data) => {
+    try {
+      await contractHTTPService.createContract(data);
+      showMessage('Confirmation', noteMessage.add, 'success');
+      reset();
+      props.closeModal();
+    } catch (error) {
+      console.error('Error adding contract:', error);
+      showMessage('Error', 'Failed to add contract', 'danger');
+    }
   };
 
   return (
     <div className="AddContract">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="row">
+          <div className="form-group col-md-12">
 
+            <label>Title <span className="text-danger">*</span></label>
+            <input
+              type="text"
+              className="form-control"
+              {...register('title', { required: 'Title is required' })}
+            />
+            {errors.title && <p className="text-danger">{errors.title.message}</p>}
 
+            <label>Date <span className="text-danger">*</span></label>
+            <input
+              type="date"
+              className="form-control"
+              {...register('date', { required: 'Date is required' })}
+            />
+            {errors.date && <p className="text-danger">{errors.date.message}</p>}
 
-      <div className="AddNote">
-        <form class="" onSubmit={handleSubmit(onSubmit)}>
-          <div class="row">
+            <label>Client</label>
+            <select className="form-control" {...register('client')}>
+              <option value="Mike Dean">Mike Dean</option>
+              <option value="John Doe">John Doe</option>
+            </select>
 
-            <div class="form-group col-md-12">
+            <label>Project <span className="text-danger">*</span></label>
+            <select
+              className="form-control"
+              {...register('project', { required: 'Project selection is required' })}
+            >
+              <option value="">Select a project</option>
+              {projects.map((project) => (
+                <option key={project.id} value={project.name}>
+                  {project.name}
+                </option>
+              ))}
+            </select>
+            {errors.project && <p className="text-danger">{errors.project.message}</p>}
 
-              <label>Title<span class="text-danger">*</span></label>
-              <input ref={register({ required: true })} onChange={handleInputChange} value={contract.title}
-                type="text" name="title" class="form-control" />
+            <label>Company <span className="text-danger">*</span></label>
+            <input
+              type="text"
+              className="form-control"
+              {...register('company', { required: 'Company name is required' })}
+            />
+            {errors.company && <p className="text-danger">{errors.company.message}</p>}
 
-              <label>Date<span class="text-danger">*</span></label>
-              <input ref={register({ required: true })} onChange={handleInputChange} value={contract.date}
-                type="date" name="date" class="form-control" />
-
-
-              <div class="form-group">
-                <label>Client</label>
-                <select ref={register({ required: true })} onChange={handleInputChange} value={contract.client}
-                  name="client" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
-                >
-                  <option value="Mike Dean">Mike Dean</option>
-                  <option value="John Doe">John Doe</option>
-                </select>
-
+            <label>Value <span className="text-danger">*</span></label>
+            <div className="input-group mb-3">
+              <input
+                type="number"
+                className="form-control"
+                {...register('contractValue', { required: 'Contract value is required' })}
+              />
+              <div className="input-group-append">
+                <span className="input-group-text">$</span>
               </div>
-
-
-
-              <div className="form-group">
-                <label>Project<span className="text-danger">*</span></label>
-                <select ref={register({ required: true })} onChange={handleInputChange}
-                  value={contract.project} name="project" id="project"
-                  class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow" tabIndex="-1" aria-hidden="true">
-
-                  <option value="Projet 1">Project</option>
-                </select>
-              </div>
-
-              <label>Company<span class="text-danger">*</span></label>
-              <input ref={register({ required: true })} onChange={handleInputChange} value={contract.company}
-                type="text" name="company" class="form-control" />
-
-              <label>Value<span class="text-danger">*</span></label>
-              <div class="input-group mb-3">
-                <input ref={register({ required: true })} onChange={handleInputChange} value={contract.contractValue}
-                  type="number" name="contractValue" class="form-control" />
-                <div class="input-group-append">
-                  <span class="input-group-text" id="basic-addon2"> $</span>
-                </div>
-              </div>
-
-              <label>Type<span class="text-danger">*</span></label>
-              <select ref={register({ required: true })} onChange={handleInputChange} value={contract.contractType} name="contractType" id="project"
-                class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow" tabIndex="-1" aria-hidden="true">
-
-                <option value="Fixed-price contracts">Fixed-price contracts</option>
-                <option value="Cost-reimbursable Contracts">Cost-reimbursable Contracts</option>
-                <option value="Time and materials (T&M)">Time and materials (T&M):</option>
-              </select>
-
-              <label>Website<span class="text-danger">*</span></label>
-
-
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">https://</span>
-                </div>
-                <input ref={register({ required: true })} onChange={handleInputChange} value={contract.website}
-                  type="text" name="website" class="form-control" />
-              </div>
-
-
-              <label>Start<span class="text-danger">*</span></label>
-              <input ref={register({ required: true })} onChange={handleInputChange} value={contract.startDate}
-                type="date" name="startDate" class="form-control" />
-
-
-              <label>End<span class="text-danger">*</span></label>
-              <input ref={register({ required: true })} onChange={handleInputChange} value={contract.endDate}
-                type="date" name="endDate" class="form-control" />
-
-              <label>Description<span class="text-danger">*</span></label>
-              <textarea ref={register({ required: true })} onChange={handleInputChange} value={contract.description}
-                type="text" name="description" class="form-control" ></textarea>
-
             </div>
+            {errors.contractValue && <p className="text-danger">{errors.contractValue.message}</p>}
+
+            <label>Contract Type <span className="text-danger">*</span></label>
+            <select
+              className="form-control"
+              {...register('contractType', { required: 'Contract type is required' })}
+            >
+              <option value="">Select contract type</option>
+              <option value="Fixed-price contracts">Fixed-price contracts</option>
+              <option value="Cost-reimbursable Contracts">Cost-reimbursable Contracts</option>
+              <option value="Time and materials (T&M)">Time and materials (T&M)</option>
+            </select>
+            {errors.contractType && <p className="text-danger">{errors.contractType.message}</p>}
+
+            <label>Website <span className="text-danger">*</span></label>
+            <div className="input-group mb-3">
+              <div className="input-group-prepend">
+                <span className="input-group-text">https://</span>
+              </div>
+              <input
+                type="text"
+                className="form-control"
+                {...register('website', { required: 'Website is required' })}
+              />
+            </div>
+            {errors.website && <p className="text-danger">{errors.website.message}</p>}
+
+            <label>Start Date <span className="text-danger">*</span></label>
+            <input
+              type="date"
+              className="form-control"
+              {...register('startDate', { required: 'Start date is required' })}
+            />
+            {errors.startDate && <p className="text-danger">{errors.startDate.message}</p>}
+
+            <label>End Date <span className="text-danger">*</span></label>
+            <input
+              type="date"
+              className="form-control"
+              {...register('endDate', { required: 'End date is required' })}
+            />
+            {errors.endDate && <p className="text-danger">{errors.endDate.message}</p>}
+
+            <label>Description <span className="text-danger">*</span></label>
+            <textarea
+              className="form-control"
+              {...register('description', { required: 'Description is required' })}
+            ></textarea>
+            {errors.description && <p className="text-danger">{errors.description.message}</p>}
 
           </div>
-          <button type="submit" id="save-form" className="btn btn-success">
-            <i className="fa fa-check"></i>
-            <font   ><font   > Save</font></font></button>
-        </form>
-      </div>
+        </div>
 
+        <button type="submit" className="btn btn-success">
+          <i className="fa fa-check"></i> Save
+        </button>
+      </form>
     </div>
-  )
+  );
 };
-
-AddContract.propTypes = {};
-
-AddContract.defaultProps = {};
 
 export default AddContract;

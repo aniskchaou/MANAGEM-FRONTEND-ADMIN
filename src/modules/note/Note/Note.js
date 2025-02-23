@@ -202,8 +202,6 @@ const Note = () => {
   )
 };
 
-Note.propTypes = {};
 
-Note.defaultProps = {};
 
 export default Note;

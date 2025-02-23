@@ -59,8 +59,6 @@ const SearchProject = (props) => {
   )
 };
 
-SearchProject.propTypes = {};
 
-SearchProject.defaultProps = {};
 
 export default SearchProject;

@@ -19,8 +19,6 @@ const EditMyTask = () => (
   </div>
 );
 
-EditMyTask.propTypes = {};
 
-EditMyTask.defaultProps = {};
 
 export default EditMyTask;

@@ -6,58 +6,70 @@ import showMessage from '../../../libraries/messages/messages';
 import noteMessage from '../../../main/messages/noteMessage';
 import { useForm } from 'react-hook-form';
 
-const EditNote = (props) => {
-
-  const { register, handleSubmit, errors } = useForm() // initialise the hook
-  const [note, setNote] = useState(props.note);
-  const [typeSubs, setTypeSubs] = useState([]);
-  const [members, setMembers] = useState([]);
+const EditNote = ({ note: initialNote, closeModal }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [note, setNote] = useState(initialNote);
 
   useEffect(() => {
-    setNote(props.note)
-
-  }, [props.note]);
-
+    setNote(initialNote);
+  }, [initialNote]);
 
   const onSubmit = (data) => {
-    console.log(data)
-    noteHTTPService.editNote(props.note.id, data).then(data => {
-      props.closeModal()
-      showMessage('Confirmation', noteMessage.edit, 'success')
-    }).catch(e => {
-      console.log(e)
-    })
-
-  }
-
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setNote({ ...note, [name]: value });
+    noteHTTPService.editNote(note.id, data)
+      .then(() => {
+        closeModal();
+        showMessage('Confirmation', noteMessage.edit, 'success');
+      })
+      .catch((e) => console.error(e));
   };
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setNote((prevNote) => ({ ...prevNote, [name]: value }));
+  };
 
   return (
     <div className="EditNote">
-      <form onSubmit={handleSubmit(onSubmit)} class="">
-        <div class="row">
-          <div class="form-group col-md-12">
-            <label>Title<span class="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange} value={note.name}
-              type="text" name="name" class="form-control" />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="row">
+          <div className="form-group col-md-12">
+            <label>
+              Title<span className="text-danger">*</span>
+            </label>
+            <input
+              {...register('name', { required: true })}
+              onChange={handleInputChange}
+              value={note.name || ''}
+              type="text"
+              name="name"
+              className="form-control"
+            />
+            {errors.name && <div className="error text-danger">Title is required</div>}
 
-            <label>Description<span class="text-danger">*</span></label>
-            <textarea type="text" name="description" class="form-control" onChange={handleInputChange} value={note.description} ref={register({ required: true })} ></textarea>
+            <label>
+              Description<span className="text-danger">*</span>
+            </label>
+            <textarea
+              {...register('description', { required: true })}
+              onChange={handleInputChange}
+              value={note.description || ''}
+              name="description"
+              className="form-control"
+            ></textarea>
+            {errors.description && <div className="error text-danger">Description is required</div>}
           </div>
         </div>
-        <button name="submit" type="submit" class="btn btn-primary"><i class="far fa-save"></i>
-          Save</button></form>
+        <button type="submit" className="btn btn-primary">
+          <i className="far fa-save"></i> Save
+        </button>
+      </form>
     </div>
-  )
-
+  );
 };
 
-EditNote.propTypes = {};
-
-EditNote.defaultProps = {};
+EditNote.propTypes = {
+  note: PropTypes.object.isRequired,
+  closeModal: PropTypes.func.isRequired,
+};
 
 export default EditNote;

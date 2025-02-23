@@ -206,8 +206,6 @@ const User = () => {
   )
 };
 
-User.propTypes = {};
 
-User.defaultProps = {};
 
 export default User;

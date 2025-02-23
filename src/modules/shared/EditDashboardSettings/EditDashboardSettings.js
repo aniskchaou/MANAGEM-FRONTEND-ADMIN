@@ -6,92 +6,123 @@ import showMessage from '../../../libraries/messages/messages';
 import React, { useEffect, useState } from 'react';
 import CurrentUser from '../../../main/config/user';
 
-
 const EditDashboardSettings = () => {
-  const { register, handleSubmit, errors } = useForm()
-  const [dashboardSettings, setDashboardSettings] = useState();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
+
+  const [dashboardSettings, setDashboardSettings] = useState({
+    showSummary: '',
+    showCalendar: '',
+    showExpenseIncomeCharts: '',
+  });
 
   useEffect(() => {
-    getDashboardSettings()
-  }, [])
+    getDashboardSettings();
+  }, []);
 
+  const getDashboardSettings = async () => {
+    try {
+      const { data } = await settingsHTTPService.getDashboardSettings();
+      if (data.length > 0) {
+        const settings = data[0];
+        setDashboardSettings(settings);
 
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setDashboardSettings({ ...dashboardSettings, [name]: value });
+        // Populate form fields dynamically
+        Object.keys(settings).forEach((key) => setValue(key, settings[key]));
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard settings:', error);
+    }
   };
 
-  const getDashboardSettings = () => {
-    settingsHTTPService.getDashboardSettings().then(data => {
-      console.log(data.data[0])
-      setDashboardSettings(data.data[0])
-
-    })
-  }
-
-  const onSubmit = (data) => {
-    settingsHTTPService.editDashboardSettings(dashboardSettings.id, data).then(data => {
-      console.log(data)
-      showMessage('Confirmation', CurrentUser.SETTINGS_UPDATE_MSG, 'success')
-    })
-  }
-
+  const onSubmit = async (data) => {
+    try {
+      await settingsHTTPService.editDashboardSettings(dashboardSettings.id, data);
+      showMessage('Confirmation', CurrentUser.SETTINGS_UPDATE_MSG, 'success');
+      getDashboardSettings(); // Refresh UI after save
+    } catch (error) {
+      console.error('Error updating dashboard settings:', error);
+      showMessage('Error', 'Failed to update dashboard settings', 'danger');
+    }
+  };
 
   return (
     <div className="EditDashboardSettings">
       <form onSubmit={handleSubmit(onSubmit)}>
-
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Show Summary</label>
-          <div class="col-8">
-            <select onChange={handleInputChange} value={dashboardSettings?.showSummary} ref={register({ required: true })}
-              id="select2" name="showSummary" class="custom-select">
-
+        {/* Show Summary */}
+        <div className="form-group row">
+          <label htmlFor="showSummary" className="col-4 col-form-label">
+            Show Summary
+          </label>
+          <div className="col-8">
+            <select
+              {...register('showSummary', { required: 'This field is required' })}
+              id="showSummary"
+              name="showSummary"
+              className="custom-select"
+            >
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
+            {errors.showSummary && <p className="text-danger">{errors.showSummary.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Show Calendar</label>
-          <div class="col-8">
-            <select onChange={handleInputChange} value={dashboardSettings?.showCalendar} ref={register({ required: true })}
-              id="select2" name="showCalendar" class="custom-select">
-
+        {/* Show Calendar */}
+        <div className="form-group row">
+          <label htmlFor="showCalendar" className="col-4 col-form-label">
+            Show Calendar
+          </label>
+          <div className="col-8">
+            <select
+              {...register('showCalendar', { required: 'This field is required' })}
+              id="showCalendar"
+              name="showCalendar"
+              className="custom-select"
+            >
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
+            {errors.showCalendar && <p className="text-danger">{errors.showCalendar.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Show Charts</label>
-          <div class="col-8">
-            <select onChange={handleInputChange} value={dashboardSettings?.showExpenseIncomeCharts} ref={register({ required: true })}
-              id="select2" name="showExpenseIncomeCharts" class="custom-select">
-
+        {/* Show Charts */}
+        <div className="form-group row">
+          <label htmlFor="showExpenseIncomeCharts" className="col-4 col-form-label">
+            Show Charts
+          </label>
+          <div className="col-8">
+            <select
+              {...register('showExpenseIncomeCharts', { required: 'This field is required' })}
+              id="showExpenseIncomeCharts"
+              name="showExpenseIncomeCharts"
+              className="custom-select"
+            >
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
+            {errors.showExpenseIncomeCharts && (
+              <p className="text-danger">{errors.showExpenseIncomeCharts.message}</p>
+            )}
           </div>
         </div>
 
-        <div class="form-group row">
-          <div class="offset-4 col-8">
-            <button name="submit" type="submit" class="btn btn-primary"><i class="far fa-save"></i>
-              Save</button>
+        {/* Submit Button */}
+        <div className="form-group row">
+          <div className="offset-4 col-8">
+            <button type="submit" className="btn btn-primary">
+              <i className="far fa-save"></i> Save
+            </button>
           </div>
         </div>
-
-
       </form>
     </div>
-  )
+  );
 };
-
-EditDashboardSettings.propTypes = {};
-
-EditDashboardSettings.defaultProps = {};
 
 export default EditDashboardSettings;

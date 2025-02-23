@@ -124,8 +124,6 @@ const ConfigurationModules = () => (
   </div>
 );
 
-ConfigurationModules.propTypes = {};
 
-ConfigurationModules.defaultProps = {};
 
 export default ConfigurationModules;

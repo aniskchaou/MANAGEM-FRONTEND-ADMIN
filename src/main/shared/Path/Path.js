@@ -14,8 +14,6 @@ const Path = () => (
     </nav></div>
 );
 
-Path.propTypes = {};
 
-Path.defaultProps = {};
 
 export default Path;

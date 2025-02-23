@@ -8,8 +8,6 @@ const TaskGantt = () => (
   </div>
 );
 
-TaskGantt.propTypes = {};
 
-TaskGantt.defaultProps = {};
 
 export default TaskGantt;

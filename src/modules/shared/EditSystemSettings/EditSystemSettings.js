@@ -7,94 +7,151 @@ import React, { useEffect, useState } from 'react';
 import CurrentUser from '../../../main/config/user';
 
 const EditSystemSettings = () => {
-  const { register, handleSubmit, errors } = useForm()
-  const [systemSettings, setSystemSettings] = useState();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
+
+  const [systemSettings, setSystemSettings] = useState({
+    appName: '',
+    showLogo: '',
+    email: '',
+    address: '',
+    entrepriseName: '',
+  });
 
   useEffect(() => {
-    getSystemSettings()
-  }, [])
+    getSystemSettings();
+  }, []);
 
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setSystemSettings({ ...systemSettings, [name]: value });
+  const getSystemSettings = async () => {
+    try {
+      const { data } = await settingsHTTPService.getSystemSettings();
+      if (data.length > 0) {
+        const settings = data[0];
+        setSystemSettings(settings);
+
+        // Populate form with existing settings
+        Object.keys(settings).forEach((key) => setValue(key, settings[key]));
+      }
+    } catch (error) {
+      console.error('Error fetching system settings:', error);
+    }
   };
 
-  const getSystemSettings = () => {
-    settingsHTTPService.getSystemSettings().then(data => {
-      setSystemSettings(data.data[0])
-      console.log(data.data[0])
-    })
-  }
+  const onSubmit = async (data) => {
+    try {
+      await settingsHTTPService.editSystemSettings(systemSettings.id, data);
+      showMessage('Confirmation', CurrentUser.SETTINGS_UPDATE_MSG, 'success');
+    } catch (error) {
+      console.error('Error updating settings:', error);
+      showMessage('Error', 'Failed to update settings', 'danger');
+    }
+  };
 
-  const onSubmit = (data) => {
-
-    settingsHTTPService.editSystemSettings(systemSettings.id, data).then(data => {
-
-      showMessage('Confirmation', CurrentUser.SETTINGS_UPDATE_MSG, 'success')
-    })
-  }
   return (
     <div className="EditDashboardSettings">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Application Name</label>
-          <div class="col-8">
-            <input onChange={handleInputChange} value={systemSettings?.appName} ref={register({ required: true })}
-              id="text" name="appName" type="text" class="form-control" />
+        {/* Application Name */}
+        <div className="form-group row">
+          <label htmlFor="appName" className="col-4 col-form-label">
+            Application Name
+          </label>
+          <div className="col-8">
+            <input
+              {...register('appName', { required: 'Application name is required' })}
+              id="appName"
+              name="appName"
+              type="text"
+              className="form-control"
+            />
+            {errors.appName && <p className="text-danger">{errors.appName.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Show Logo</label>
-          <div class="col-8">
-            <select onChange={handleInputChange} value={systemSettings?.showLogo} ref={register({ required: true })}
-              id="select2" name="showLogo" class="custom-select">
-
+        {/* Show Logo */}
+        <div className="form-group row">
+          <label htmlFor="showLogo" className="col-4 col-form-label">
+            Show Logo
+          </label>
+          <div className="col-8">
+            <select
+              {...register('showLogo', { required: 'Please select an option' })}
+              id="showLogo"
+              name="showLogo"
+              className="custom-select"
+            >
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
+            {errors.showLogo && <p className="text-danger">{errors.showLogo.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Email</label>
-          <div class="col-8">
-            <input onChange={handleInputChange} value={systemSettings?.email} ref={register({ required: true })}
-              id="text" name="email" type="text" class="form-control" />
+        {/* Email */}
+        <div className="form-group row">
+          <label htmlFor="email" className="col-4 col-form-label">
+            Email
+          </label>
+          <div className="col-8">
+            <input
+              {...register('email', { required: 'Email is required' })}
+              id="email"
+              name="email"
+              type="email"
+              className="form-control"
+            />
+            {errors.email && <p className="text-danger">{errors.email.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Address</label>
-          <div class="col-8">
-            <input onChange={handleInputChange} value={systemSettings?.address} ref={register({ required: true })}
-              id="text" name="address" type="text" class="form-control" />
+        {/* Address */}
+        <div className="form-group row">
+          <label htmlFor="address" className="col-4 col-form-label">
+            Address
+          </label>
+          <div className="col-8">
+            <input
+              {...register('address', { required: 'Address is required' })}
+              id="address"
+              name="address"
+              type="text"
+              className="form-control"
+            />
+            {errors.address && <p className="text-danger">{errors.address.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Entreprise Name</label>
-          <div class="col-8">
-            <input onChange={handleInputChange} value={systemSettings?.entrepriseName} ref={register({ required: true })}
-              id="text" name="entrepriseName" type="text" class="form-control" />
+        {/* Entreprise Name */}
+        <div className="form-group row">
+          <label htmlFor="entrepriseName" className="col-4 col-form-label">
+            Enterprise Name
+          </label>
+          <div className="col-8">
+            <input
+              {...register('entrepriseName', { required: 'Enterprise name is required' })}
+              id="entrepriseName"
+              name="entrepriseName"
+              type="text"
+              className="form-control"
+            />
+            {errors.entrepriseName && <p className="text-danger">{errors.entrepriseName.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <div class="offset-4 col-8">
-            <button name="submit" type="submit" class="btn btn-primary"><i class="far fa-save"></i>
-              Save</button>
+        {/* Submit Button */}
+        <div className="form-group row">
+          <div className="offset-4 col-8">
+            <button type="submit" className="btn btn-primary">
+              <i className="far fa-save"></i> Save
+            </button>
           </div>
         </div>
-
-
       </form>
     </div>
-  )
-}
-
-EditSystemSettings.propTypes = {};
-
-EditSystemSettings.defaultProps = {};
+  );
+};
 
 export default EditSystemSettings;

@@ -40,8 +40,6 @@ const Footer = ({ connected }) => {
   )
 };
 
-Footer.propTypes = {};
 
-Footer.defaultProps = {};
 
 export default Footer;

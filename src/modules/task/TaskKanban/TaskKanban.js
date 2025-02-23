@@ -8,8 +8,6 @@ const TaskKanban = () => (
   </div>
 );
 
-TaskKanban.propTypes = {};
 
-TaskKanban.defaultProps = {};
 
 export default TaskKanban;

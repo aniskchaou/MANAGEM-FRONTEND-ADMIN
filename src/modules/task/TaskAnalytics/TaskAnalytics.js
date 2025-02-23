@@ -71,8 +71,6 @@ const TaskAnalytics = () => {
   )
 };
 
-TaskAnalytics.propTypes = {};
 
-TaskAnalytics.defaultProps = {};
 
 export default TaskAnalytics;

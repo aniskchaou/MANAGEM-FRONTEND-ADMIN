@@ -8,8 +8,6 @@ const ViewMyTask = () => (
   </div>
 );
 
-ViewMyTask.propTypes = {};
 
-ViewMyTask.defaultProps = {};
 
 export default ViewMyTask;

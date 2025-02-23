@@ -25,7 +25,7 @@ import TaskInProgress from '../../../modules/task/TaskInProgress/TaskInProgress'
 import DashboardSummary from '../../../modules/shared/DashboardSummary/DashboardSummary';
 import clientHTTPService from '../../../main/services/clientHTTPService';
 import userHTTPService from '../../../main/services/userHTTPService';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import settingsHTTPService from '../../../main/services/settingsHTTPService';
 //import faker from 'faker';
 
@@ -109,7 +109,7 @@ const DashBoard = () => {
   const [inprogresstask, setInprogresstask] = useState(0);
   const [completed, setCompleted] = useState(0);
   const [inreview, setInreview] = useState(0);
-  let history = useHistory()
+  let history = useNavigate()
 
 
   useEffect(() => {
@@ -304,8 +304,6 @@ const DashBoard = () => {
   )
 };
 
-DashBoard.propTypes = {};
 
-DashBoard.defaultProps = {};
 
 export default DashBoard;

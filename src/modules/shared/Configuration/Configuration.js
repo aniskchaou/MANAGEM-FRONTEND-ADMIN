@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Configuration.css';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import settingsHTTPService from '../../../main/services/settingsHTTPService';
 import { data } from '../DashBoard/DashBoard';
 import useForceUpdate from 'use-force-update';
@@ -21,7 +21,7 @@ const Configuration = () => {
   const [emailSettings, setEmailSettings] = useState({})
   const [emailTemplateSettings, setemailTemplateSettings] = useState({})
   const [notificationSettings, setNotificationSettings] = useState({})
-  const history = useHistory()
+  const history = useNavigate()
   const forceUpdate = useForceUpdate();
 
 
@@ -449,8 +449,6 @@ const Configuration = () => {
   )
 }
 
-Configuration.propTypes = {};
 
-Configuration.defaultProps = {};
 
 export default Configuration;

@@ -9,7 +9,7 @@ const MyTaskSummary = () => {
   const [inreview, setInreview] = useState(0);
 
   useEffect(() => {
-    mytaskHTTPService.getTodo().then(data => {
+   /* mytaskHTTPService.getTodo().then(data => {
       setTodo(data.data.todo)
     })
     mytaskHTTPService.getInprogress().then(data => {
@@ -20,7 +20,7 @@ const MyTaskSummary = () => {
     })
     mytaskHTTPService.getinreview().then(data => {
       setInreview(data.data.inreview)
-    })
+    })*/
   }, []);
 
   return (
@@ -111,8 +111,6 @@ const MyTaskSummary = () => {
 
 };
 
-MyTaskSummary.propTypes = {};
 
-MyTaskSummary.defaultProps = {};
 
 export default MyTaskSummary;

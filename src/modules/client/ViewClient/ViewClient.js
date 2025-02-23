@@ -35,8 +35,6 @@ const ViewClient = () => (
   </div>
 );
 
-ViewClient.propTypes = {};
 
-ViewClient.defaultProps = {};
 
 export default ViewClient;

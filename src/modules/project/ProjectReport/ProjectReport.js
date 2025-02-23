@@ -66,8 +66,6 @@ const ProjectReport = () => {
   )
 };
 
-ProjectReport.propTypes = {};
 
-ProjectReport.defaultProps = {};
 
 export default ProjectReport;
