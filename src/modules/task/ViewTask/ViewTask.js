@@ -37,8 +37,6 @@ const ViewTask = () => (
   </div>
 );
 
-ViewTask.propTypes = {};
 
-ViewTask.defaultProps = {};
 
 export default ViewTask;

@@ -210,8 +210,6 @@ const Message = () => {
   )
 };
 
-Message.propTypes = {};
 
-Message.defaultProps = {};
 
 export default Message;

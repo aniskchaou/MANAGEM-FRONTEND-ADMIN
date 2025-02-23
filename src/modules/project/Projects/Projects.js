@@ -189,7 +189,7 @@ const Projects = () => {
                 </button>
               </div>
               <div class="modal-body">
-                <AddProject closeModal={closeModalAdd} />
+               <AddProject closeModal={closeModalAdd} />
               </div>
               <div class="modal-footer">
                 <button ref={closeButtonAdd} onClick={resfresh} type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -210,7 +210,7 @@ const Projects = () => {
                 </button>
               </div>
               <div class="modal-body">
-                <EditProject project={updatedItem} closeModal={closeModalEdit} />
+               <EditProject project={updatedItem} closeModal={closeModalEdit} />
               </div>
               <div class="modal-footer">
                 <button onClick={resfresh} ref={closeButtonEdit} type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -227,8 +227,6 @@ const Projects = () => {
   )
 };
 
-Projects.propTypes = {};
 
-Projects.defaultProps = {};
 
 export default Projects;

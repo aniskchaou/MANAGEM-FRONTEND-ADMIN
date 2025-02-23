@@ -8,8 +8,5 @@ const ViewUser = () => (
   </div>
 );
 
-ViewUser.propTypes = {};
-
-ViewUser.defaultProps = {};
 
 export default ViewUser;

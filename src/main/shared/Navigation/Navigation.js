@@ -130,8 +130,6 @@ const Navigation = ({ connected }) => {
 
 
 
-Navigation.propTypes = {};
 
-Navigation.defaultProps = {};
 
 export default Navigation;

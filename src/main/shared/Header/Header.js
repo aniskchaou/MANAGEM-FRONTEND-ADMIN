@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './Header.css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import User from '../../../modules/user/User/User';
 import CurrentUser from '../../config/user';
 import { LoadJS } from '../../../libraries/datatables/datatables';
@@ -9,7 +9,7 @@ import settingsHTTPService from '../../services/settingsHTTPService';
 
 const Header = ({ connected, handleClick }) => {
 
-    let history = useHistory()
+    let history = useNavigate()
     const [headerSettings, setHeaderSettings] = useState({});
     const initialState = {
         input: '',
@@ -109,8 +109,6 @@ const Header = ({ connected, handleClick }) => {
         </div>
     );
 }
-Header.propTypes = {};
 
-Header.defaultProps = {};
 
 export default Header;

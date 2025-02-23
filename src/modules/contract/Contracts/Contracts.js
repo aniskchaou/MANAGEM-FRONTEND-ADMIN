@@ -183,8 +183,6 @@ const Contracts = () => {
   )
 };
 
-Contracts.propTypes = {};
 
-Contracts.defaultProps = {};
 
 export default Contracts;

@@ -1,155 +1,180 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
 import './EditProject.css';
 import projectHTTPService from '../../../main/services/projectHTTPService';
-import projectMessage from '../../../main/messages/projectMessage';
-import showMessage from '../../../libraries/messages/messages';
-import { useForm } from 'react-hook-form';
 import clientHTTPService from '../../../main/services/clientHTTPService';
 import userHTTPService from '../../../main/services/userHTTPService';
+import projectMessage from '../../../main/messages/projectMessage';
+import showMessage from '../../../libraries/messages/messages';
 
-const EditProject = (props) => {
-
-  const { register, handleSubmit, errors } = useForm() // initialise the hook
-  const [project, setProject] = useState(props.project);
-  const [typeSubs, setTypeSubs] = useState([]);
-  const [members, setMembers] = useState([]);
+const EditProject = ({ project: initialProject, closeModal }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const [project, setProject] = useState(initialProject);
   const [clients, setClients] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setProject(props.project)
-    console.log(props.project)
-  }, [props.project]);
+    setProject(initialProject);
+    fetchClients();
+    fetchUsers();
+  }, [initialProject]);
 
-
-  const onSubmit = (data) => {
-    console.log(data)
-    projectHTTPService.editProject(props.project.id, data).then(data => {
-      props.closeModal()
-      showMessage('Confirmation', projectMessage.edit, 'success')
-
-    }).catch(e => {
-      console.log(e)
-    })
-
-  }
-
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setProject({ ...project, [name]: value });
+  const fetchClients = async () => {
+    setLoading(true);
+    try {
+      const { data } = await clientHTTPService.getAllClient();
+      setClients(data);
+    } catch (error) {
+      console.error('Error fetching clients:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => {
-    retrieveUsers()
-    retrieveClients()
-  }, []);
-
-  const retrieveClients = () => {
-    setLoading(true)
-    clientHTTPService.getAllClient().then(data => {
-      setLoading(false)
-      setClients(data.data)
-
-    });
-    ;
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const { data } = await userHTTPService.getAllUser();
+      setUsers(data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-
-  const retrieveUsers = () => {
-    setLoading(true)
-    userHTTPService.getAllUser()
-      .then(response => {
-        setUsers(response.data);
-        console.log(response.data)
-        setLoading(false)
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  const handleInputChange = (e) => {
+    setProject({ ...project, [e.target.name]: e.target.value });
   };
 
-
-
-
+  const onSubmit = async (data) => {
+    try {
+      await projectHTTPService.editProject(project.id, data);
+      showMessage('Confirmation', projectMessage.edit, 'success');
+      closeModal();
+    } catch (error) {
+      console.error('Error updating project:', error);
+    }
+  };
 
   return (
     <div className="EditProject">
-      <form class="" onSubmit={handleSubmit(onSubmit)}>
-
-        <div class="form-group">
-          <label>Title<span class="text-danger">*</span></label>
-          <input type="text" name="title" class="form-control" onChange={handleInputChange} value={project.title} ref={register({ required: true })} />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-group">
+          <label>Title<span className="text-danger">*</span></label>
+          <input
+            type="text"
+            name="title"
+            className="form-control"
+            {...register('title', { required: true })}
+            value={project.title}
+            onChange={handleInputChange}
+          />
+          {errors.title && <div className="error text-danger">Title is required</div>}
         </div>
 
-        <div class="form-group">
-          <label>Short description<span class="text-danger">*</span></label>
-          <textarea type="text" name="description" class="form-control" onChange={handleInputChange} value={project.description} ref={register({ required: true })}></textarea>
+        <div className="form-group">
+          <label>Short Description<span className="text-danger">*</span></label>
+          <textarea
+            name="description"
+            className="form-control"
+            {...register('description', { required: true })}
+            value={project.description}
+            onChange={handleInputChange}
+          />
+          {errors.description && <div className="error text-danger">Description is required</div>}
         </div>
 
-        <div class="form-group">
-          <label>Start<span class="text-danger">*</span></label>
-          <input type="date" name="starting_date" class="form-control datepicker" onChange={handleInputChange} value={project.starting_date} ref={register({ required: true })} />
+        <div className="form-group">
+          <label>Start Date<span className="text-danger">*</span></label>
+          <input
+            type="date"
+            name="starting_date"
+            className="form-control"
+            {...register('starting_date', { required: true })}
+            value={project.starting_date}
+            onChange={handleInputChange}
+          />
+          {errors.starting_date && <div className="error text-danger">Start date is required</div>}
         </div>
 
-        <div class="form-group">
-          <label>End<span class="text-danger">*</span></label>
-          <input type="date" name="ending_date" class="form-control datepicker" onChange={handleInputChange} value={project.ending_date} ref={register({ required: true })} />
+        <div className="form-group">
+          <label>End Date<span className="text-danger">*</span></label>
+          <input
+            type="date"
+            name="ending_date"
+            className="form-control"
+            {...register('ending_date', { required: true })}
+            value={project.ending_date}
+            onChange={handleInputChange}
+          />
+          {errors.ending_date && <div className="error text-danger">End date is required</div>}
         </div>
 
-        <div class="form-group">
-          <label>Status<span class="text-danger">*</span></label>
-          <select name="status" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
-            onChange={handleInputChange} value={project.title} ref={register({ required: true })}>
+        <div className="form-group">
+          <label>Status<span className="text-danger">*</span></label>
+          <select
+            name="status"
+            className="form-control"
+            {...register('status', { required: true })}
+            value={project.status}
+            onChange={handleInputChange}
+          >
             <option value="Todo">ToDo</option>
             <option value="In Progress">In Progress</option>
             <option value="Done">Done</option>
             <option value="Blocked">Blocked</option>
           </select>
+          {errors.status && <div className="error text-danger">Status is required</div>}
         </div>
 
-        <div class="form-group">
-          <label>User </label>
-
-
-          <select name="users" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
+        <div className="form-group">
+          <label>User</label>
+          <select
+            name="users"
+            className="form-control"
+            {...register('users', { required: true })}
+            value={project.users}
             onChange={handleInputChange}
-            value={project.users} ref={register({ required: true })}>
-            {
-              users.map(item =>
-                <option value={item.username}>{item.name}</option>
-
-              )
-            }
+          >
+            {users.map((item) => (
+              <option key={item.id} value={item.username}>{item.name}</option>
+            ))}
           </select>
+          {errors.users && <div className="error text-danger">User is required</div>}
         </div>
 
-
-        <div class="form-group">
+        <div className="form-group">
           <label>Client</label>
-          <select name="client" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
-            onChange={handleInputChange} value={project.client} ref={register({ required: true })}>
-            {
-              clients.map(item =>
-                <option value={item.first_name + ' ' + item.last_name}>{item.first_name + ' ' + item.last_name}</option>
-
-              )
-            }
+          <select
+            name="client"
+            className="form-control"
+            {...register('client', { required: true })}
+            value={project.client}
+            onChange={handleInputChange}
+          >
+            {clients.map((item) => (
+              <option key={item.id} value={`${item.first_name} ${item.last_name}`}>
+                {item.first_name} {item.last_name}
+              </option>
+            ))}
           </select>
+          {errors.client && <div className="error text-danger">Client is required</div>}
         </div>
 
-
-        <button name="submit" type="submit" class="btn btn-primary"><i class="far fa-save"></i>
-          Save</button>
+        <button type="submit" className="btn btn-primary">
+          <i className="far fa-save"></i> Save
+        </button>
       </form>
     </div>
-  )
-
+  );
 };
 
-EditProject.propTypes = {};
-
-EditProject.defaultProps = {};
+EditProject.propTypes = {
+  project: PropTypes.object.isRequired,
+  closeModal: PropTypes.func.isRequired,
+};
 
 export default EditProject;

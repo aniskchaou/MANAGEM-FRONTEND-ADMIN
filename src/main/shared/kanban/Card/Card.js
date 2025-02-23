@@ -1,51 +1,36 @@
 import React from 'react';
-import { DragSource, DropTarget } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 import cn from 'classnames';
 import _ from 'lodash';
-import './Card.css'
-export function Card(props) {
-  return _.flowRight(props.connectDragSource, props.connectDropTarget)(
+import './Card.css';
+
+export function Card({ id, title, columnId, columnIndex, moveCard, isSpacer }) {
+  const [{ isDragging }, dragRef] = useDrag({
+    type: 'Card',
+    item: { id },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const [, dropRef] = useDrop({
+    accept: 'Card',
+    hover: (draggedItem) => {
+      if (draggedItem.id !== id) {
+        moveCard(draggedItem.id, columnId, columnIndex);
+      }
+    },
+  });
+
+  return (
     <div
+      ref={(node) => dragRef(dropRef(node))} // Combine drag and drop refs
       className={cn('Card', {
-        'Card--dragging': props.isDragging,
-        'Card--spacer': props.isSpacer,
+        'Card--dragging': isDragging,
+        'Card--spacer': isSpacer,
       })}
     >
-      <div className="Card__title">{props.title}</div>
+      <div className="Card__title">{title}</div>
     </div>
   );
 }
-
-export const DraggableCard = _.flowRight([
-  DropTarget(
-    'Card',
-    {
-      hover(props, monitor) {
-        const { columnId, columnIndex } = props;
-        const draggingItem = monitor.getItem();
-        if (draggingItem.id !== props.id) {
-          props.moveCard(draggingItem.id, columnId, columnIndex);
-        }
-      },
-    },
-    connect => ({
-      connectDropTarget: connect.dropTarget(),
-    })
-  ),
-  DragSource(
-    'Card',
-    {
-      beginDrag(props) {
-        return { id: props.id };
-      },
-
-      isDragging(props, monitor) {
-        return props.id === monitor.getItem().id;
-      },
-    },
-    (connect, monitor) => ({
-      connectDragSource: connect.dragSource(),
-      isDragging: monitor.isDragging(),
-    })
-  ),
-])(Card);

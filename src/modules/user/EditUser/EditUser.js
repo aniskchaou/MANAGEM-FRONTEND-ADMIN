@@ -48,8 +48,6 @@ const EditUser = () => (
   </div>
 );
 
-EditUser.propTypes = {};
-
-EditUser.defaultProps = {};
+;
 
 export default EditUser;

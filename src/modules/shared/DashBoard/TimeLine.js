@@ -111,8 +111,6 @@ const ProjectTimeLine = () => {
   )
 };
 
-ProjectTimeLine.propTypes = {};
 
-ProjectTimeLine.defaultProps = {};
 
 export default ProjectTimeLine;

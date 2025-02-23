@@ -1,123 +1,154 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import './EditContract.css';
-import contractHTTPService from '../../../main/services/contractHTTPService';
-
 import { useForm } from 'react-hook-form';
+import contractHTTPService from '../../../main/services/contractHTTPService';
+import projectHTTPService from '../../../main/services/projectHTTPService';
 import showMessage from '../../../libraries/messages/messages';
 
-const EditContract = (props) => {
+const EditContract = ({ contract, closeModal }) => {
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
-  const { register, handleSubmit, errors } = useForm() // initialise the hook
-  const [contract, setContract] = useState(props.contract);
-  const [typeSubs, setTypeSubs] = useState([]);
-  const [members, setMembers] = useState([]);
+  const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    setContract(props.contract)
+    retrieveProjects();
+  }, []);
 
-  }, [props.contract]);
+  useEffect(() => {
+    if (contract) {
+      Object.keys(contract).forEach(key => {
+        setValue(key, contract[key]);
+      });
+    }
+  }, [contract, setValue]);
 
-
-  const onSubmit = (data) => {
-    console.log(data)
-    contractHTTPService.editContract(props.contract.id, data).then(data => {
-      props.closeModal()
-      showMessage('Confirmation', "contractMessage.edit", 'success')
-    }).catch(e => {
-      console.log(e)
-    })
-
-  }
-
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setContract({ ...contract, [name]: value });
+  const retrieveProjects = async () => {
+    try {
+      const response = await projectHTTPService.getAllProject();
+      setProjects(response.data || []);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
   };
 
-
+  const onSubmit = async (data) => {
+    try {
+      await contractHTTPService.editContract(contract.id, data);
+      showMessage('Confirmation', 'Contract updated successfully', 'success');
+      closeModal();
+    } catch (error) {
+      console.error('Error updating contract:', error);
+      showMessage('Error', 'Failed to update contract', 'danger');
+    }
+  };
 
   return (
     <div className="EditContract">
-      <form class="" onSubmit={handleSubmit(onSubmit)}>
-        <div class="row">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="row">
+          <div className="form-group col-md-12">
 
-          <div class="form-group col-md-12">
+            <label>Title <span className="text-danger">*</span></label>
+            <input
+              type="text"
+              className="form-control"
+              {...register('title', { required: 'Title is required' })}
+            />
+            {errors.title && <p className="text-danger">{errors.title.message}</p>}
 
-            <label>Title<span class="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange} value={contract.title}
-              type="text" name="title" class="form-control" />
-            <label>Date<span class="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange} value={contract.date}
-              type="date" name="date" class="form-control" />
+            <label>Date <span className="text-danger">*</span></label>
+            <input
+              type="date"
+              className="form-control"
+              {...register('date', { required: 'Date is required' })}
+            />
+            {errors.date && <p className="text-danger">{errors.date.message}</p>}
 
+            <label>Client</label>
+            <select className="form-control" {...register('client')}>
+              <option value="Mike Dean">Mike Dean</option>
+              <option value="John Doe">John Doe</option>
+            </select>
 
-            <div class="form-group">
-              <label>Client</label>
-              <select ref={register({ required: true })} onChange={handleInputChange} value={contract.client}
-                name="client" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow"
-              >
-                <option value="Mike Dean">Mike Dean</option>
-                <option value="John Doe">John Doe</option>
-              </select>
+            <label>Project <span className="text-danger">*</span></label>
+            <select
+              className="form-control"
+              {...register('project', { required: 'Project selection is required' })}
+            >
+              <option value="">Select a project</option>
+              {projects.map((project) => (
+                <option key={project.id} value={project.name}>
+                  {project.name}
+                </option>
+              ))}
+            </select>
+            {errors.project && <p className="text-danger">{errors.project.message}</p>}
 
-            </div>
+            <label>Company <span className="text-danger">*</span></label>
+            <input
+              type="text"
+              className="form-control"
+              {...register('company', { required: 'Company name is required' })}
+            />
+            {errors.company && <p className="text-danger">{errors.company.message}</p>}
 
+            <label>Value <span className="text-danger">*</span></label>
+            <input
+              type="number"
+              className="form-control"
+              {...register('contractValue', { required: 'Contract value is required' })}
+            />
+            {errors.contractValue && <p className="text-danger">{errors.contractValue.message}</p>}
 
+            <label>Contract Type <span className="text-danger">*</span></label>
+            <input
+              type="text"
+              className="form-control"
+              {...register('contractType', { required: 'Contract type is required' })}
+            />
+            {errors.contractType && <p className="text-danger">{errors.contractType.message}</p>}
 
-            <div className="form-group">
-              <label>Project<span className="text-danger">*</span></label>
-              <select ref={register({ required: true })} onChange={handleInputChange}
-                value={contract.project} name="project" id="project"
-                class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow" tabIndex="-1" aria-hidden="true">
+            <label>Website <span className="text-danger">*</span></label>
+            <input
+              type="text"
+              className="form-control"
+              {...register('website', { required: 'Website is required' })}
+            />
+            {errors.website && <p className="text-danger">{errors.website.message}</p>}
 
-                <option value="Projet 1">Project</option>
-              </select>
-            </div>
+            <label>Start Date <span className="text-danger">*</span></label>
+            <input
+              type="date"
+              className="form-control"
+              {...register('startDate', { required: 'Start date is required' })}
+            />
+            {errors.startDate && <p className="text-danger">{errors.startDate.message}</p>}
 
-            <label>Company<span class="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange} value={contract.company}
-              type="text" name="company" class="form-control" />
+            <label>End Date <span className="text-danger">*</span></label>
+            <input
+              type="date"
+              className="form-control"
+              {...register('endDate', { required: 'End date is required' })}
+            />
+            {errors.endDate && <p className="text-danger">{errors.endDate.message}</p>}
 
-            <label>Value<span class="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange} value={contract.contractValue}
-              type="number" name="contractValue" class="form-control" />
-
-
-            <label>Type<span class="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange} value={contract.contractType}
-              type="text" name="contractType" class="form-control" />
-
-            <label>Website<span class="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange} value={contract.website}
-              type="text" name="website" class="form-control" />
-
-            <label>Start<span class="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange} value={contract.startDate}
-              type="date" name="startDate" class="form-control" />
-
-
-            <label>End<span class="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange} value={contract.endDate}
-              type="date" name="endDate" class="form-control" />
-
-            <label>Description<span class="text-danger">*</span></label>
-            <textarea ref={register({ required: true })} onChange={handleInputChange} value={contract.description}
-              type="text" name="description" class="form-control" ></textarea>
+            <label>Description <span className="text-danger">*</span></label>
+            <textarea
+              className="form-control"
+              {...register('description', { required: 'Description is required' })}
+            ></textarea>
+            {errors.description && <p className="text-danger">{errors.description.message}</p>}
 
           </div>
-
         </div>
-        <button type="submit" id="save-form" className="btn btn-success">
-          <i className="fa fa-check"></i>
-          <font   ><font   > Save</font></font></button>
+
+        <button type="submit" className="btn btn-success">
+          <i className="fa fa-check"></i> Save
+        </button>
       </form>
     </div>
-  )
+  );
 };
-
-EditContract.propTypes = {};
-
-EditContract.defaultProps = {};
 
 export default EditContract;

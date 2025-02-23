@@ -227,8 +227,6 @@ const Tasks = () => {
   )
 };
 
-Tasks.propTypes = {};
 
-Tasks.defaultProps = {};
 
 export default Tasks;

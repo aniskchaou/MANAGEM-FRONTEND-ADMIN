@@ -4,8 +4,10 @@ import './ProjectCalendar.css';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 
-import "@fullcalendar/core/main.css";
-import "@fullcalendar/daygrid/main.css";
+//import '@fullcalendar/react/dist/vdom';
+//import '@fullcalendar/common/main.css';
+//import '@fullcalendar/daygrid/main.css';
+
 import { NavLink } from 'react-router-dom';
 import projectHTTPService from '../../../main/services/projectHTTPService';
 const ProjectCalendar = () => {
@@ -54,18 +56,11 @@ const ProjectCalendar = () => {
             <NavLink class="dropdown-item" to="/timeline" >Gantt view</NavLink>
           </div>
         </div>
-        <FullCalendar
-          defaultView="dayGridMonth"
-          plugins={[dayGridPlugin]}
-          events={events}
-        />
       </div>
     </div>
   );
 };
 
-ProjectCalendar.propTypes = {};
 
-ProjectCalendar.defaultProps = {};
 
 export default ProjectCalendar;

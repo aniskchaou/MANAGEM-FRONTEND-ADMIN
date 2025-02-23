@@ -1,133 +1,123 @@
 import './AddUser.css';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import showMessage from '../../../libraries/messages/messages'
-import userMessage from '../../../main/messages/userMessage'
-import userValidation from '../../../main/validations/userValidation'
-import UserTestService from '../../../main/mocks/UserTestService';
-import HTTPService from '../../../main/services/userHTTPService';
+import showMessage from '../../../libraries/messages/messages';
+import userMessage from '../../../main/messages/userMessage';
+import userValidation from '../../../main/validations/userValidation';
 import userHTTPService from '../../../main/services/userHTTPService';
 
+const AddUser = ({ closeModal }) => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      firstname: '',
+      lastname: '',
+      email: '',
+      phone: '',
+      groups: '',
+    },
+  });
 
-const AddUser = (props) => {
-
-  const initialState = {
-    firstname: "",
-    lastname: "",
-    email: "",
-    phone: "",
-    password: "",
-    groups: ""
-  };
-
-  const { register, handleSubmit, errors } = useForm()
-  const [user, setUser] = useState(initialState);
   const closeButtonAdd = useRef(null);
 
+  const onSubmit = async (data) => {
+    try {
+      await userHTTPService.createUser(data);
+      showMessage('Confirmation', userMessage.add, 'success');
 
-  const closeModalAdd = (data) => {
+      // Reset form fields
+      setValue('firstname', '');
+      setValue('lastname', '');
+      setValue('email', '');
+      setValue('phone', '');
+      setValue('groups', '');
 
-    closeButtonAdd.current.click()
-  }
-
-  const onSubmit = (data) => {
-
-    userHTTPService.createUser(data).then(data => {
-
-      setUser(initialState)
-      showMessage('Confirmation', userMessage.add, 'success')
-      props.closeModal()
-    })
-
-  }
-
-  const saveUser = (data) => {
-
-    HTTPService.create(data)
-      .then(response => {
-        setUser(initialState)
-      })
-      .catch(e => {
-        console.log(e);
-      });
-
-  };
-
-
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setUser({ ...user, [name]: value });
+      // Close modal
+      closeModal();
+    } catch (error) {
+      console.error('Error adding user:', error);
+      showMessage('Error', 'Failed to add user', 'danger');
+    }
   };
 
   return (
     <div className="AddUser">
-      <form method="POST" className="" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="row">
-
+          {/* First Name */}
           <div className="form-group col-md-6">
-            <label>First name<span className="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange}
-              value={user.firstname} type="text" name="firstname" className="form-control" required="" />
-            <div className="error text-danger">
-              {errors.first_name && userValidation.first_name}
-            </div>
+            <label>First Name <span className="text-danger">*</span></label>
+            <input
+              {...register('firstname', { required: userValidation.first_name })}
+              type="text"
+              className="form-control"
+              placeholder="Enter first name"
+            />
+            {errors.firstname && <p className="text-danger">{errors.firstname.message}</p>}
           </div>
 
+          {/* Last Name */}
           <div className="form-group col-md-6">
-            <label>Last name<span className="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange}
-              value={user.lastname} type="text" name="lastname" className="form-control" />
-            <div className="error text-danger">
-              {errors.last_name && userValidation.last_name}
-            </div>
+            <label>Last Name <span className="text-danger">*</span></label>
+            <input
+              {...register('lastname', { required: userValidation.last_name })}
+              type="text"
+              className="form-control"
+              placeholder="Enter last name"
+            />
+            {errors.lastname && <p className="text-danger">{errors.lastname.message}</p>}
           </div>
 
+          {/* Email */}
           <div className="form-group col-md-6">
-            <label>Email<span className="text-danger">*</span></label>
-            <input ref={register({ required: true })} onChange={handleInputChange}
-              value={user.email} type="email" name="email" className="form-control" />
-            <div className="error text-danger">
-              {errors.email && userValidation.email}
-            </div>
+            <label>Email <span className="text-danger">*</span></label>
+            <input
+              {...register('email', { required: userValidation.email })}
+              type="email"
+              className="form-control"
+              placeholder="Enter email"
+            />
+            {errors.email && <p className="text-danger">{errors.email.message}</p>}
           </div>
 
+          {/* Phone Number */}
           <div className="form-group col-md-6">
-            <label>Telephone</label>
-            <input ref={register({ required: true })} onChange={handleInputChange}
-              value={user.phone} type="number" name="phone" className="form-control" />
-            <div className="error text-danger">
-              {errors.phone && userValidation.phone}
-            </div>
+            <label>Phone</label>
+            <input
+              {...register('phone', { required: userValidation.phone })}
+              type="tel"
+              className="form-control"
+              placeholder="Enter phone number"
+            />
+            {errors.phone && <p className="text-danger">{errors.phone.message}</p>}
           </div>
 
-
+          {/* Role Selection */}
           <div className="form-group col-md-6">
-            <label>Role<span className="text-danger">*</span></label>
-
-            <select ref={register({ required: true })} onChange={handleInputChange}
-              value={user.groups} name="role" className="form-control select2 select2-hidden-accessible"
-              tabindex="-1" aria-hidden="true">
+            <label>Role <span className="text-danger">*</span></label>
+            <select
+              {...register('groups', { required: userValidation.groups })}
+              className="form-control"
+            >
+              <option value="">Select Role</option>
               <option value="Admin">Admin</option>
               <option value="Member">Member</option>
             </select>
-            <div className="error text-danger">
-              {errors.groups && userValidation.groups}
-            </div>
+            {errors.groups && <p className="text-danger">{errors.groups.message}</p>}
           </div>
-
-
-
         </div>
 
-        <button type="submit" id="save-form" className="btn btn-success"><i className="fa fa-check"></i>
-          <font   ><font   > Save</font></font></button>
+        {/* Submit Button */}
+        <button type="submit" className="btn btn-success">
+          <i className="fa fa-check"></i> Save
+        </button>
       </form>
     </div>
-  )
+  );
 };
-
-AddUser.propTypes = {};
-
-AddUser.defaultProps = {};
 
 export default AddUser;

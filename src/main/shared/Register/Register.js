@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import CurrentUser from '../../config/user';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import userHTTPService from '../../services/userHTTPService';
 import showMessage from '../../../libraries/messages/messages';
@@ -9,7 +9,7 @@ import User from '../../config/user';
 
 const Register = ({ handleClick }) => {
 
-    let history = useHistory()
+    let history = useNavigate()
     var userInit = { username: "admin", password: "admin" }
     const { register, handleSubmit, errors } = useForm()
     const [user, setUser] = useState(userInit);
@@ -69,8 +69,6 @@ const Register = ({ handleClick }) => {
     )
 };
 
-Register.propTypes = {};
 
-Register.defaultProps = {};
 
 export default Register;

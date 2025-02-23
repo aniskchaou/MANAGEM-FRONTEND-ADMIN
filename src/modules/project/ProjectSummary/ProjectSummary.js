@@ -113,8 +113,6 @@ const ProjectSummary = () => {
   )
 };
 
-ProjectSummary.propTypes = {};
 
-ProjectSummary.defaultProps = {};
 
 export default ProjectSummary;

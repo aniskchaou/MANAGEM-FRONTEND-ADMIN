@@ -207,8 +207,6 @@ const Client = () => {
   )
 };
 
-Client.propTypes = {};
 
-Client.defaultProps = {};
 
 export default Client;

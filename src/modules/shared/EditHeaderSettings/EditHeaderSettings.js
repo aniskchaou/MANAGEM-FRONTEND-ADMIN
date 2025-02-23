@@ -7,74 +7,100 @@ import React, { useEffect, useState } from 'react';
 import CurrentUser from '../../../main/config/user';
 
 const EditHeaderSettings = () => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
-  const { register, handleSubmit, errors } = useForm()
-  const [headerSettings, setHeaderSettings] = useState();
+  const [headerSettings, setHeaderSettings] = useState({
+    enableSearchBar: '',
+    showLogo: '',
+  });
 
   useEffect(() => {
-    getHeaderSettings()
-  }, [])
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setHeaderSettings({ ...headerSettings, [name]: value });
+    getHeaderSettings();
+  }, []);
+
+  const getHeaderSettings = async () => {
+    try {
+      const { data } = await settingsHTTPService.getHeaderSettings();
+      if (data.length > 0) {
+        const settings = data[0];
+        setHeaderSettings(settings);
+
+        // Populate form fields with API data
+        Object.keys(settings).forEach((key) => setValue(key, settings[key]));
+      }
+    } catch (error) {
+      console.error('Error fetching header settings:', error);
+    }
   };
 
-  const getHeaderSettings = () => {
-    settingsHTTPService.getHeaderSettings().then(data => {
-      setHeaderSettings(data.data[0])
-
-    })
-  }
-
-  const onSubmit = (data) => {
-    settingsHTTPService.editHeaderSettings(headerSettings.id, data).then(data => {
-      showMessage('Confirmation', CurrentUser.SETTINGS_UPDATE_MSG, 'success')
-      getHeaderSettings()
-    })
-  }
-
+  const onSubmit = async (data) => {
+    try {
+      await settingsHTTPService.editHeaderSettings(headerSettings.id, data);
+      showMessage('Confirmation', CurrentUser.SETTINGS_UPDATE_MSG, 'success');
+      getHeaderSettings(); // Refresh UI after update
+    } catch (error) {
+      console.error('Error updating header settings:', error);
+      showMessage('Error', 'Failed to update header settings', 'danger');
+    }
+  };
 
   return (
     <div className="EditDashboardSettings">
       <form onSubmit={handleSubmit(onSubmit)}>
-
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Show search Bar</label>
-          <div class="col-8">
-            <select onChange={handleInputChange} value={headerSettings?.enbaleSearchBar} ref={register({ required: true })}
-              id="select2" name="enbaleSearchBar" class="custom-select">
-
+        {/* Show Search Bar */}
+        <div className="form-group row">
+          <label htmlFor="enableSearchBar" className="col-4 col-form-label">
+            Show Search Bar
+          </label>
+          <div className="col-8">
+            <select
+              {...register('enableSearchBar', { required: 'Please select an option' })}
+              id="enableSearchBar"
+              name="enableSearchBar"
+              className="custom-select"
+            >
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
+            {errors.enableSearchBar && <p className="text-danger">{errors.enableSearchBar.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Show logo</label>
-          <div class="col-8">
-            <select onChange={handleInputChange} value={headerSettings?.showLogo} ref={register({ required: true })}
-              id="select2" name="showLogo" class="custom-select">
-
+        {/* Show Logo */}
+        <div className="form-group row">
+          <label htmlFor="showLogo" className="col-4 col-form-label">
+            Show Logo
+          </label>
+          <div className="col-8">
+            <select
+              {...register('showLogo', { required: 'Please select an option' })}
+              id="showLogo"
+              name="showLogo"
+              className="custom-select"
+            >
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
+            {errors.showLogo && <p className="text-danger">{errors.showLogo.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <div class="offset-4 col-8">
-            <button name="submit" type="submit" class="btn btn-primary"><i class="far fa-save"></i>
-              Save</button>
+        {/* Submit Button */}
+        <div className="form-group row">
+          <div className="offset-4 col-8">
+            <button type="submit" className="btn btn-primary">
+              <i className="far fa-save"></i> Save
+            </button>
           </div>
         </div>
       </form>
     </div>
-  )
-}
-
-EditHeaderSettings.propTypes = {};
-
-EditHeaderSettings.defaultProps = {};
+  );
+};
 
 export default EditHeaderSettings;

@@ -137,8 +137,4 @@ const DashboardSummary = () => {
   )
 };
 
-DashboardSummary.propTypes = {};
-
-DashboardSummary.defaultProps = {};
-
 export default DashboardSummary;

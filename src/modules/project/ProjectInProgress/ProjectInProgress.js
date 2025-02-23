@@ -35,8 +35,6 @@ const ProjectInProgress = () => {
   )
 };
 
-ProjectInProgress.propTypes = {};
 
-ProjectInProgress.defaultProps = {};
 
 export default ProjectInProgress;

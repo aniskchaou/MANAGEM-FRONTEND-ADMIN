@@ -8,8 +8,6 @@ const ViewProject = () => (
   </div>
 );
 
-ViewProject.propTypes = {};
 
-ViewProject.defaultProps = {};
 
 export default ViewProject;

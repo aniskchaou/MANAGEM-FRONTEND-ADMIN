@@ -51,8 +51,6 @@ const TaskReport = () => {
   )
 };
 
-TaskReport.propTypes = {};
 
-TaskReport.defaultProps = {};
 
 export default TaskReport;

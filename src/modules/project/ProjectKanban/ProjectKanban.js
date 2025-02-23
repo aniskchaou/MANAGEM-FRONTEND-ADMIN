@@ -1,8 +1,8 @@
-import React, { Component, useRef } from 'react';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import React, { Component } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import _ from 'lodash';
-import { Board } from '../../../main/shared/kanban/Board/Board';
+import DraggableCard from '../../../main/shared/kanban/Board/Board'; // ❗ FIXED: No `Board` export
 import { NavLink } from 'react-router-dom';
 import projectHTTPService from '../../../main/services/projectHTTPService';
 
@@ -14,12 +14,6 @@ const initialCards = Array.from({ length: 9 }).map(() => ({
   title: `Card ${_cardId}`,
 }));
 
-const initcard = Array.from({ length: 9 }).map(() => ({
-  id: ++_cardId,
-  title: `jygkuy ${_cardId}`,
-}));
-
-
 const initialColumns = ['TODO', 'Doing', 'Done'].map((title, i) => ({
   id: _columnId++,
   title,
@@ -27,99 +21,55 @@ const initialColumns = ['TODO', 'Doing', 'Done'].map((title, i) => ({
 }));
 
 class ProjectKanban extends Component {
-
   state = {
     cards: initialCards,
     columns: initialColumns,
-
   };
 
-  componentWillMount() {
-    let projectList = []
+  componentDidMount() {
     projectHTTPService.getAllProject()
       .then(response => {
-
-        for (const item of response.data) {
-          let projectObject = {
-            id: item.title,
-            title: item.title,
-            status: item.status
-          }
-          projectList.push(projectObject)
-        }
-
-
-        console.log(projectList)
-        /*   this.setState({
-            cards: projectList,
-            columns: initialColumns
-  
-          }) */
-
-        const initcolumn = ['Todo', 'In Progress', 'Done', 'Blocked'].map((title, i) => ({
-          id: _columnId++,
-          title,
-          cardIds: projectList.filter(s => s.status == title).map(card => {
-
-            return card.id
-          }),
+        const projectList = response.data.map(item => ({
+          id: item.id,
+          title: item.title,
+          status: item.status
         }));
+
+        const initColumns = ['Todo', 'In Progress', 'Done', 'Blocked'].map(title => ({
+          id: ++_columnId,
+          title,
+          cardIds: projectList.filter(p => p.status === title).map(p => p.id)
+        }));
+
         this.setState({
           cards: projectList,
-          columns: initcolumn,
+          columns: initColumns
+        });
 
-        })
-        console.log(this.state.columns)
-      }).catch(e => {
-        console.log(e);
+      }).catch(error => {
+        console.error("Error fetching projects:", error);
       });
   }
 
-  constructor() {
-    super()
-    this.setState({
-      cards: initialCards,
-      columns: initialColumns,
-
-    })
-
-
-
-
-
-
-
-  }
-
-
-
-  addColumn = _title => {
-    const title = _title.trim();
+  addColumn = title => {
+    title = title.trim();
     if (!title) return;
 
-    const newColumn = {
-      id: ++_columnId,
-      title,
-      cardIds: [],
-    };
     this.setState(state => ({
-      columns: [...state.columns, newColumn],
+      columns: [...state.columns, { id: ++_columnId, title, cardIds: [] }]
     }));
   };
 
-  addCard = (columnId, _title) => {
-    const title = _title.trim();
+  addCard = (columnId, title) => {
+    title = title.trim();
     if (!title) return;
 
     const newCard = { id: ++_cardId, title };
     this.setState(state => ({
       cards: [...state.cards, newCard],
-      columns: state.columns.map(
-        column =>
-          column.id === columnId
-            ? { ...column, cardIds: [...column.cardIds, newCard.id] }
-            : column
-      ),
+      columns: state.columns.map(column =>
+        column.id === columnId ? { ...column, cardIds: [...column.cardIds, newCard.id] } : column
+      )
     }));
   };
 
@@ -128,50 +78,45 @@ class ProjectKanban extends Component {
       columns: state.columns.map(column => ({
         ...column,
         cardIds: _.flowRight(
-          // 2) If this is the destination column, insert the cardId.
-          ids =>
-            column.id === destColumnId
-              ? [...ids.slice(0, index), cardId, ...ids.slice(index)]
-              : ids,
-          // 1) Remove the cardId for all columns
+          ids => (column.id === destColumnId ? [...ids.slice(0, index), cardId, ...ids.slice(index)] : ids),
           ids => ids.filter(id => id !== cardId)
-        )(column.cardIds),
-      })),
+        )(column.cardIds)
+      }))
     }));
   };
 
   render() {
     return (
-      <div className="card">
-
-        <div className="card-header">
-          <h4><i class="menu-icon fa fa-folder"></i> Projects</h4>
-        </div>
-        <div className="card-body">
-
-          <div class="btn-group">
-            <button type="button" class="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i className="menu-icon fa fa-male"></i>  Switch to
-            </button>
-            <div class="dropdown-menu">
-              <NavLink class="dropdown-item" to="/projects">List view</NavLink>
-              <NavLink class="dropdown-item" to="/project-kanban">Kanban view</NavLink>
-              <NavLink class="dropdown-item" to="/calendar">Calendar view</NavLink>
-              <NavLink class="dropdown-item" to="/timeline" >Gantt view</NavLink>
-            </div>
+      <DndProvider backend={HTML5Backend}>
+        <div className="card">
+          <div className="card-header">
+            <h4><i className="menu-icon fa fa-folder"></i> Projects</h4>
           </div>
-          <Board
-            cards={this.state.cards}
-            columns={this.state.columns}
-            moveCard={this.moveCard}
-            addCard={this.addCard}
-            addColumn={this.addColumn}
-          />
+          <div className="card-body">
+            <div className="btn-group">
+              <button type="button" className="btn btn-danger btn-sm dropdown-toggle" data-toggle="dropdown">
+                <i className="menu-icon fa fa-male"></i> Switch to
+              </button>
+              <div className="dropdown-menu">
+                <NavLink className="dropdown-item" to="/projects">List view</NavLink>
+                <NavLink className="dropdown-item" to="/project-kanban">Kanban view</NavLink>
+                <NavLink className="dropdown-item" to="/calendar">Calendar view</NavLink>
+                <NavLink className="dropdown-item" to="/timeline">Gantt view</NavLink>
+              </div>
+            </div>
 
+            <DraggableCard
+              cards={this.state.cards}
+              columns={this.state.columns}
+              moveCard={this.moveCard}
+              addCard={this.addCard}
+              addColumn={this.addColumn}
+            />
+          </div>
         </div>
-      </div>
+      </DndProvider>
     );
   }
 }
 
-export default DragDropContext(HTML5Backend)(ProjectKanban);
+export default ProjectKanban;

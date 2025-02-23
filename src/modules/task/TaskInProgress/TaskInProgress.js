@@ -37,8 +37,6 @@ const TaskInProgress = () => {
 
 };
 
-TaskInProgress.propTypes = {};
 
-TaskInProgress.defaultProps = {};
 
 export default TaskInProgress;

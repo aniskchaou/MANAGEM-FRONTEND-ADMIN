@@ -194,8 +194,6 @@ const Teams = () => {
   )
 };
 
-Teams.propTypes = {};
 
-Teams.defaultProps = {};
 
 export default Teams;

@@ -29,8 +29,6 @@ const Profile = () => (
   </div>
 );
 
-Profile.propTypes = {};
 
-Profile.defaultProps = {};
 
 export default Profile;

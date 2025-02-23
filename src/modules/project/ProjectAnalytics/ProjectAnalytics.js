@@ -99,8 +99,6 @@ const ProjectAnalytics = () => {
   )
 };
 
-ProjectAnalytics.propTypes = {};
 
-ProjectAnalytics.defaultProps = {};
 
 export default ProjectAnalytics;

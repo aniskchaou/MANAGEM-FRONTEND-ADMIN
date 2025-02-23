@@ -11,7 +11,7 @@ import taskMessage from '../../../main/messages/taskMessage';
 import MyTaskTestService from '../../../main/mocks/MyTaskTestService';
 import HTTPService from '../../../main/services/HTTPService';
 import mytaskHTTPService from '../../../main/services/mytaskHTTPService';
-import ReactTooltip from 'react-tooltip';
+ import { Tooltip } from 'react-tooltip';
 import { useForm } from 'react-hook-form';
 import projectHTTPService from '../../../main/services/projectHTTPService';
 import { Typography, Button, LinearProgress } from '@mui/material';
@@ -187,7 +187,7 @@ const Task = () => {
       <div className="card-body">
         <MyTaskSummary />
 
-        <ReactTooltip />
+        <Tooltip />
 
         {loading ?
           <LinearProgress />
@@ -272,8 +272,6 @@ const Task = () => {
   )
 };
 
-Task.propTypes = {};
 
-Task.defaultProps = {};
 
 export default Task;

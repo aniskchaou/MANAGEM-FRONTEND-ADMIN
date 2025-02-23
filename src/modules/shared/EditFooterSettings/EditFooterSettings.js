@@ -7,74 +7,100 @@ import React, { useEffect, useState } from 'react';
 import CurrentUser from '../../../main/config/user';
 
 const EditFooterSettings = () => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
-  const { register, handleSubmit, errors } = useForm()
-  const [footerSettings, setFooterSettings] = useState();
+  const [footerSettings, setFooterSettings] = useState({
+    enableFooter: '',
+    enableCopyRightText: '',
+  });
 
   useEffect(() => {
-    getFooterSettings()
-  }, [])
+    getFooterSettings();
+  }, []);
 
-  const handleInputChange = event => {
-    const { name, value } = event.target;
-    setFooterSettings({ ...footerSettings, [name]: value });
+  const getFooterSettings = async () => {
+    try {
+      const { data } = await settingsHTTPService.getFooterSettings();
+      if (data.length > 0) {
+        const settings = data[0];
+        setFooterSettings(settings);
+
+        // Populate form fields with API data
+        Object.keys(settings).forEach((key) => setValue(key, settings[key]));
+      }
+    } catch (error) {
+      console.error('Error fetching footer settings:', error);
+    }
   };
 
-  const getFooterSettings = () => {
-    settingsHTTPService.getFooterSettings().then(data => {
-      setFooterSettings(data.data[0])
+  const onSubmit = async (data) => {
+    try {
+      await settingsHTTPService.editFooterSettings(footerSettings.id, data);
+      showMessage('Confirmation', CurrentUser.SETTINGS_UPDATE_MSG, 'success');
+      getFooterSettings(); // Refresh UI after update
+    } catch (error) {
+      console.error('Error updating footer settings:', error);
+      showMessage('Error', 'Failed to update footer settings', 'danger');
+    }
+  };
 
-    })
-  }
-
-  const onSubmit = (data) => {
-    settingsHTTPService.editFooterSettings(footerSettings.id, data).then(data => {
-      console.log(data)
-      showMessage('Confirmation', CurrentUser.SETTINGS_UPDATE_MSG, 'success')
-    })
-  }
   return (
     <div className="EditDashboardSettings">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Show footer</label>
-          <div class="col-8">
-            <select onChange={handleInputChange} value={footerSettings?.enableFooter} ref={register({ required: true })}
-              id="select2" name="enableFooter" class="custom-select">
-
+        {/* Show Footer */}
+        <div className="form-group row">
+          <label htmlFor="enableFooter" className="col-4 col-form-label">
+            Show Footer
+          </label>
+          <div className="col-8">
+            <select
+              {...register('enableFooter', { required: 'Please select an option' })}
+              id="enableFooter"
+              name="enableFooter"
+              className="custom-select"
+            >
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
+            {errors.enableFooter && <p className="text-danger">{errors.enableFooter.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <label for="select2" class="col-4 col-form-label">Show copy right</label>
-          <div class="col-8">
-            <select onChange={handleInputChange} value={footerSettings?.enableCopyRightTest} ref={register({ required: true })}
-              id="select2" name="enableCopyRightTest" class="custom-select">
-
+        {/* Show Copyright */}
+        <div className="form-group row">
+          <label htmlFor="enableCopyRightText" className="col-4 col-form-label">
+            Show Copyright
+          </label>
+          <div className="col-8">
+            <select
+              {...register('enableCopyRightText', { required: 'Please select an option' })}
+              id="enableCopyRightText"
+              name="enableCopyRightText"
+              className="custom-select"
+            >
               <option value="1">Yes</option>
               <option value="0">No</option>
             </select>
+            {errors.enableCopyRightText && <p className="text-danger">{errors.enableCopyRightText.message}</p>}
           </div>
         </div>
 
-        <div class="form-group row">
-          <div class="offset-4 col-8">
-            <button name="submit" type="submit" class="btn btn-primary"><i class="far fa-save"></i>
-              Save</button>
+        {/* Submit Button */}
+        <div className="form-group row">
+          <div className="offset-4 col-8">
+            <button type="submit" className="btn btn-primary">
+              <i className="far fa-save"></i> Save
+            </button>
           </div>
         </div>
-
-
       </form>
     </div>
-  )
-}
-
-EditFooterSettings.propTypes = {};
-
-EditFooterSettings.defaultProps = {};
+  );
+};
 
 export default EditFooterSettings;
