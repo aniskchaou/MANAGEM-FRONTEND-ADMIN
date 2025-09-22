@@ -74,12 +74,33 @@ const Contracts = () => {
     resfresh()
   }
   const columns = [
-    { field: 'id', headerName: '#', width: 20 },
-    { field: 'title', headerName: 'Title', width: 200 },
-    { field: 'date', headerName: 'Date', width: 200 },
-    { field: 'client', headerName: 'Client', width: 200 },
-    { field: 'project', headerName: 'Project', width: 200 }
-  ];
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'contractNumber', headerName: 'Contract Number', width: 150 },
+  { field: 'contractType', headerName: 'Type', width: 130 },
+  { field: 'startDate', headerName: 'Start Date', width: 150, 
+    valueFormatter: (params) => new Date(params.value).toLocaleDateString() 
+  },
+  { field: 'endDate', headerName: 'End Date', width: 150, 
+    valueFormatter: (params) => new Date(params.value).toLocaleDateString() 
+  },
+  { field: 'totalValue', headerName: 'Total Value', width: 130 },
+  { field: 'currency', headerName: 'Currency', width: 100 },
+  { field: 'status', headerName: 'Status', width: 130 },
+  { field: 'paymentTerms', headerName: 'Payment Terms', width: 150 },
+  { 
+    field: 'deliverables', 
+    headerName: 'Deliverables', 
+    width: 250,
+    valueGetter: (params) => (params.value || []).join(', ')
+  },
+  { field: 'createdAt', headerName: 'Created At', width: 180, 
+    valueFormatter: (params) => new Date(params.value).toLocaleString() 
+  },
+  { field: 'updatedAt', headerName: 'Updated At', width: 180, 
+    valueFormatter: (params) => new Date(params.value).toLocaleString() 
+  }
+];
+
 
 
   const handleRowSelection = (e) => {

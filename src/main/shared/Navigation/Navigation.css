@@ -7,24 +7,41 @@
     color: #0056b3;
   }
 
+.left-panel {
+  overflow-x: hidden;
+}
+
+.main-menu {
+  overflow-x: hidden;
+}
+
+.dropdown-menu {
+  overflow-x: hidden !important;
+  max-width: 100vw;
+}
+
+.navbar-nav {
+  overflow-x: hidden;
+}
+
     .sub-navigation {
-     overflow: hidden;
+     overflow-x: hidden;
      width: 30%;
     }
 
        .left-panel::-webkit-scrollbar-track {
           -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-          border-radius: 10px;
-          background-color: #F5F5F5;
+          border-radius: 8px;
+          background-color: #e0e4ea;
         }
     
                 .left-panel::-webkit-scrollbar {
-          width: 12px;
-          background-color: #F5F5F5;
+          width: 8px;
+          background-color: #e0e4ea;
         }
     
                 .left-panel::-webkit-scrollbar-thumb {
-          border-radius: 10px;
-          -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-          background-color: #607d8b;
+          border-radius: 8px;
+          background: linear-gradient(180deg, #43a047 0%, #1565c0 100%);
+          box-shadow: 0 2px 8px #1976d233;
         }

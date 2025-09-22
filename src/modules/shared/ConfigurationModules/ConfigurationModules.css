@@ -1,1 +1,133 @@
-.ConfigurationModules {}
+
+
+.config-container {
+	background: #fafdff;
+	min-height: 100vh;
+	padding: 40px 0;
+}
+
+.config-header {
+	text-align: center;
+	margin-bottom: 32px;
+}
+
+.config-header h2 {
+	font-weight: 700;
+	color: #1976d2;
+		background: linear-gradient(90deg, #1976d2 0%, #43a047 100%);
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+	font-size: 2.2rem;
+}
+
+.config-desc {
+	color: #43a047;
+	font-size: 1.1rem;
+	font-weight: 500;
+}
+
+.config-nav-card {
+	border-radius: 16px;
+	box-shadow: 0 4px 16px #e0e4ea55;
+	background: #fff;
+	border: none;
+}
+
+.config-content-card {
+	border-radius: 16px;
+	box-shadow: 0 4px 16px #e0e4ea55;
+	background: #fff;
+	padding: 32px;
+	border: none;
+}
+
+.config-section-title {
+	font-weight: 700;
+	color: #1976d2;
+	margin-bottom: 12px;
+	font-size: 1.2rem;
+}
+
+.config-btn-group {
+	display: flex;
+	gap: 16px;
+	margin-top: 20px;
+}
+
+.config-btn {
+	border-radius: 8px;
+	font-weight: 600;
+	min-width: 120px;
+	box-shadow: 0 1px 4px #e0e4ea77;
+	padding: 8px 18px;
+	transition: background 0.2s, color 0.2s;
+}
+.btn-info.config-btn {
+	background: linear-gradient(90deg, #1976d2 0%, #43a047 100%);
+	color: #fff;
+	border: none;
+}
+.btn-info.config-btn:hover {
+	background: linear-gradient(90deg, #43a047 0%, #1976d2 100%);
+	color: #fff;
+}
+.btn-warning.config-btn {
+	background: linear-gradient(90deg, #ffd700 0%, #43a047 100%);
+	color: #fff;
+	border: none;
+}
+.btn-warning.config-btn:hover {
+	background: linear-gradient(90deg, #43a047 0%, #ffd700 100%);
+	color: #fff;
+}
+.card {
+	border: none !important;
+}
+
+.config-header {
+	text-align: center;
+	margin-bottom: 32px;
+}
+
+.config-header h2 {
+	font-weight: 700;
+	color: #2c3e50;
+}
+
+.config-desc {
+	color: #6c757d;
+	font-size: 1.1rem;
+}
+
+.config-nav-card {
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+	background: #fff;
+}
+
+.config-content-card {
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+	background: #fff;
+	padding: 24px;
+}
+
+.config-section-title {
+	font-weight: 600;
+	color: #2980b9;
+	margin-bottom: 12px;
+}
+
+.config-btn-group {
+	display: flex;
+	gap: 12px;
+	margin-top: 16px;
+}
+
+.config-btn {
+	border-radius: 6px;
+	font-weight: 500;
+	min-width: 120px;
+	box-shadow: 0 1px 4px rgba(44,62,80,0.07);
+}

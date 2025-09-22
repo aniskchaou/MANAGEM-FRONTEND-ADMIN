@@ -2,7 +2,7 @@ import http from "../../libraries/axios/axios";
 import BASE_URL from "../urls/urls";
 
 const getAllTeam = () => {
-    return http.get(`${BASE_URL}/api/team`)
+    return http.get(`${BASE_URL}/teams`)
 }
 const createTeam = data => {
     return http.post(`${BASE_URL}/api/team`, data);

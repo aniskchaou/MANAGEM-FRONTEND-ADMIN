@@ -111,13 +111,20 @@ const Client = () => {
 
 
   const columns = [
-    { field: 'id', headerName: '#', width: 200 },
-    { field: 'last_name', headerName: 'Last name', width: 200 },
-    { field: 'first_name', headerName: 'First name', width: 200 },
-    { field: 'company', headerName: 'Company', width: 200 },
-    { field: 'email', headerName: 'Email', width: 200 },
-    { field: 'phone', headerName: 'Telephone', width: 200 },
-  ];
+  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'first_name', headerName: 'First Name', width: 150 },
+  { field: 'last_name', headerName: 'Last Name', width: 150 },
+  { field: 'email', headerName: 'Email', width: 200 },
+  { field: 'phone', headerName: 'Phone', width: 150 },
+  { field: 'company', headerName: 'Company', width: 180 },
+  { field: 'type', headerName: 'Type', width: 120 },
+  { field: 'address', headerName: 'Address', width: 250 },
+  { field: 'website', headerName: 'Website', width: 200 },
+  { field: 'vatNumber', headerName: 'VAT Number', width: 150 },
+  { field: 'owner', headerName: 'Owner', width: 150 },
+  { field: 'createdAt', headerName: 'Created At', width: 180 },
+  { field: 'updatedAt', headerName: 'Updated At', width: 180 }
+];
 
 
   const handleRowSelection = (e) => {

@@ -11,10 +11,6 @@ const Header = ({ connected, handleClick }) => {
 
     let history = useNavigate()
     const [headerSettings, setHeaderSettings] = useState({});
-    const initialState = {
-        input: '',
-    };
-    const [activity, setActivity] = useState(initialState);
     const logout = () => {
         handleClick(false)
         localStorage.clear()
@@ -31,21 +27,6 @@ const Header = ({ connected, handleClick }) => {
 
     }, []);
 
-    const print = () => {
-        history.replace("/result/" + activity.input)
-    }
-
-    const handleInputChange = event => {
-        const { name, value } = event.target;
-        setActivity({ ...activity, [name]: value });
-    };
-
-    const search = (event) => {
-        if (event.keyCode === 13) {
-            history.replace("/result/" + activity.input)
-        }
-    }
-
     useEffect(() => {
         getFooterSettings()
     }, []);
@@ -60,47 +41,45 @@ const Header = ({ connected, handleClick }) => {
 
 
     return (
-        <div id="right-panel" className="right-panel" style={{ display: (connected ? 'block' : 'none') }}>
-            <header id="header" className="header">
-                <div className="top-left">
-                    <div className="navbar-header">
-                        {headerSettings.showLogo == 1 &&
-                            <a className="navbar-brand" href="./"><img src="images/logo.png" alt="Logo" /></a>
-                        }
-                        <a className="navbar-brand hidden" href="./"><img src="images/logo2.png" alt="Logo" /></a>
-                        <a id="menuToggle" className="menutoggle"><i className="fa fa-bars"></i></a>
+        <div id="right-panel" className="right-panel" style={{ display: (connected ? 'block' : 'none'), background: '#fafdff', borderRadius: 16, boxShadow: '0 4px 16px #e0e4ea55', border: 'none', position: 'relative' }}>
+            <header id="header" className="header" style={{ background: '#f5f6fa', borderRadius: '16px 16px 0 0', color: '#222', boxShadow: '0 2px 8px #e0e4ea33', padding: '12px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div className="top-left" style={{ display: 'flex', alignItems: 'center', gap: 18, width: '100%' }}>
+                    {/* Logo removed */}
+                    {/* Centered header title and quicklinks */}
+                    <div className="header-title" style={{ marginLeft: 24, fontWeight: 700, fontSize: 22, letterSpacing: 1, color: '#1976d2', display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <i className="fa fa-gem" style={{ fontSize: 24, color: '#43a047' }}></i>
+                        <span style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, letterSpacing: 2 }}>MANAGEM</span>
+                    </div>
+                    <div className="header-quicklinks" style={{ marginLeft: 32, display: 'flex', gap: 18 }}>
+                        <Link to="/projects" style={{ color: '#1976d2', fontWeight: 500, textDecoration: 'none', fontSize: 16 }}><i className="fa fa-folder-open" style={{ color: '#1976d2' }}></i> Projects</Link>
+                        <Link to="/tasks" style={{ color: '#1976d2', fontWeight: 500, textDecoration: 'none', fontSize: 16 }}><i className="fa fa-tasks" style={{ color: '#1976d2' }}></i> Tasks</Link>
+                        <Link to="/teams" style={{ color: '#1976d2', fontWeight: 500, textDecoration: 'none', fontSize: 16 }}><i className="fa fa-users" style={{ color: '#1976d2' }}></i> Teams</Link>
                     </div>
                 </div>
-                <div className="top-right">
-                    <div className="header-menu">
-                        <div className="header-left">
-                            {headerSettings.enbaleSearchBar == 1 &&
-                                <button className="search-trigger"><i className="fa fa-search"></i></button>
-                            }
-                            <div className="form-inline">
-                                <form className="search-form">
-                                    <input onChange={handleInputChange} name="input" value={activity.input} onKeyDown={(e) => search(e)} className="form-control mr-sm-2" type="text" placeholder="Search ..." aria-label="Search" />
-                                    <button onClick={print} className="search-close" type="submit"><i className="fa fa-close"></i></button>
-                                </form>
-                            </div>
-
-
-
+                <div className="top-right" style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+                    <div className="header-menu" style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+                        {/* Toolbar icons */}
+                        <div className="toolbar-icons" style={{ display: 'flex', alignItems: 'center', gap: 18, marginRight: 18 }}>
+                            <button type="button" style={{ background: 'none', border: 'none', color: '#1976d2', fontSize: 22, cursor: 'pointer' }} aria-label="Notifications">
+                                <i className="fa fa-bell" style={{ color: '#1976d2' }}></i>
+                            </button>
+                            <button type="button" style={{ background: 'none', border: 'none', color: '#43a047', fontSize: 22, cursor: 'pointer' }} aria-label="Settings">
+                                <i className="fa fa-cog" style={{ color: '#43a047' }}></i>
+                            </button>
+                            <button type="button" style={{ background: 'none', border: 'none', color: '#d32f2f', fontSize: 22, cursor: 'pointer' }} aria-label="Help">
+                                <i className="fa fa-question-circle" style={{ color: '#d32f2f' }}></i>
+                            </button>
                         </div>
-
-                        <div className="user-area dropdown float-right">
-                            <a href="#" className="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img className="user-avatar rounded-circle" src="images/admin.png" alt="User Avatar" />
-                            </a>
-
-                            <div className="user-menu dropdown-menu">
-                                <Link to="/profile" className="nav-link" href="#"><i className="fa fa-user"></i>My Profile</Link>
-
-
-
-                                <Link to="/configuration" className="nav-link" href="#"><i className="fa fa-cog"></i>Settings</Link>
-
-                                <Link to="/" onClick={logout} className="nav-link" href="#"><i className="fa fa-power-off"></i>Log out</Link>
+                        <div className="user-area dropdown float-right" style={{ marginLeft: 18 }}>
+                            <button type="button" className="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }} aria-label="User menu">
+                                <img className="user-avatar rounded-circle" src="images/admin.png" alt="User Avatar" style={{ height: 38, width: 38, borderRadius: '50%', boxShadow: '0 2px 8px #1976d233', marginRight: 8 }} />
+                                <span style={{ color: '#1976d2', fontWeight: 600, fontSize: 16 }}>Admin</span>
+                                <i className="fa fa-chevron-down" style={{ color: '#1976d2', fontSize: 16 }}></i>
+                            </button>
+                            <div className="user-menu dropdown-menu" style={{ minWidth: 180, borderRadius: 12, boxShadow: '0 2px 8px #1976d233', background: '#fff', color: '#333', padding: 10, right: 0, left: 'auto', top: 48, position: 'absolute' }}>
+                                <Link to="/profile" className="nav-link" style={{ color: '#1976d2', fontWeight: 500 }}><i className="fa fa-user"></i> My Profile</Link>
+                                <Link to="/configuration" className="nav-link" style={{ color: '#1976d2', fontWeight: 500 }}><i className="fa fa-cog"></i> Settings</Link>
+                                <Link to="/" onClick={logout} className="nav-link" style={{ color: '#d32f2f', fontWeight: 500 }}><i className="fa fa-power-off"></i> Log out</Link>
                             </div>
                         </div>
                     </div>

@@ -27,14 +27,14 @@ const Configuration = () => {
 
   useEffect(() => {
 
-    getSystemSettings()
-    getEmailSettings()
-    getEmailTemplateSettings()
-    getLocalisationSettings()
-    getFooterSettings()
-    getHeaderSettings()
-    getDashboardSettings()
-    getNotificationSettings()
+    // getSystemSettings()
+    // getEmailSettings()
+    // getEmailTemplateSettings()
+    // getLocalisationSettings()
+    // getFooterSettings()
+    // getHeaderSettings()
+    // getDashboardSettings()
+    // getNotificationSettings()
   }, []);
 
   const getNotificationSettings = () => {

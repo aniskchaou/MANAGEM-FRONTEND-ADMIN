@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Sprint 1",
+    "status": "Active",
+    "startDate": "2025-07-01T09:00:00.000Z",
+    "endDate": "2025-07-15T18:00:00.000Z",
+    "goal": "Deliver authentication module"
+  },
+  {
+    "id": 2,
+    "name": "Sprint 2",
+    "status": "Planned",
+    "startDate": "2025-07-16T09:00:00.000Z",
+    "endDate": "2025-07-31T18:00:00.000Z",
+    "goal": "Implement user profile and settings"
+  },
+  {
+    "id": 3,
+    "name": "Sprint 3",
+    "status": "Planned",
+    "startDate": "2025-08-01T09:00:00.000Z",
+    "endDate": "2025-08-15T18:00:00.000Z",
+    "goal": "Integrate notifications and reporting"
+  }
+]
